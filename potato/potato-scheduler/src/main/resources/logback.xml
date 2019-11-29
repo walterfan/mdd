@@ -1,0 +1,83 @@
+<configuration debug="false">
+
+    <!-- Ensure that logback level changes are also propagated to java.util.logging framework -->
+    <!-- See http://logback.qos.ch/manual/configuration.html#LevelChangePropagator -->
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
+
+    <turboFilter class="ch.qos.logback.classic.turbo.DynamicThresholdFilter">
+        <Key>loggerLevel</Key>
+        <DefaultThreshold>ERROR</DefaultThreshold>
+        <OnHigherOrEqual>ACCEPT</OnHigherOrEqual>
+        <OnLower>NEUTRAL</OnLower>
+        <MDCValueLevelPair>
+            <value>trace</value>
+            <level>TRACE</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>debug</value>
+            <level>DEBUG</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>info</value>
+            <level>INFO</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>warn</value>
+            <level>WARN</level>
+        </MDCValueLevelPair>
+        <MDCValueLevelPair>
+            <value>error</value>
+            <level>ERROR</level>
+        </MDCValueLevelPair>
+    </turboFilter>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS z(Z)} [%X{WEBEX_TRACKINGID}] [%X{RHESOS_DIALOG_ID}] [%thread] %-5level
+                %logger{36} - %X{dboperation_latency} %msg%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/opt/logs/potato-scheduler.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS z(Z)} [%X{WEBEX_TRACKINGID}] [%X{RHESOS_DIALOG_ID}] [%thread] %-5level
+                %logger{36} - %X{dboperation_latency} %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="METRICS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/opt/logs/potato-scheduler.metrics.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <logger name="com.github.walterfan.potato.common.metrics.handler.output.OutputMetricByLog" level="INFO">
+        <appender-ref ref="METRICS_LOG"/>
+    </logger>
+
+    <!-- Reduce excessive Glassfish server logger chattiness -->
+    <logger name="org.glassfish.jersey" level="INFO"/>
+    <logger name="org.springframework" level="INFO"/>
+
+
+</configuration>

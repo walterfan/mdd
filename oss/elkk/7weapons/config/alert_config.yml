@@ -1,0 +1,10 @@
+potato_create_failure:
+  query: metrics.event.success:false AND metrics.application.component:potato-web
+  count: 10
+  enabled: true
+  # the PD will be snoozed until the time, format: YYYY-MM-DDThh:mm:ss, e.g. 2018-11-15T00:00:00
+  snoozed: 2018-11-15T00:00:00
+  priority: 1
+  suggestion: check what's the matter of potato creation
+  query_scope: metrics.application.component:potato-web
+  success_ratio: 0.9999

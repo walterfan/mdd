@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Potato workshop</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"/>
+    <link rel="stylesheet"  href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" />
+    <link rel="stylesheet"  href="./css/index.css" />
+    <link rel="stylesheet"  href="./css/login.css" />
+    <link rel="stylesheet"  href="./css/registration.css" />
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+
+    <script src="/webjars/vue/2.5.16/vue.js"></script>
+    <script src="/webjars/vue-router/3.0.1/dist/vue-router.js"></script>
+    <script src="/webjars/axios/0.17.1/dist/axios.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Potato Workshop</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/potatoes">Potato</a></li>
+                <li class="active"><a href="/tomatoes">Tomato</a></li>
+                <li class="active"><a href="/bookmarks">Bookmark</a></li>
+                <li class="active"><a href="/articles">Article</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin/home">Admin</a></li>
+                        <li><a href="#">Feedback</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Help</li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+
+            <div sec:authorize="isAuthenticated()" class="nav navbar-nav navbar-right" >
+                <form action="/logout" th:acction="@{/logout}" method="post">
+                    <input class="btn btn-link btn-default" type="submit" value="Logout">
+                </form>
+            </div>
+            <div sec:authorize="isAnonymous()" class="nav navbar-nav navbar-right">
+                <a class="btn btn-link btn-default" href="/login">Login</a>
+                <a class="btn btn-link btn-default" href="/registration">Register</a>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <br/><br/>
+
+
+<div class="row" layout:fragment="content"><br/>
+
+    <div class="row">
+        <div class="starter-template" ng-controller="IntroController as vm">
+
+            <div class="jumbotron">
+                <div class="container" id="banner">
+                    <h2>今天只是未来生命中的一天, 但你的未来却取决于你今天做了什么 </h2>
+                    <p>Proper Planning Prevents Pretty Poor Performance</p>
+                    <p><a class="btn btn-default" href="/potatoes" role="button">View details &raquo;</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+   <div class="alert alert-success" th:if="${message}">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p th:text="${message}">Welcome to our potato store!</p>
+    </div>
+
+    <div class="alert alert-warning" th:if="${error}">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p th:text="${error}">input error</p>
+    </div>
+
+   <div>
+        <div><img src="./image/pomodoro.png" width="60%"></div>
+
+
+   </div>
+
+</div>
+</section>
+    <br/>
+    <hr/>
+
+        <footer>
+            <p>&copy; 2018 Potato and Tomato Studio for Metrics Driven Development book </p>
+        </footer>
+</div>
+
+
+
+</body>
+</html>

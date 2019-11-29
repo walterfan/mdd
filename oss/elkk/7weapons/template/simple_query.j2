@@ -1,0 +1,22 @@
+{
+  "size": {{ size }},
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "{{ queryString }}"
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "gte": "{{ beginTime }}",
+              "lte": "{{ endTime }}"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,3 @@
+[elkservers]
+10.224.77.184 ansible_user=root
+

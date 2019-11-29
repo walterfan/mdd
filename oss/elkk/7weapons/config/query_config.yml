@@ -1,0 +1,2 @@
+Potato:
+  potato_api_error: metrics.application.component:potato-web AND metrics.event.success:false

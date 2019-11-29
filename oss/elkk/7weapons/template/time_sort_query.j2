@@ -1,0 +1,36 @@
+{
+  "version": true,
+  "size": {{ size }},
+  "sort": [
+    {
+      "@timestamp": {
+        "order": "asc",
+        "unmapped_type": "boolean"
+      }
+    }
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "{{ queryString }}",
+            "analyze_wildcard": true
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "gte": "{{ beginTime }}",
+              "lte": "{{ endTime }}"
+            }
+          }
+        }
+      ],
+      "must_not": []
+    }
+  },
+  "_source": {
+    "excludes": []
+  }
+}

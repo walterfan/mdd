@@ -1,0 +1,9 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: potato
+  cloud:
+    consul:
+      host: 10.224.112.67
+      port: 8500

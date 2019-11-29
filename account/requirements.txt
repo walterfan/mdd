@@ -1,0 +1,6 @@
+flask
+flask-httpauth
+requests
+httpie
+redis
+locust

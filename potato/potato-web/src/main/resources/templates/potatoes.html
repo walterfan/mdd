@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Welcome to Potato workshop</title>
+</head>
+<body>
+
+
+<div class="row" layout:fragment="content"><br/>
+
+    <main id="app">
+        <router-view></router-view>
+    </main>
+
+    <template id="potato-list">
+        <div>
+
+            <div class="filters row">
+                <div class="form-group col-sm-4">
+                    <input v-model="searchKey" class="form-control" id="search-element"  placeholder="name, tags" requred/>
+                </div>
+                <div class="actions form-group col-sm-4">
+                    <button class="btn btn-default" v-on:click="searchPotato"><span class="glyphicon glyphicon-search"></span> Search</button>
+
+                    <router-link class="btn btn-default" v-bind:to="{path: '/add-potato'}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add
+                    </router-link>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Tags</th>
+                    <th>Duration</th>
+                    <th>ScheduleTime</th>
+                    <th>Deadline</th>
+                    <th class="col-sm-2">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(potato, index) in potatoes" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>
+                        <router-link v-bind:to="{path: '/potatoes/' + potato.id}">{{ potato.name }}</router-link>
+                    </td>
+                    <td>{{ potato.priority }}</td>
+                    <td>{{ potato.tags }}</td>
+                    <td>
+                        {{ potato.duration }} hour
+                    </td>
+                    <td>
+                        {{ potato.scheduleTime }}
+                    </td>
+                    <td>
+                        {{ potato.deadline }}
+                    </td>
+                    <td>
+                        <router-link class="btn btn-warning btn-xs" v-bind:to="{path: '/potatoes/'+ potato.id +'/edit'}">Edit</router-link>
+                        <router-link class="btn btn-danger btn-xs" v-bind:to="{path: '/potatoes/'+ potato.id +'/delete'}">Delete</router-link>
+                        <router-link class="btn btn-warning btn-xs" v-bind:to="{path: '/potatoes/'+ potato.id +'/start'}">Start</router-link>
+                        <router-link class="btn btn-danger btn-xs" v-bind:to="{path: '/potatoes/'+ potato.id +'/stop'}">Stop</router-link>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+
+    <template id="add-potato">
+        <div>
+            <h2>Add Potato</h2>
+            <form v-on:submit="createPotato">
+                <div class="form-group">
+                    <label for="add-name">Name</label>
+                    <input class="form-control" id="add-name" v-model="potato.name" placeholder="task name" required/>
+                </div>
+                <div class="form-group">
+                    <label for="add-description">Description</label>
+                    <textarea class="form-control" id="add-description" rows="3" v-model="potato.description"  placeholder="task description" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="add-tags">Tags</label>
+                    <input type="text" class="form-control" id="add-tags" v-model="potato.tags"  placeholder="task tags divided by comma" />
+                </div>
+                <div class="form-group">
+                    <label for="add-priority">Priority</label>
+
+                    <select class="form-control" id="add-priority" v-model="potato.priority" >
+                        <option value="0">--Please choose an priority--</option>
+                        <option value="1">Important & Urgent</option>
+                        <option value="2">Important & Not Urgent</option>
+                        <option value="3">Not Important & Urgent</option>
+                        <option value="4">Not Important & Not Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="add-duration">Duration (Hour)</label>
+                    <input type="text" class="form-control" id="add-duration" v-model="potato.duration"  placeholder="task duration" />
+                </div>
+                <div class="form-group">
+                    <label for="add-scheduleTime">Schedule Time (e.g. 2008-08-08T08:08:08+08:00)</label>
+                    <input type="text" class="form-control" id="add-scheduleTime" v-model="potato.scheduleTime"/>
+                </div>
+                <div class="form-group">
+                    <label for="add-deadline">Deadline (e.g. 2008-08-08T08:08:08+08:00)</label>
+                    <input type="text" class="form-control" id="add-deadline" v-model="potato.deadline"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+                <router-link class="btn btn-default" v-bind:to="'/'">Cancel</router-link>
+            </form>
+        </div>
+    </template>
+
+    <template id="potato">
+
+        <div>
+            <h2>Toast this Potato</h2>
+
+            <div>
+                <label>Name: </label>
+                <span><u>{{ potato.name }}</u></span>
+            </div>
+            <div>
+                <label>Description: </label>
+                <span>{{ potato.description }}</span>
+            </div>
+
+
+            <div>
+                <label>Priority: </label>
+                <span>{{ potato.priority }}</span>
+            </div>
+
+            <div>
+                <label>Duration: </label>
+                <span>{{ potato.duration }}</span>
+            </div>
+
+               <div>
+                <label>Schedule Time: </label>
+                <span>{{ potato.scheduleTime }}</span>
+            </div>
+
+            <div>
+                <label>Deadline: </label>
+                <span>{{ potato.deadline }}</span>
+            </div>
+
+            <div>
+                <label>Tags: </label>
+                <span>{{ potato.tags }}</span>
+            </div>
+
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+            <router-link v-bind:to="'/'">Go Back</router-link>
+        </div>
+    </template>
+
+    <template id="edit-potato">
+
+        <div>
+            <h2>Edit Potato</h2>
+            <form v-on:submit="updatePotato">
+                <div class="form-group">
+                    <label for="edit-name">Name</label>
+                    <input class="form-control" id="edit-name" v-model="potato.name" placeholder="task name" required/>
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea class="form-control" id="edit-description" rows="3" v-model="potato.description"  placeholder="task description" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-tags">Tags</label>
+                    <input type="text" class="form-control" id="edit-tags" v-model="potato.tags"  placeholder="task tags divided by comma" />
+                </div>
+                <div class="form-group">
+                    <label for="edit-priority">Priority</label>
+
+                    <select class="form-control" id="edit-priority" v-model="potato.priority" >
+                        <option value="0">--Please choose an priority--</option>
+                        <option value="1">Important & Urgent</option>
+                        <option value="2">Important & Not Urgent</option>
+                        <option value="3">Not Important & Urgent</option>
+                        <option value="4">Not Important & Not Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-duration">Duration (Hour)</label>
+                    <input type="text" class="form-control" id="edit-duration" v-model="potato.duration"  placeholder="task duration" />
+
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-scheduleTime">Schedule Time (e.g. 2008-08-08T08:08:08+08:00)</label>
+                    <input type="text" class="form-control" id="edit-scheduleTime" v-model="potato.scheduleTime"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-deadline">Deadline (e.g. 2008-08-08T08:08:08+08:00)</label>
+                    <input type="text" class="form-control" id="edit-deadline" v-model="potato.deadline"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <router-link class="btn btn-default" v-bind:to="'/'">Cancel</router-link>
+            </form>
+        </div>
+
+    </template>
+
+    <template id="delete-potato">
+        <div>
+            <h2>Delete Potato {{ potato.name }} ?</h2>
+            <form v-on:submit="deletePotato">
+                <p>The action cannot be undone.</p>
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <router-link class="btn btn-default" v-bind:to="'/'">Cancel</router-link>
+            </form>
+        </div>
+    </template>
+
+<script src="./js/potato.js"></script>
+</div>
+
+</body>
+</html>

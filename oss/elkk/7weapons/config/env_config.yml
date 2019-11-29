@@ -1,0 +1,19 @@
+Potato:
+  LAB:
+    ELS_URL:
+      - http://10.224.2.159:9200/_search
+
+  ATS:
+    ELS_URL:
+      - http://10.224.2.159:9200/_search
+  BTS:
+    ELS_URL:
+      - http://10.224.2.159:9200/_search
+
+  PROD:
+    ELS_URL:
+      - http://10.224.2.159:9200/_search
+      - http://10.224.2.159:9200/_search
+      - http://10.224.2.159:9200/_search
+      - http://10.224.2.159:9200/_search
+

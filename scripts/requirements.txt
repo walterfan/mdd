@@ -1,0 +1,12 @@
+pytz>=2018.5
+requests>=2.18.4
+Werkzeug>=0.14.1
+Flask_HTTPAuth>=3.2.3
+urllib3>=1.22
+Markdown>=2.6.11
+Jinja2>=2.10
+PyYAML>=3.13
+bs4>=0.0.1
+tabulate>=0.8.3
+locustio>=0.11.0
+

@@ -1,0 +1,29 @@
+---
+# ansible-playbook potato_server.yml
+- name: deploy potato server
+  hosts: potato_server
+  become: True
+
+  vars:
+    isFileReplaced: no
+
+  tasks:
+  - name: Creates directory
+    file:
+      path: /opt/potato/potato-server
+      state: directory
+  - name: copy dockerfile to remote server
+    copy:
+      src: ../potato/potato-server/Dockerfile
+      dest: /opt/potato/potato-server
+      force: "{{ isFileReplaced }}"
+  - name: copy jar package to remote server
+    copy:
+      src: ../potato/potato-server/target/task-0.0.1-SNAPSHOT.jar
+      dest: /opt/potato/potato-server/potato-server.jar
+      force: "{{ isFileReplaced }}"
+  - name: copy docker image to remote server
+    copy:
+      src: ../potato/potato-server-image.tar
+      dest: /opt/potato/potato-server
+      force: "{{ isFileReplaced }}"

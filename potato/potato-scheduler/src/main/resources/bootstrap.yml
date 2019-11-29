@@ -1,0 +1,9 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: potato-reminder
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:10.224.112.67}
+      port: ${CONSUL_PORT:8500}

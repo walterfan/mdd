@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Welcome to Potato workshop</title>
+</head>
+<body>
+
+
+<div class="row" layout:fragment="content"><br/>
+
+    <div class="row">
+        <div class="starter-template" ng-controller="IntroController as vm">
+
+            <div class="jumbotron">
+                <div class="container" id="banner">
+                    <h2>今天只是未来生命中的一天, 但你的未来却取决于你今天做了什么 </h2>
+                    <p>Proper Planning Prevents Pretty Poor Performance</p>
+                    <p><a class="btn btn-default" href="/potatoes" role="button">View details &raquo;</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <h2> Access Denied </h2>
+
+    <div class="alert alert-success" th:if="${message}">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p th:text="${message}">Welcome to our potato store!</p>
+    </div>
+
+    <div class="alert alert-warning" th:if="${error}">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p th:text="${error}">login error</p>
+    </div>
+
+
+
+</div>
+
+
+<script type="text/javascript">
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "summarize redis",
+  "description": "read redis in action",
+  "tags": "tech web",
+  "priority": 2,
+  "duration": 2,
+  "timeUnit": "DAYS",
+  "deadline": "2019-12-31T19:00:00+08:00",
+  "scheduleTime": "2019-10-27T09:00:00+08:00"
+}

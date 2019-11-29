@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Welcome to Potato workshop</title>
+</head>
+<body>
+
+<div class="row" layout:fragment="content"><br/>
+
+
+
+    <div class="panel-group" style="margin-top:40px">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span th:utext="${userName}"></span>
+            </div>
+            <div class="panel-body">
+                <img th:src="@{/image/tomato-clock.jpg}" class="img-responsive center-block" width="400" height="400"
+                     alt="Beer"/>
+                <div>
+
+                <a href="/swagger-ui.html">API Documents</a>
+                </div>
+            </div>
+            <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
+        </div>
+    </div>
+
+    <form th:action="@{/logout}" method="get">
+        <button class="btn btn-md btn-danger btn-block" name="registration"
+                type="Submit">Logout
+        </button>
+    </form>
+
+</div>
+</body>
+</html>

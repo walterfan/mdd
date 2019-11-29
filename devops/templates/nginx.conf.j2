@@ -1,0 +1,16 @@
+upstream webservers {
+  {{range service "potato-web" "any"}}
+    server {{.Address}}:{{.Port}} ;
+  {{end}}
+}
+
+
+  server {
+    listen 80;
+
+    location / {
+      proxy_pass  http://webservers;
+      proxy_next_upstream error timeout invalid_header http_500;
+    }
+
+  }

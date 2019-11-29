@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Welcome to Potato workshop</title>
+</head>
+<body>
+
+
+<div class="row" layout:fragment="content"><br/>
+
+
+    <main id="blogApp">
+        <router-view></router-view>
+    </main>
+
+
+    <template id="article-list">
+            <div>
+
+                <div class="filters row">
+                    <div class="form-group col-sm-4">
+                        <input v-model="searchKey" class="form-control" id="search-element"  placeholder="name, tags" requred/>
+                    </div>
+                    <div class="actions form-group col-sm-4">
+                        <button class="btn btn-default" v-on:click="searchPotato"><span class="glyphicon glyphicon-search"></span> Search</button>
+
+                        <router-link class="btn btn-default" v-bind:to="{path: '/add-article'}">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add
+                        </router-link>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Priority</th>
+                        <th>Tags</th>
+                        <th>Duration</th>
+                        <th>ScheduleTime</th>
+                        <th>Deadline</th>
+                        <th class="col-sm-2">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(potato, index) in potatoTags" :key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td>
+                            <router-link v-bind:to="{path: '/potatoTags/' + potato.id}">{{ potato.name }}</router-link>
+                        </td>
+                        <td>{{ potato.priority }}</td>
+                        <td>{{ potato.tags }}</td>
+                        <td>
+                            {{ potato.duration }}
+                        </td>
+                        <td>
+                            {{ potato.scheduleTime }}
+                        </td>
+                        <td>
+                            {{ potato.deadline }}
+                        </td>
+                        <td>
+                            <router-link class="btn btn-warning btn-xs" v-bind:to="{path: '/potatoTags/'+ potato.id +'/edit'}">Edit</router-link>
+                            <router-link class="btn btn-danger btn-xs" v-bind:to="{path: '/potatoTags/'+ potato.id +'/delete'}">Delete</router-link>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+</div>
+
+
+<script type="text/javascript">
+
+
+</script>
+
+</body>
+</html>

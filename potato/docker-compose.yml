@@ -1,0 +1,125 @@
+version: '2'
+services:
+    mysqldb:
+        image: mysql
+        container_name: local-mysql
+        environment:
+            - MYSQL_DATABASE=test
+            - MYSQL_ROOT_PASSWORD=pass1234
+            - MYSQL_USER=walter
+            - MYSQL_PASSWORD=pass1234
+        ports:
+            - 3306:3306
+        volumes:
+            - ./data/db/mysql:/var/lib/mysql
+
+    scheduler:
+        build: ./potato-scheduler
+        container_name: potato-scheduler
+        ports:
+            - 9002:9002
+        environment:
+
+            - MYSQL_URL=jdbc:mysql://mysqldb/scheduler?useUnicode=true&characterEncoding=utf8
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PWD=${MYSQL_PWD}
+            - EMAIL_SMTP_SERVER=${EMAIL_SMTP_SERVER}
+            - EMAIL_USER=${EMAIL_USER}
+            - EMAIL_PWD=${EMAIL_PWD}
+            - INFLUXDB_URL=http://influxdb:8086
+            - ZIPKIN_URL=http://zipkin:9411
+            - REGISTRY_URL=http://registry:8761
+            - CONSUL_HOST=consul
+            - CONSUL_PORT=8500
+        volumes:
+            - ./data/db/sqlite:/var/lib/sqlite
+            - ./data/logs:/opt/logs
+        depends_on:
+            - "mysqldb"
+            - "influxdb"
+            - "consul"
+        links:
+            - "mysqldb"
+            - "influxdb"
+            - "zipkin"
+            - "consul"
+    potato:
+        build: ./potato-server
+        container_name: potato-server
+        ports:
+            - 9003:9003
+        environment:
+            - JDBC_URL=jdbc:sqlite:/var/lib/sqlite/potato.db
+            - INFLUXDB_URL=http://influxdb:8086
+            - ZIPKIN_URL=http://zipkin:9411
+            - REGISTRY_URL=http://registry:8761
+            - potato_scheduler_url=http://scheduler:9002/scheduler/api/v1
+            - CONSUL_HOST=consul
+            - CONSUL_PORT=8500
+        volumes:
+            - ./data/db/sqlite:/var/lib/sqlite
+            - ./data/logs:/opt/logs
+        depends_on:
+            - "mysqldb"
+            - "consul"
+        links:
+            - "influxdb"
+            - "mysqldb"
+            - "scheduler"
+            - "zipkin"
+            - "consul"
+    web:
+        #image: walterfan/potato-web
+        build: ./potato-web
+        container_name: potato-web
+        ports:
+            - 9005:9005
+        environment:
+            - INFLUXDB_URL=http://influxdb:8086
+            - ZIPKIN_URL=http://zipkin:9411
+            - REGISTRY_URL=http://registry:8761
+            - CONSUL_HOST=consul
+            - CONSUL_PORT=8500
+            - potato_server_url=http://potato:9003/potato/api/v1
+        volumes:
+             - ./data/logs:/opt/logs
+        depends_on:
+            - "potato"
+            - "consul"
+        links:
+            - "influxdb"
+            - "potato"
+            - "zipkin"
+            - "consul"
+
+    #registry:
+    #    build: ./potato-registry
+    #    container_name: potato-registry
+    #    ports:
+    #        - 8761:8761
+    consul:
+        container_name: consul
+        image: consul:latest
+        ports:
+            - "8400:8400"
+            - "8500:8500"
+            - "8600:8600"
+            - "8600:8600/udp"
+        volumes:
+            - ./config:/config
+            - ./data/consul:/data
+        command: agent -server -ui -data-dir=/data -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect=1
+        
+    influxdb:
+      image: influxdb
+      container_name: influxdb
+      ports:
+        #- 3000:3000
+        - 8086:8086
+        - 8083:8083
+    #docker run -d -p 9411:9411 openzipkin/zipkin
+    zipkin:
+      image: openzipkin/zipkin
+      container_name: potato-zipkin
+      ports:
+          - 9411:9411
