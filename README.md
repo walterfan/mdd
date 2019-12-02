@@ -1,11 +1,15 @@
 # MDD (Metrics Driven Development)
-Some samples for Metrics Driven Development Book
+
+Samples for Metrics Driven Development Book
 
 
 # modules
 
 ## Account
 Account Service based on Flask
+
+## Alertor
+Alertor to check metrics and trigger alert based on ElasticSearch API.
 
 ## Potato
 Potato service based on Spring boot
@@ -15,10 +19,13 @@ Potato service based on Spring boot
 * Performance testing scripts
 
 ## Docker
-some Dockerfiles
+
+Some Dockerfiles
 
 ## oss
-the installation and setup guideline of ELKK, TIG, etc.
+
+The installation and setup guideline of ELKK, TIG, etc.
 
 ## devops
-the devops scripts
+
+The devops scripts
