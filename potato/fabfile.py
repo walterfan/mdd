@@ -2,6 +2,7 @@ from fabric.api import *
 from fabric.context_managers import *
 from fabric.contrib.console import confirm
 import os, subprocess
+from fabric.api import settings
 
 local_path = os.path.dirname(os.path.abspath(__file__))
 data_dir = local_path + "/data"
@@ -29,11 +30,12 @@ jenkins_container_name="jenkins"
 #jenkins_image_name="walterfan-jenkins"
 jenkins_image_name="jenkins/jenkins:lts"
 
-def run_cmd(cmd):
+def run_cmd(cmd, warnOnly=False):
 	if(need_print_cmd):
 		print(cmd)
 	if not only_display_cmd:
-		local(cmd)
+		with settings(warn_only=warnOnly):
+			local(cmd)
 #----------------------------- jenkins --------------------------#
 
 @task
@@ -84,7 +86,7 @@ def redeploy():
 	stop_services()
 	for container_name in ["potato_potato","potato_web","potato_scheduler"]:
 		cmd = "docker rmi {}".format(container_name)
-		run_cmd(cmd)
+		run_cmd(cmd, True)
 	run_cmd("mvn clean package -DskipTests=true")
 	
 	run_cmd("docker-compose up --force-recreate -d")
