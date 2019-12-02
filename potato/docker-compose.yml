@@ -4,7 +4,7 @@ services:
         image: mysql
         container_name: local-mysql
         environment:
-            - MYSQL_DATABASE=test
+            - MYSQL_DATABASE=scheduler
             - MYSQL_ROOT_PASSWORD=pass1234
             - MYSQL_USER=walter
             - MYSQL_PASSWORD=pass1234
@@ -100,6 +100,8 @@ services:
     consul:
         container_name: consul
         image: consul:latest
+        environment:
+            - CONSUL_DISABLE_PERM_MGMT=true
         ports:
             - "8400:8400"
             - "8500:8500"
