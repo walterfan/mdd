@@ -1,0 +1,39 @@
+version: '2'
+services:
+    influxdb:
+      image: influxdb:latest
+      container_name: influxdb
+      ports:
+        - "8083:8083"
+        - "8086:8086"
+        - "8090:8090"
+      environment:
+        - INFLUXDB_DATA_ENGINE=tsm1
+        - INFLUXDB_REPORTING_DISABLED=false
+      volumes:
+        # Data persistency
+        # sudo mkdir -p /opt/influxdb
+        - /opt/influxdb:/var/lib/influxdb
+
+    telegraf:
+      image: telegraf:latest
+      container_name: telegraf
+      links:
+        - influxdb
+      volumes:
+        - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+    grafana:
+      image: grafana/grafana:latest
+      container_name: grafana
+      ports:
+        - "3000:3000"
+      environmentv:
+        - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+      user: "0"
+      links:
+        - influxdb
+      volumes:
+        # Data persistency
+        # sudo mkdir -p /opt/grafana
+        - /opt/grafana:/var/lib/grafana
