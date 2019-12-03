@@ -1,7 +1,7 @@
 ---
 version: "2.1"
 services:
-
+  # refer to https://github.com/amolkokje/elk-docker/blob/master/docker-compose-linux.yml
   # Elasticsearch cluster. localhost 9200 (ensure this is open on host) --> container 9200
   # For simplicity, running only a single node here
   # To run multiple nodes on single machines: https://discuss.elastic.co/t/can-i-run-multiple-elasticsearch-nodes-on-the-same-machine/67
@@ -50,8 +50,8 @@ services:
       - '5601:5601'
     # Health check to confirm availability of Kibana
     healthcheck:
-          test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/login"]
-          retries: 6
+      test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/login"]
+      retries: 6
     # Internal network for the containers
     networks:
       - 'elk_stack'
@@ -81,15 +81,3 @@ services:
     depends_on:
       - 'elasticsearch'
       - 'kibana'
-
-
-# network connectors used in the docker env
-networks:
-  elk_stack:
-      driver: bridge
-      ipam:
-        driver: default
-        config:
-        # default docker compose subnet(172.177.0.0/16), which may overlap with existing services on home network.
-        # use this configuration to update to a different subnet
-        - subnet: 192.168.1.0/24

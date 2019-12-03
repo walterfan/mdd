@@ -12,7 +12,8 @@ services:
             - 3306:3306
         volumes:
             - ./data/db/mysql:/var/lib/mysql
-
+        networks:
+            - 'potato_network'
     scheduler:
         build: ./potato-scheduler
         container_name: potato-scheduler
@@ -43,6 +44,8 @@ services:
             - "influxdb"
             - "zipkin"
             - "consul"
+        networks:
+            - 'potato_network'
     potato:
         build: ./potato-server
         container_name: potato-server
@@ -62,6 +65,8 @@ services:
         depends_on:
             - "mysqldb"
             - "consul"
+        networks:
+            - 'potato_network'
         links:
             - "influxdb"
             - "mysqldb"
@@ -86,12 +91,13 @@ services:
         depends_on:
             - "potato"
             - "consul"
+        networks:
+            - 'potato_network'
         links:
             - "influxdb"
             - "potato"
             - "zipkin"
             - "consul"
-
     #registry:
     #    build: ./potato-registry
     #    container_name: potato-registry
@@ -111,7 +117,8 @@ services:
             - ./config:/config
             - ./data/consul:/data
         command: agent -server -ui -data-dir=/data -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect=1
-        
+        networks:
+            - 'potato_network'
     influxdb:
       image: influxdb
       container_name: influxdb
@@ -119,9 +126,18 @@ services:
         #- 3000:3000
         - 8086:8086
         - 8083:8083
-    #docker run -d -p 9411:9411 openzipkin/zipkin
+      networks:
+          - 'potato_network'
     zipkin:
       image: openzipkin/zipkin
       container_name: potato-zipkin
       ports:
           - 9411:9411
+      networks:
+          - 'potato_network'
+# network connectors used in the docker env
+networks:
+    potato_network:
+        driver: bridge
+        ipam:
+            driver: default
