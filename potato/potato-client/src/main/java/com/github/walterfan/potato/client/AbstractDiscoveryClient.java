@@ -35,11 +35,13 @@ public abstract class AbstractDiscoveryClient  implements ServiceHealthChecker {
                     .findFirst()
                     .map(x -> x.toString())
                     .orElse(null);
+            log.info("discovery: {}'s url is {}", this.getServiceName(), serviceUrl);
         }
         if(null == serviceUrl) {
             serviceUrl = potatoClientProperties.getPotatoScheduleryUrl();
+            log.info("configure: {}'s url is {}", this.getServiceName(), serviceUrl);
         }
-        log.info("{}'s url is {}", this.getServiceName(), serviceUrl);
+
         return serviceUrl;
     }
 
