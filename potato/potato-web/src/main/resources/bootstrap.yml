@@ -9,4 +9,5 @@ spring:
       port: ${CONSUL_PORT:8500}
       config:
         enabled: true
-        #format: properties
+      discovery:
+        preferIpAddress: true

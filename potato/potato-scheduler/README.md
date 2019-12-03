@@ -65,7 +65,7 @@ Note that, Gmail’s SMTP access is disabled by default. To allow this app to se
 
 # FAQ
 
-Table 'scheduler.QRTZ_LOCKS' doesn't exist
+## Table 'scheduler.QRTZ_LOCKS' doesn't exist
 
 docker-compose stop mysqldb
 
@@ -79,5 +79,14 @@ use scheduler
 
 docker-compose restart scheduler
 
+## Potato-scheduler startup failure
+
+```
+fab mysql_cli
+mysql> grant all on scheduler.* to 'walter'@'%'; 
+quit
+
+docker-compose up -d scheduler
+```
 # reference
 * https://www.callicoder.com/spring-boot-quartz-scheduler-email-scheduling-example/
