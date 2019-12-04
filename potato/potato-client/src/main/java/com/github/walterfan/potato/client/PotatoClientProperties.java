@@ -38,6 +38,10 @@ public class PotatoClientProperties {
 
     private String potatoServerUrl = "http://potato:9003/potato/api/v1";
 
+    private String potatoIdentityUrl = "http://identity:9001/identity/api/v1";
+
+    private static final String POTATO_IDENTITY_URL = "potato_identity_url";
+
     public String getPotatoServerUrl() {
         return env.getProperty(POTATO_SERVER_URL, String.class, potatoServerUrl);
     }
@@ -45,4 +49,9 @@ public class PotatoClientProperties {
     public String getPotatoSchedulerUrl() {
         return env.getProperty(POTATO_SCHEDULER_URL, String.class, potatoScheduleryUrl);
     }
+
+    public String getPotatoIdentityUrl() {
+        return env.getProperty(POTATO_IDENTITY_URL, String.class, potatoIdentityUrl);
+    }
+    
 }
