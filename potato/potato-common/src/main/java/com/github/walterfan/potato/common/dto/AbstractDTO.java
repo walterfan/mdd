@@ -6,7 +6,6 @@ import com.github.walterfan.potato.common.util.JsonUtil;
 
 /**
  * @Author: Walter Fan
- * @Date: 8/6/2019, Sat
  **/
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AbstractDTO {

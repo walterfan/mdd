@@ -19,7 +19,6 @@ import java.util.UUID;
 
 /**
  * @Author: Walter Fan
- * @Date: 16/6/2019, Sun
  **/
 @Slf4j
 public class JwtUtil {

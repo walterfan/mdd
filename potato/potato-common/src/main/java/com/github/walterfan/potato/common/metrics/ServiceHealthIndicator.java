@@ -8,7 +8,6 @@ import org.springframework.boot.actuate.health.Status;
 
 /**
  * @Author: Walter Fan
- * @Date: 1/9/2019, Sun
  **/
 public class ServiceHealthIndicator implements HealthIndicator {
 
@@ -23,8 +22,6 @@ public class ServiceHealthIndicator implements HealthIndicator {
 
     @Getter
     private final Boolean  required;
-
-
 
     public ServiceHealthIndicator(ServiceHealthChecker healthChecker, Boolean required) {
         this.healthChecker = healthChecker;

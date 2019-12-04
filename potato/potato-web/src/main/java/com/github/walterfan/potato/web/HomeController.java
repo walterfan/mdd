@@ -10,7 +10,6 @@ import java.util.Date;
 
 /**
  * @Author: Walter Fan
- * @Date: 17/6/2019, Mon
  **/
 @Controller
 public class HomeController {

@@ -18,7 +18,6 @@ import java.util.Set;
 
 /**
  * @Author: Walter Fan
- * @Date: 1/9/2019, Sun
  **/
 @Slf4j
 @Component
@@ -35,7 +34,6 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
 
     @PostConstruct
     public void initialize() {
-
         //this.healthIndicatorRegistry.register("influxDB", new InfluxDbHealthIndicator(InfluxDbHealthIndicator));
     }
     @Override

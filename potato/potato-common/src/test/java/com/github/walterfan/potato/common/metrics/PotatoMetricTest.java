@@ -30,8 +30,8 @@ public class PotatoMetricTest {
         log.info("potatoMetricEvent: \n{}", JsonUtil.toJson(potatoMetricEvent));
 
         Application application = new Application("potato-service", "potato-server", "1.0.0");
-        Environment envionement = new Environment("production", "10.224.77.99");
-        Metrics metric = new Metrics(application, envionement, potatoMetricEvent);
+        Environment environment  = new Environment("production", "10.224.77.99");
+        Metrics metric = new Metrics(application, environment, potatoMetricEvent);
         log.info("potatoMetric: \n{}", JsonUtil.toJson(metric));
     }
 }

@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
 @Data
 @Entity

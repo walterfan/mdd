@@ -25,7 +25,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
 @RestController
 @RequestMapping("/identity/api/v1")

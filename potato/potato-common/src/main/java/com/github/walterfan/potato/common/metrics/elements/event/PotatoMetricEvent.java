@@ -10,7 +10,7 @@ import java.time.Instant;
 @Getter
 @Setter
 public class PotatoMetricEvent extends MetricEvent {
-    public static enum Action {
+    public enum Action {
         CREATE,
         UPDATE,
         DELETE,

@@ -2,8 +2,7 @@
 """
   
   Author: Walter (yafan@cisco.com)
-  Date: 2018.10.10
-  
+
 """
 
 import os

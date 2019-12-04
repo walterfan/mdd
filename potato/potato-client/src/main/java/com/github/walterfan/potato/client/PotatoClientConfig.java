@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @Author: Walter Fan
- * @Date: 8/6/2019, Sat
  **/
 @Configuration
 public class PotatoClientConfig {

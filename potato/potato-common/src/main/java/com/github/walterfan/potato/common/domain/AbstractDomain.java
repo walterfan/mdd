@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
