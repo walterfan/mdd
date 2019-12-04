@@ -28,18 +28,26 @@ public abstract class AbstractDiscoveryClient  implements ServiceHealthChecker {
     @Override
     public String getServiceUrl() {
         String serviceUrl = null;
+        String serviceName = this.getServiceName();
         if(null != discoveryClient) {
-            serviceUrl = discoveryClient.getInstances(this.getServiceName())
+            serviceUrl = discoveryClient.getInstances(serviceName)
                     .stream()
                     .map(si -> si.getUri())
                     .findFirst()
                     .map(x -> x.toString())
                     .orElse(null);
-            log.info("discovery: {}'s url is {}", this.getServiceName(), serviceUrl);
+            log.info("discovery: {}'s url is {}", serviceName, serviceUrl);
         }
         if(null == serviceUrl) {
-            serviceUrl = potatoClientProperties.getPotatoScheduleryUrl();
-            log.info("configure: {}'s url is {}", this.getServiceName(), serviceUrl);
+            if("potato_service".equalsIgnoreCase(serviceName)) {
+                serviceUrl = potatoClientProperties.getPotatoServerUrl();
+            } else if("potato_scheduler".equalsIgnoreCase(serviceName)) {
+                serviceUrl = potatoClientProperties.getPotatoSchedulerUrl();
+            } else {
+                log.error("Cannot get the service url for {}", serviceName);
+            }
+            log.info("configure: {}'s url is {}", serviceName, serviceUrl);
+
         }
 
         return serviceUrl;
