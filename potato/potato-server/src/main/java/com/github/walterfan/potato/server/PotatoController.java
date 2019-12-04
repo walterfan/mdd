@@ -21,7 +21,6 @@ import java.util.UUID;
 
 /**
  * @Author: Walter Fan
- * @Date: 8/6/2019, Sat
  **/
 @RestController
 @RequestMapping("/potato/api/v1")
@@ -127,6 +126,5 @@ public class PotatoController {
     public ServiceHealth ping() {
         return serviceHealthManager.checkHealth();
     }
-
 
 }

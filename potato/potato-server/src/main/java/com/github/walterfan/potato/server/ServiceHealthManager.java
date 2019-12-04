@@ -23,7 +23,6 @@ import java.util.Set;
 
 /**
  * @Author: Walter Fan
- * @Date: 1/9/2019, Sun
  **/
 @Slf4j
 @Component
@@ -33,7 +32,6 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
 
     @Value("${server.port}")
     private Integer serverPort;
-
 
     @Autowired
     private PotatoSchedulerClient potatoSchedulerClient;
@@ -47,8 +45,8 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
     public void initialize() {
         ServiceHealthIndicator serviceHealthIndicator = new ServiceHealthIndicator(potatoSchedulerClient, true);
         this.healthIndicatorRegistry.register("schedulerService", serviceHealthIndicator);
-        //this.healthIndicatorRegistry.register("influxDB", new InfluxDbHealthIndicator(InfluxDbHealthIndicator));
     }
+
     @Override
     public Map<String, Boolean> getUpstreamServices() {
         return this.UPSTREAM_SERVICES;
