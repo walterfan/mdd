@@ -98,12 +98,12 @@ public class KafkaClientImpl<P, M> implements KafkaClient<P, M> {
 
         @Override
         public boolean isCancelled() {
-            return future != null ? future.isCancelled() : false;
+            return future != null && future.isCancelled();
         }
 
         @Override
         public boolean isDone() {
-            return future != null ? future.isDone() : false;
+            return future != null && future.isDone();
         }
 
         @Override
