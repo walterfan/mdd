@@ -7,7 +7,6 @@ import java.util.UUID;
 
 /**
  * @Author: Walter Fan
- * @Date: 8/6/2019, Sat
  **/
 @Data
 public class TomatoDTO extends AbstractDTO {

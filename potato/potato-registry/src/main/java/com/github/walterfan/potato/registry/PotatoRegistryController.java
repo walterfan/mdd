@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
 @RestController
 @RequestMapping("/registry/api/v1")
@@ -31,7 +30,6 @@ public class PotatoRegistryController {
     @ApiCallMetricAnnotation(name = "CreateUser")
     public User create(@RequestBody User potatoRequest) {
         log.info("create {}", potatoRequest);
-        //TODO: change it
         return User.builder().email("walter.fan@gmail.com").build();
 
     }

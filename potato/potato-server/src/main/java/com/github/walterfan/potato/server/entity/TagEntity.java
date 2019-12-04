@@ -17,9 +17,7 @@ import java.util.UUID;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
-
 @Data
 @Entity
 @Table(name = "tag")

@@ -6,7 +6,6 @@ import com.github.walterfan.potato.common.dto.RemindEmailResponse;
 
 /**
  * @Author: Walter Fan
- * @Date: 22/6/2019, Sat
  **/
 public interface ScheduleService {
 

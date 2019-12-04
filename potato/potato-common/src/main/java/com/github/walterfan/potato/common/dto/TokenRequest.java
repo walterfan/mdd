@@ -6,9 +6,6 @@ import java.util.List;
 
 /**
  * @Author: Walter Fan
- * @Date: 16/6/2019, Sun
- *
- *
  **/
 @Data
 public class TokenRequest extends AbstractDTO{

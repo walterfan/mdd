@@ -17,7 +17,6 @@ import static com.github.walterfan.potato.common.dto.PotatoDTO.DATE_TIME_FMT;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
 @JsonPropertyOrder({"serviceName", "serviceType", "serviceState", "message", "serviceInstance", "lastUpdatedTime", "upstreamServices"})
 @JsonIgnoreProperties(
@@ -31,7 +30,6 @@ public class ServiceHealth extends AbstractDTO {
     private final String serviceUrl;
     @JsonProperty
     private final ServiceState serviceState;
-
 
     @Setter
     @JsonProperty
@@ -60,6 +58,5 @@ public class ServiceHealth extends AbstractDTO {
         this.required = true;
         this.message = "";
         this.lastUpdatedTime = new Date();
-
     }
 }

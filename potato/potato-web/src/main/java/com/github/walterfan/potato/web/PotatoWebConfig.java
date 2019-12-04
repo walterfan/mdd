@@ -1,9 +1,6 @@
 package com.github.walterfan.potato.web;
 
-/**
- * @Author: Walter Fan
- * @Date: 11/8/2019, Sun
- **/
+
 
 import com.github.walterfan.potato.client.PotatoClientDemoApp;
 import com.github.walterfan.potato.common.util.TemplateHelper;
@@ -25,9 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
-/**
- * Created by yafan on 5/5/2018.
- */
+
 @Configuration
 @EnableAutoConfiguration
 @EnableSwagger2

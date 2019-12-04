@@ -6,7 +6,6 @@ import org.junit.Test;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
 @Slf4j
 public class ServiceHealthTest {

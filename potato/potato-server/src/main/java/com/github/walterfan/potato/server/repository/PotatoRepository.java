@@ -12,9 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 
-/**
- * Created by yafan on 26/11/2017.
- */
 @Repository
 public interface PotatoRepository extends PagingAndSortingRepository<PotatoEntity, UUID>, JpaSpecificationExecutor<PotatoEntity> {
     Page<PotatoEntity> findByUserId(UUID userId, Pageable pageable);

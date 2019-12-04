@@ -24,7 +24,6 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * @Author: Walter Fan
- * @Date: 16/6/2019, Sun
  **/
 @Service
 public class TokenService {

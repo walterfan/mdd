@@ -5,6 +5,6 @@ import com.github.walterfan.potato.common.metrics.elements.event.MetricEvent;
 
 public interface MetricsHandler {
 
-    public void handle(MetricEvent event);
+    void handle(MetricEvent event);
 
 }

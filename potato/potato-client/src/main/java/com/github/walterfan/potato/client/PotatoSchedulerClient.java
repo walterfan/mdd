@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @Author: Walter Fan
- * @Date: 25/6/2019, Tue
  **/
 @Component
 @Slf4j
