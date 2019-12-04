@@ -18,6 +18,7 @@ bin/
 .mvn/
 .iml
 *.jar
+oss/elkk/elasticsearch/nodes/
 WEB-INF/lib/
 WEB-INF/classes/
 .iml
