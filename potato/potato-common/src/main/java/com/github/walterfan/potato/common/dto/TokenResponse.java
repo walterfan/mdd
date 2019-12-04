@@ -6,8 +6,6 @@ import java.util.Date;
 
 /**
  * @Author: Walter Fan
- * @Date: 16/6/2019, Sun
- *
  **/
 @Data
 public class TokenResponse extends AbstractDTO {

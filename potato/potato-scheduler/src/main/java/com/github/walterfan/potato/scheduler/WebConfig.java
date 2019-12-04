@@ -18,9 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Collections;
 
 
-/**
- * Created by yafan on 5/5/2018.
- */
+
 @Configuration
 @EnableAutoConfiguration
 @EnableSwagger2

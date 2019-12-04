@@ -14,7 +14,6 @@ public class PotatoMetricHolder {
     public static PotatoMetricEvent getPotatoMetric() {
         String str = MDC.get(POTATO_METRIC);
         return JsonUtil.fromJson(str, PotatoMetricEvent.class);
-
     }
 
     public static void setPotatoMetric(PotatoMetricEvent potatoMetric) {

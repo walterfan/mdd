@@ -17,7 +17,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 /**
  * @Author: Walter Fan
- * @Date: 1/7/2019, Mon
  **/
 @Component
 public class TemplateHelper {

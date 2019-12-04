@@ -7,8 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Walter Fan
- * @Date: 1/7/2019, Mon
- *
  * modify the org.h2.util.NetUtils
  **/
 public class NetworkUtil {

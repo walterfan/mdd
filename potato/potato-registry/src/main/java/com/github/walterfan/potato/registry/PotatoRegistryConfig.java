@@ -1,17 +1,11 @@
 package com.github.walterfan.potato.registry;
 
-/**
- * @Author: Walter Fan
- * @Date: 11/8/2019, Sun
- **/
-
 
 import com.google.common.base.Predicates;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -23,9 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
-/**
- * Created by yafan on 5/5/2018.
- */
+
 @Configuration
 @EnableAutoConfiguration
 @EnableSwagger2

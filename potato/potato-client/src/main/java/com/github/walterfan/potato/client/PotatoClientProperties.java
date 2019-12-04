@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 /**
  * @Author: Walter Fan
- * @Date: 8/6/2019, Sat
  *
  * potato.registry.url=http://localhost:8761
  *
@@ -47,8 +46,6 @@ public class PotatoClientProperties {
     private String potatoTomatoUrl = "http://localhost:9004/tomato/api/v1";
 
     private String potatoRegistryUrl = "http://localhost:8761";
-
-
 
     public String getPotatoServerUrl() {
         return env.getProperty(POTATO_SERVER_URL, String.class, potatoServerUrl);

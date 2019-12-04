@@ -25,9 +25,7 @@ import java.time.Instant;
 
 /**
  * @Author: Walter Fan
- * @Date: 8/6/2019, Sat
  **/
-
 public final class JsonUtil {
     public static final DateTimeFormatter isoDateTimeFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
