@@ -51,7 +51,6 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: Walter Fan
- * @Date: 9/6/2019, Sun
  **/
 @Service
 @Slf4j
@@ -72,12 +71,6 @@ public class PotatoServiceImpl implements PotatoService {
     @Autowired
     private TemplateHelper templateHelper;
 
-    private static String EMAIL_TEMPLATE_FILE = "remind_email.tpl";
-
-    private static String EMAIL_SUBJECT = "remind your TODO item";
-
-    private static long FIVE_MINUTES = 300 * 1000;
-
     @Override
     public PotatoDTO create(PotatoDTO potatoRequest) {
         PotatoEntity potato = potatoDto2Entity(potatoRequest, null);
@@ -91,28 +84,20 @@ public class PotatoServiceImpl implements PotatoService {
     @HystrixCommand(fallbackMethod = "recordRemindEmails")
     private void scheduleRemindEmails(PotatoDTO potatoRequest) {
         String emailContent = potatoRequest.getDescription();
-        //schedule remind
+        //schedule reminds
+        scheduleRemindEmail(potatoRequest, "To start: " + potatoRequest.getName(), emailContent);
+        scheduleRemindEmail(potatoRequest, "To finish: " + potatoRequest.getName(), emailContent);
+    }
+
+    private void scheduleRemindEmail(PotatoDTO potatoRequest, String subject, String emailContent) {
         RemindEmailRequest remindEmailRequest = RemindEmailRequest.builder()
                 .email(this.remindEmail)
-                .subject("To start: " + potatoRequest.getName())
+                .subject(subject)
                 .body(emailContent)
                 .dateTime(potatoRequest.getScheduleTime())
                 .build();
-        ResponseEntity<RemindEmailResponse> respEntity1 = potatoSchedulerClient.scheduleRemindEmail(remindEmailRequest);
-        log.info("respEntity1: {}", respEntity1.getStatusCode());
-
-        RemindEmailRequest remindEmailRequest2 = RemindEmailRequest.builder()
-                .email(this.remindEmail)
-                .subject("To finish: " + potatoRequest.getName())
-                .body(emailContent)
-                .dateTime(potatoRequest.getDeadline())
-                .build();
-        ResponseEntity<RemindEmailResponse>  respEntity2 = potatoSchedulerClient.scheduleRemindEmail(remindEmailRequest2);
-        log.info("respEntity2: {}", respEntity2.getStatusCode());
-    }
-
-    private void recordRemindEmails(PotatoDTO potatoRequest) {
-        log.info("recordRemindEmails: {}", potatoRequest);
+        ResponseEntity<RemindEmailResponse> responseEntity = potatoSchedulerClient.scheduleRemindEmail(remindEmailRequest);
+        log.info("respEntity for remind : {}", responseEntity.getStatusCode());
     }
 
     @Override
@@ -206,6 +191,7 @@ public class PotatoServiceImpl implements PotatoService {
         } else {
             addTags(potatoEntity, tags);
         }
+
         log.info("potatoDto2Entity {} --> {}", potatoRequest, potatoEntity);
         return potatoEntity;
     }
@@ -256,18 +242,17 @@ public class PotatoServiceImpl implements PotatoService {
     }
 
     private Date toDate(ZonedDateTime zonedDateTime) {
-        if(null == zonedDateTime) {
+        if(zonedDateTime == null) {
             return null;
         }
         return new Date(zonedDateTime.toInstant().toEpochMilli());
     }
 
-
-
     private ZonedDateTime toZonedDateTime(Date date) {
-        if(null == date) {
+        if(date == null) {
             return null;
         }
+
         Instant instant = Instant.ofEpochMilli(date.getTime());
         return ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
     }

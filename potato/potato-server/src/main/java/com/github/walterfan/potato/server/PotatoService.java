@@ -9,7 +9,6 @@ import java.util.UUID;
 
 /**
  * @Author: Walter Fan
- * @Date: 8/6/2019, Sat
  **/
 
  interface PotatoService {
