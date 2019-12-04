@@ -28,9 +28,7 @@ services:
       - ${ES_MOUNT_DRIVE}:/usr/share/elasticsearch/data
     ports:
       - '9200:9200'
-    # Internal network for the containers
-    networks:
-      - 'elk_stack'
+
     # Health check to confirm availability of ES. Other containers wait on this.
     healthcheck:
       test: ["CMD", "curl","-s" ,"-f", "-u", "elastic:${ES_PASSWORD}", "http://localhost:9200/_cat/health"]
@@ -53,8 +51,7 @@ services:
       test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/login"]
       retries: 6
     # Internal network for the containers
-    networks:
-      - 'elk_stack'
+
     # We don't start Kibana until the ES instance is ready
     depends_on:
       - 'elasticsearch'
@@ -75,8 +72,7 @@ services:
       - './init/configure-stack.sh:/usr/local/bin/configure-stack.sh:ro'
     command: ['/bin/bash', '-c', 'cat /usr/local/bin/configure-stack.sh | tr -d "\r" | bash']
     # Internal network for the containers
-    networks:
-      - 'elk_stack'
+
     # Wait for ES, Kibana to come up before stack config
     depends_on:
       - 'elasticsearch'
