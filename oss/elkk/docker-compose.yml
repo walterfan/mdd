@@ -1,5 +1,5 @@
 ---
-version: "2.1"
+version: "2"
 services:
   # refer to https://github.com/amolkokje/elk-docker/blob/master/docker-compose-linux.yml
   # Elasticsearch cluster. localhost 9200 (ensure this is open on host) --> container 9200
@@ -30,8 +30,8 @@ services:
       - '9200:9200'
 
     # Health check to confirm availability of ES. Other containers wait on this.
-    healthcheck:
-      test: ["CMD", "curl","-s" ,"-f", "-u", "elastic:${ES_PASSWORD}", "http://localhost:9200/_cat/health"]
+    #healthcheck:
+    #  test: ["CMD", "curl","-s" ,"-f", "-u", "elastic:${ES_PASSWORD}", "http://localhost:9200/_cat/health"]
 
 
   # Kibana container. localhost 5601 (ensure this is open on host) --> container 5601
@@ -47,9 +47,9 @@ services:
     ports:
       - '5601:5601'
     # Health check to confirm availability of Kibana
-    healthcheck:
-      test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/login"]
-      retries: 6
+    #healthcheck:
+    #  test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/login"]
+    #  retries: 6
     # Internal network for the containers
 
     # We don't start Kibana until the ES instance is ready
