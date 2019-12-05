@@ -96,8 +96,12 @@ public class PotatoServiceImpl implements PotatoService {
                 .body(emailContent)
                 .dateTime(potatoRequest.getScheduleTime())
                 .build();
-        ResponseEntity<RemindEmailResponse> responseEntity = potatoSchedulerClient.scheduleRemindEmail(remindEmailRequest);
-        log.info("respEntity for remind : {}", responseEntity.getStatusCode());
+        try {
+            ResponseEntity<RemindEmailResponse> responseEntity = potatoSchedulerClient.scheduleRemindEmail(remindEmailRequest);
+            log.info("respEntity for remind : {}", responseEntity.getStatusCode());
+        } catch(Exception e) {
+            log.error("scheduleRemindEmail error", e);
+        }
     }
 
     @Override

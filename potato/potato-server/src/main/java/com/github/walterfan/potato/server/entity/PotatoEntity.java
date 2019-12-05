@@ -3,6 +3,7 @@ package com.github.walterfan.potato.server.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.CascadeType;
@@ -58,6 +59,7 @@ public class PotatoEntity extends AbstractPersistable<UUID> {
     @JsonIgnore
     private Date updateTime;
 
+    @Type(type="uuid-char")
     private UUID userId;
 
     @ManyToMany(fetch = FetchType.LAZY,

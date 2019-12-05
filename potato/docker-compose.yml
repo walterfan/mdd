@@ -20,7 +20,6 @@ services:
         ports:
             - 9002:9002
         environment:
-
             - MYSQL_URL=jdbc:mysql://mysqldb/scheduler?useUnicode=true&characterEncoding=utf8
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PWD=${MYSQL_PWD}
@@ -52,7 +51,9 @@ services:
         ports:
             - 9003:9003
         environment:
-            - JDBC_URL=jdbc:sqlite:/var/lib/sqlite/potato.db
+            - MYSQL_URL=jdbc:mysql://mysqldb/potato?useUnicode=true&characterEncoding=utf8
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PWD=${MYSQL_PWD}
             - INFLUXDB_URL=http://influxdb:8086
             - ZIPKIN_URL=http://zipkin:9411
             - REGISTRY_URL=http://registry:8761

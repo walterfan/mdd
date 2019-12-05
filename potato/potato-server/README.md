@@ -14,16 +14,18 @@ docker run -d -p 9003:9003 --name potato-server walterfan/potato-app --env JDBC_
 ```
 
 
-### Reference Documentation
-For further reference, please consider the following sections:
+### MySQL prepare
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
 
-### Guides
-The following guides illustrate how to use some features concretely:
+```
+mysql -u root -p
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
-* [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
+mysql> create database potato  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; 
+
+mysql> create user 'walter'@'%' identified by 'pass1234'; 
+
+mysql> grant all on potato.* to 'walter'@'%'; 
+
+```
+
 
