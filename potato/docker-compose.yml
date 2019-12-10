@@ -6,8 +6,6 @@ services:
         environment:
             - MYSQL_DATABASE=potato
             - MYSQL_ROOT_PASSWORD=pass1234
-            - MYSQL_USER=walter
-            - MYSQL_PASSWORD=pass1234
         ports:
             - 3306:3306
         command: --init-file /tmp/init.sql
@@ -23,11 +21,6 @@ services:
             - 9002:9002
         environment:
             - MYSQL_URL=jdbc:mysql://mysqldb/scheduler?useUnicode=true&characterEncoding=utf8
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PWD=${MYSQL_PWD}
-            - EMAIL_SMTP_SERVER=${EMAIL_SMTP_SERVER}
-            - EMAIL_USER=${EMAIL_USER}
-            - EMAIL_PWD=${EMAIL_PWD}
             - INFLUXDB_URL=http://influxdb:8086
             - ZIPKIN_URL=http://zipkin:9411
             - REGISTRY_URL=http://registry:8761
@@ -54,8 +47,6 @@ services:
             - 9003:9003
         environment:
             - MYSQL_URL=jdbc:mysql://mysqldb/potato?useUnicode=true&characterEncoding=utf8
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PWD=${MYSQL_PWD}
             - INFLUXDB_URL=http://influxdb:8086
             - ZIPKIN_URL=http://zipkin:9411
             - REGISTRY_URL=http://registry:8761

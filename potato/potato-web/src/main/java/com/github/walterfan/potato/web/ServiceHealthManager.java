@@ -1,5 +1,7 @@
 package com.github.walterfan.potato.web;
 
+import com.codahale.metrics.InstrumentedExecutorService;
+import com.codahale.metrics.MetricRegistry;
 import com.github.walterfan.potato.client.PotatoClient;
 import com.github.walterfan.potato.common.metrics.AbstractServiceHealthChecker;
 import com.github.walterfan.potato.common.metrics.ServiceHealthChecker;
@@ -29,6 +31,11 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
     @Value("${server.port}")
     private Integer serverPort;
 
+    @Autowired
+    private MetricRegistry metricRegistry;
+
+    @Autowired
+    private InstrumentedExecutorService executorService;
 
     @Autowired
     private PotatoClient potatoClient;
@@ -39,7 +46,9 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
 
     @PostConstruct
     public void initialize() {
-        ServiceHealthIndicator serviceHealthIndicator = new ServiceHealthIndicator(potatoClient, true);
+        ServiceHealthIndicator serviceHealthIndicator
+                = new ServiceHealthIndicator(potatoClient, metricRegistry, executorService,true);
+
         this.healthIndicatorRegistry.register("potatoService", serviceHealthIndicator);
         //this.healthIndicatorRegistry.register("influxDB", new InfluxDbHealthIndicator(InfluxDbHealthIndicator));
     }
@@ -55,6 +64,6 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
 
     @Override
     public String getServiceUrl() {
-        return String.format("http://%s:%d/$s/api/v1/ping" , NetworkUtil.getLocalAddress() , this.serverPort, this.serviceName);
+        return String.format("http://%s:%d/%s/api/v1/ping" , NetworkUtil.getLocalAddress() , this.serverPort, this.serviceName);
     }
 }

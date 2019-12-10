@@ -2,6 +2,7 @@ package com.github.walterfan.potato.common.metrics;
 
 import com.github.walterfan.potato.common.metrics.elements.event.ApiCallEvent;
 import com.github.walterfan.potato.common.metrics.handler.MetricsHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Component
 @Order(Integer.MIN_VALUE)
+@Slf4j
 public class MetricsFilter implements Filter {
 
     @Autowired
@@ -42,6 +44,8 @@ public class MetricsFilter implements Filter {
         long startTime = System.currentTimeMillis();
         try {
             chain.doFilter(request, response);
+        } catch (Exception e) {
+            log.error("do filter error", e);
         } finally {
             ApiCallEvent apiCallEvent = buildApiEvent(response, builder, startTime);
             metricsHandler.handle(apiCallEvent);

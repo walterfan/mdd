@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+
 @Slf4j
 public abstract class AbstractDiscoveryClient  implements ServiceHealthChecker {
     @Autowired
@@ -30,13 +32,7 @@ public abstract class AbstractDiscoveryClient  implements ServiceHealthChecker {
         String serviceUrl = null;
         String serviceName = this.getServiceName();
         if(null != discoveryClient) {
-            serviceUrl = discoveryClient.getInstances(serviceName)
-                    .stream()
-                    .map(si -> si.getUri())
-                    .findFirst()
-                    .map(x -> x.toString())
-                    .orElse(null);
-            log.info("discovery: {}'s url is {}", serviceName, serviceUrl);
+            serviceUrl = findServiceUrl(serviceName);
         }
         if(null == serviceUrl) {
             if("potato_service".equalsIgnoreCase(serviceName)) {
@@ -51,6 +47,22 @@ public abstract class AbstractDiscoveryClient  implements ServiceHealthChecker {
         }
 
         return serviceUrl;
+    }
+
+    private String findServiceUrl(String serviceName) {
+        try {
+            String serviceUrl = discoveryClient.getInstances(serviceName)
+                    .stream()
+                    .map(si -> si.getUri())
+                    .findFirst()
+                    .map(x -> x.toString())
+                    .orElse(null);
+            log.info("discovery: {}'s url is {}", serviceName, serviceUrl);
+            return serviceUrl;
+        } catch (Exception e) {
+            log.error("findServceUrl error", e);
+            return null;
+        }
     }
 
     @Override

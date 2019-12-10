@@ -1,5 +1,7 @@
 package com.github.walterfan.potato.server;
 
+import com.codahale.metrics.InstrumentedExecutorService;
+import com.codahale.metrics.MetricRegistry;
 import com.github.walterfan.potato.client.PotatoSchedulerClient;
 
 import com.github.walterfan.potato.common.metrics.AbstractServiceHealthChecker;
@@ -36,6 +38,12 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
     @Autowired
     private PotatoSchedulerClient potatoSchedulerClient;
 
+    @Autowired
+    private MetricRegistry metricRegistry;
+
+    @Autowired
+    private InstrumentedExecutorService executorService;
+
     private Map<String, Boolean> UPSTREAM_SERVICES = ImmutableMap.of(
             "diskSpace", true,
             "db", true,
@@ -43,7 +51,8 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
 
     @PostConstruct
     public void initialize() {
-        ServiceHealthIndicator serviceHealthIndicator = new ServiceHealthIndicator(potatoSchedulerClient, true);
+        ServiceHealthIndicator serviceHealthIndicator
+                = new ServiceHealthIndicator(potatoSchedulerClient, metricRegistry, executorService, true);
         this.healthIndicatorRegistry.register("schedulerService", serviceHealthIndicator);
     }
 

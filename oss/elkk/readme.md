@@ -14,9 +14,11 @@ mv logstash-7.3.1 /opt/logstash
 ```
 cd /opt/logstash/
 vi logstash.conf
-# 注：配置文件相当复杂一点，稍后详述
-```
 
+```
+* 注：配置文件相当复杂一点，参见
+  * 前端: logstash/logstash_agent.conf
+  * 后端: logstash/logstash_server.conf
 
 
 3） 启动
