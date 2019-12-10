@@ -98,6 +98,7 @@ var AddPotato = Vue.extend({
                 name: '',
                 description: '',
                 tags: '',
+                email: '',
                 priority: 1,
                 duration: 1,
                 timeUnit: "HOURS",
@@ -109,7 +110,7 @@ var AddPotato = Vue.extend({
     },
     methods: {
         createPotato: function () {
-            console.log("--- createPotato:" + this.potato.name + "," + this.potato.scheduleTime + "," + this.potato.deadline);
+            console.log("--- createPotato:" + this.potato.name + "," + this.potato.email + "," + this.potato.scheduleTime + "," + this.potato.deadline);
             axios.post('/api/v1/potatoes', this.potato)
                 .then(response => {}
         )

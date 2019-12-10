@@ -90,8 +90,13 @@ public class PotatoServiceImpl implements PotatoService {
     }
 
     private void scheduleRemindEmail(PotatoDTO potatoRequest, String subject, String emailContent) {
+        String emailBox = potatoRequest.getEmail();
+        if(StringUtils.isBlank(emailBox)) {
+            emailBox = this.remindEmail;
+        }
+        
         RemindEmailRequest remindEmailRequest = RemindEmailRequest.builder()
-                .email(this.remindEmail)
+                .email(emailBox)
                 .subject(subject)
                 .body(emailContent)
                 .dateTime(potatoRequest.getScheduleTime())

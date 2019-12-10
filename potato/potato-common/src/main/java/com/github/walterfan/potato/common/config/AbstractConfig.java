@@ -7,6 +7,7 @@ import com.google.common.base.Predicates;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -76,6 +77,7 @@ public abstract class AbstractConfig {
                 TimeUnit.SECONDS,
                 queue,
                 handler);
+        //executor.setThreadN
         return executor;
     }
 
