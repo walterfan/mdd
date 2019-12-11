@@ -45,7 +45,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/opt/logs/potato.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/opt/logs/potato-server.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>60</maxHistory>
         </rollingPolicy>
 
@@ -58,7 +58,7 @@
 
     <appender name="METRICS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/opt/logs/potato.metrics.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/opt/logs/potato-server.metrics.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>60</maxHistory>
         </rollingPolicy>
         <encoder>

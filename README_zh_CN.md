@@ -1,28 +1,29 @@
-# MDD (Metrics Driven Development)
+# MDD 度量驱动开发
 
-Samples for Metrics Driven Development Book
-##
+## 快速上手
 
-## modules
+依赖项
 
-1. Account
-Account Service based on Flask in Python
+# modules
 
-2. Alertor
+## Account
+Account Service based on Flask
+
+## Alertor
 Alertor to check metrics and trigger alert based on ElasticSearch API.
 
-3. Potato
+## Potato
 Potato service based on Spring boot
 
-4. Scripts
+## Scripts
 * Data Analysis scripts
 * Performance testing scripts
 
-5. Docker
+## Docker
 
 Some Dockerfiles
 
-6. oss
+## oss
 
 The installation and setup guideline of ELKK, TIG, etc.
 

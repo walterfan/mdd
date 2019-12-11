@@ -111,6 +111,7 @@ public class PotatoServiceImpl implements PotatoService {
 
     @Override
     public PotatoDTO retrieve(UUID id) {
+        log.info("retrievePotato: {}", id);
         Optional<PotatoEntity> optPotato = potatoRepository.findById(id);
         if(!optPotato.isPresent()) {
             throw new ResponseStatusException(
@@ -246,7 +247,7 @@ public class PotatoServiceImpl implements PotatoService {
             potatoDto.setTags(potatoEntity.getTags().stream().map(x -> x.getName()).collect(Collectors.joining(",")));
         }
 
-        log.info("potatoEntity2Dto: {} --> {}", potatoEntity, potatoDto);
+        log.info("G: {} --> {}", potatoEntity, potatoDto);
         return potatoDto;
     }
 

@@ -2,12 +2,16 @@ package com.github.walterfan.potato.server.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
@@ -21,7 +25,12 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "tag")
-public class TagEntity extends AbstractPersistable<UUID> {
+public class TagEntity  {
+    @Id
+    @GeneratedValue
+    @Nullable
+    @Type(type="uuid-char")
+    private UUID id;
 
     @Column(unique=true)
     @NaturalId

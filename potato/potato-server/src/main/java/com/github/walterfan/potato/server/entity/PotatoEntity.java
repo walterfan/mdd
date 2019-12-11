@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -31,7 +34,13 @@ import java.util.concurrent.TimeUnit;
 @Data
 @Entity
 @Table(name="potato")
-public class PotatoEntity extends AbstractPersistable<UUID> {
+public class PotatoEntity {
+
+    @Id
+    @GeneratedValue
+    @Nullable
+    @Type(type="uuid-char")
+    private UUID id;
 
     @Column(unique = true)
     private String name;
@@ -71,10 +80,6 @@ public class PotatoEntity extends AbstractPersistable<UUID> {
             joinColumns = {@JoinColumn(name = "potato_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private Set<TagEntity> tags = new HashSet<>();
-
-    public void setId(UUID id) {
-        super.setId(id);
-    }
 
     @PrePersist
     protected void onCreate() {
