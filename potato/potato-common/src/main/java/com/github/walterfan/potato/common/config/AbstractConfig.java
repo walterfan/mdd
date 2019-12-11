@@ -30,7 +30,7 @@ public abstract class AbstractConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.github.walterfan.potato"))
                 //.paths(regex("/potato/api/v1/*"))
                 .paths(PathSelectors.any())
-                .paths(Predicates.and(PathSelectors.regex("/api.*")))
+                //.paths(Predicates.and(PathSelectors.regex("/api.*")))
                 .build()
                 .enable(enableSwagger)
                 .apiInfo(apiInfo());

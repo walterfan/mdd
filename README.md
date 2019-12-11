@@ -32,7 +32,8 @@ The devops scripts
 
 # Environments
 Take Ubuntu 16 as example
-```aidl
+
+```
 apt install docker
 apt install docker-compose
 
@@ -56,4 +57,20 @@ pip install fabric3
 ```
 apt install openjdk-8-jdk
 apt install maven
+```
+
+# Quick start
+
+## potato
+
+* test
+```aidl
+
+```
+
+* deployment
+```
+cd potato
+fab redeploy
+
 ```
