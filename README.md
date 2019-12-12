@@ -58,3 +58,19 @@ pip install fabric3
 apt install openjdk-8-jdk
 apt install maven
 ```
+
+# Quick start
+
+## potato
+
+* test
+```aidl
+
+```
+
+* deployment
+```
+cd potato
+fab redeploy
+
+```

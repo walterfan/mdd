@@ -48,6 +48,6 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
 
     @Override
     public String getServiceUrl() {
-        return String.format("http://%s:%d/$s/api/v1/ping" , NetworkUtil.getLocalAddress() , this.serverPort, this.serviceName);
+        return String.format("http://%s:%d/%s/api/v1/ping" , NetworkUtil.getLocalAddress() , this.serverPort, this.serviceName);
     }
 }

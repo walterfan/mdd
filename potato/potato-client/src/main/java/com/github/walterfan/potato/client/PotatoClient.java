@@ -50,7 +50,7 @@ public class PotatoClient extends AbstractDiscoveryClient {
 
 	@ClientCallMetricAnnotation(name = "deletePotato", component = "PotatoService")
 	public void deletePotato (UUID potatoId) {
-		String url = getServiceUrl() + "/potatoes" + potatoId.toString();
+		String url = getServiceUrl() + "/potatoes/" + potatoId.toString();
 		log.info("deletePotato as {}", url);
 		restTemplate.delete(url);
 	}

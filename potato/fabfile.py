@@ -261,7 +261,7 @@ def docker_stop(container_name="local-tomcat"):
 
 @task
 def docker_list():
-	cmd = "docker ps"
+	cmd = "docker-compose ps"
 	run_cmd(cmd)
 
 @task
