@@ -1,20 +1,24 @@
 # MDD (Metrics Driven Development)
 
 Samples for Metrics Driven Development Book
-##
+
 
 ## modules
 
 1. Account
+
 Account Service based on Flask in Python
 
 2. Alertor
+
 Alertor to check metrics and trigger alert based on ElasticSearch API.
 
 3. Potato
+
 Potato service based on Spring boot
 
 4. Scripts
+
 * Data Analysis scripts
 * Performance testing scripts
 
@@ -31,6 +35,7 @@ The installation and setup guideline of ELKK, TIG, etc.
 The devops scripts
 
 # Environments
+
 Take Ubuntu 16 as example
 
 ```
@@ -64,11 +69,13 @@ apt install maven
 ## potato
 
 * test
-```aidl
 
+```
+open http://localhost:9005
 ```
 
 * deployment
+
 ```
 cd potato
 fab redeploy
