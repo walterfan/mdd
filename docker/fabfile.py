@@ -79,59 +79,6 @@ def jenkins_check():
 	print(cmd)
 	local(cmd)
 
-#-----------------------------build application --------------------------#
-
-@task
-def redeploy():
-	stop_services()
-	for container_name in ["potato_potato","potato_web","potato_scheduler"]:
-		cmd = "docker rmi {}".format(container_name)
-		run_cmd(cmd, True)
-	run_cmd("mvn clean package -DskipTests=true")
-	
-	run_cmd("docker-compose up --force-recreate -d")
-
-@task
-def package():
-	run_cmd("docker-compose up mysqldb -d")	
-	run_cmd("mvn clean package")
-
-@task
-def registry_build():
-	run_cmd("docker build -t walterfan/potato-registry:0.0.1 ./potato-registry")
-	run_cmd("docker tag walterfan/potato-registry:0.0.1 walterfan/potato-registry:latest")
-
-
-@task
-def potato_build():
-	run_cmd("docker build -t walterfan/potato-app:0.0.1 ./potato-server")
-	run_cmd("docker tag walterfan/potato-app:0.0.1 walterfan/potato-app:latest")
-
-@task
-def potato_web_build():
-
-	run_cmd("docker build -t walterfan/potato-web:0.0.1 ./potato-web")
-	run_cmd("docker tag walterfan/potato-web:0.0.1 walterfan/potato-web:latest")
-	
-
-@task
-def potato_web_deploy():
-	run_cmd("docker-compose stop web")
-	run_cmd("mvn clean package -DskipTests=true")
-	potato_web_build()
-	run_cmd("docker-compose start web")
-
-
-@task
-def scheduler_build():
-	run_cmd("docker build -t walterfan/potato-scheduler:0.0.1 ./potato-scheduler")
-	run_cmd("docker tag walterfan/potato-scheduler:0.0.1 walterfan/potato-scheduler:latest")
-
-
-@task
-def scheduler_dbinit():
-	with lcd("potato-scheduler"):
-		run_cmd("python mysql-client.py --username=walter --password=pass1234 --sqlfile=./src/main/resources/schema.sql")
 
 #-----------------------------grafana influx --------------------------#
 @task
@@ -195,22 +142,20 @@ def mysql_cli(usr='root'):
 def mysql_bash():
 	cmd = "docker exec -it local-mysql /bin/bash"
 	local(cmd)
-
+#---------------------------- freeswitch -------------------------------#
+#bettervoice/freeswitch-container   1.6.16
+@task
+def freeswitch_start():
+	cmd = "sudo docker run --name freeswitch -p 5060:5060/tcp -p 5060:5060/udp -p 5080:5080/tcp -p 5080:5080/udp -p 8021:8021/tcp \
+	-p 7443:7443/tcp -p 60535-65535:60535-65535/udp \
+	-v %s/etc/freeswitch:/usr/local/freeswitch/conf bettervoice/freeswitch-container:1.6.16" % local_path
+	print(cmd)
+	local(cmd)
 
 @task
-def start_mysql():
-	cmd = "docker-compose up -d mysqldb"
-	run_cmd(cmd)
+def freeswitch_stop():
+	docker_remove(freeswitch)
 
-@task
-def start_services():
-	cmd = "docker-compose up -d"
-	run_cmd(cmd)
-
-@task
-def stop_services():
-	cmd = "docker-compose down -v"
-	run_cmd(cmd)
 #----------------------------- general commands ---
 def get_container_id(container_name):
 	str_filter = "-aqf name=%s" % container_name
