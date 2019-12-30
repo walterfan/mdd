@@ -1,0 +1,12 @@
+,errorReason,errorCount,dataCenter
+0,"404, Not Found",5817,HeFei
+1,"504, Gateway timeout",3346,HeFei
+2,"503, Service unavailable",2631,HeFei
+3,"486, Too many requests",2263,HeFei
+4,"406, Not Acceptable",2021,HeFei
+5,"403, Forbidden",1260,HeFei
+6,"408, Request Timeout",1241,HeFei
+7,"502, Bad Gateway",1216,HeFei
+8,"401, Unauthorized",935,HeFei
+9,"500, Internal Server Error",423,HeFei
+
