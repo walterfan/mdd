@@ -4,7 +4,7 @@ from fabric.context_managers import *
 from fabric.contrib.console import confirm
 import os, subprocess
 
-redis_path = '../src'
+redis_path = '/home/walter/package/redis-5.0.8/src'
 redis_config = '''daemonize yes
 bind 0.0.0.0
 port 9001
@@ -35,7 +35,7 @@ def generate_config():
 def start_redis():
     for folder in range(9001,9007):
         with lcd(str(folder)):
-            local("../{}/redis-server ./redis.conf".format(redis_path))
+            local("{}/redis-server ./redis.conf".format(redis_path))
 
 @task
 def stop_redis():
@@ -71,5 +71,5 @@ def create_redis_cluster():
     local(cmd.format(host_and_ports, option))
 
 @task
-def redis_cli():
-    local(redis_path + "/redis-cli -c -p 9001")
+def redis_cli(command='info'):
+    local(redis_path + "/redis-cli -c -p 9001 %s" % command)
