@@ -5,7 +5,7 @@ spring:
     name: potato-web
   cloud:
     consul:
-      host: ${CONSUL_HOST:10.224.112.67}
+      host: ${CONSUL_HOST:127.0.0.1}
       port: ${CONSUL_PORT:8500}
       config:
         enabled: true

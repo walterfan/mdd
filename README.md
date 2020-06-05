@@ -1,7 +1,10 @@
 # MDD (Metrics Driven Development)
 
 Samples for Metrics Driven Development Book
+Any issues, please raise a git issue of this repo.
 
+
+如何在安装和测试中有任何问题，请在本仓库中提交问题，将会尽快回应和解决.
 
 ## modules
 
@@ -80,14 +83,21 @@ apt install maven
 
 # Quick start
 
+Please make sure the dependencies are ready.
+And you can start and debug the service one by one with consul and influxdb.
+
+请确保相关的依赖已经安装就绪， 这里使用 docker compose 来管理应用和其依赖组件。
+如果想逐个服务调试，可以先只启动 consule 和 influxdb
+
+```
+cd potato
+docker-compose start consul influxdb
+```
+
+The fabric file (potao/fabfile.py) contains the building and deployment steps, so you can try it firstly, then try every stesp by yourself.
+
 
 ## potato service
-
-* test
-
-```
-open http://localhost:9005
-```
 
 
 ### Dependencies
@@ -127,3 +137,8 @@ potato-web                              java -jar /opt/potato-web.jar           
 potato-zipkin                           /busybox/sh run.sh                      Up                                      9410/tcp, 0.0.0.0:9411->9411/tcp   
 ```
 
+* Open the web portal of potato application
+
+```
+open http://localhost:9005
+```

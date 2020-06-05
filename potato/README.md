@@ -111,7 +111,7 @@ curl http://localhost:9003/potato/api/v1/ping
 
 # consul
 
-```$xslt
+```
 docker run -d \
     -p 8500:8500 \
     -p 8600:8600/udp \
