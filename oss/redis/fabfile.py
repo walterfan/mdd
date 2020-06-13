@@ -71,5 +71,8 @@ def create_redis_cluster():
     local(cmd.format(host_and_ports, option))
 
 @task
-def redis_cli(command='info'):
-    local(redis_path + "/redis-cli -c -p 9001 %s" % command)
+def redis_cli(command=''):
+    if command:
+        local(redis_path + "/redis-cli -c -p 9001 %s" % command)
+    else:
+        local(redis_path + "/redis-cli -p 9001")
