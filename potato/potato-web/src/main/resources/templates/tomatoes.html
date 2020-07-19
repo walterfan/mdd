@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Welcome to Potato workshop</title>
+</head>
+<body>
+
+
+<div class="row" layout:fragment="content"><br/>
+
+<div class="row">
+    <h2>Tomatoes</h2>
+    <div class="col-md-12">
+        <table class="table">
+
+            <thead>
+            <tr>
+
+                <th scope="col">name</th>
+                <th scope="col">content</th>
+                <th scope="col">tags</th>
+                <th scope="col">start time</th>
+                <th scope="col">end time</th>
+                <th scope="col">action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="item: ${tomatoes}">
+                <td th:text="${item.name}" />
+                <td th:text="${item.content}" />
+                <td th:text="${item.tags}" />
+                <td th:text="${item.startTime}" />
+                <td th:text="${item.endTime}" />
+                <td>
+                    <button type="submit" class="btn btn-primary" onclick="doAction('delete', '${item.tomatoId}')">delete</button>
+                    <button type="submit" class="btn btn-primary" onclick="doAction('edit', '${item.tomatoId}')">edit</button>
+                    <button type="submit" class="btn btn-primary" onclick="doAction('start', '${item.tomatoId}')">start</button>
+                    <button type="submit" class="btn btn-primary" onclick="doAction('break', '${item.tomatoId}')">break</button>
+                    <button type="submit" class="btn btn-primary" onclick="doAction('end', '${item.tomatoId}')">end</button>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+    <div class="row">
+
+        <form action="#" th:action="@{/tomatoes}" th:object="${tomato}" method="post" class="col-md-6">
+            <div class="form-group">
+                <label for="tomatoName">Tomato Name</label>
+                <input type="hidden" th:field="*{tomatoId}"/>
+                <input type="text" class="form-control" id="tomatoName" name="tomatoName"
+                       th:value="${tomatoName}" th:field="*{name}" aria-describedby="tomatoHelp" placeholder="tomato name"/>
+                <br/>
+                <small id="tomatoNameHelp" class="form-text text-muted">* please input the tomato name</small>
+            </div>
+
+            <div class="form-group">
+                <label for="tomatoTags">Tomato Tags</label>
+                <input type="text" class="form-control" id="tomatoTags" name="tomatoTags"
+                       th:value="${tomatoTags}" th:field="*{tags}" aria-describedby="tomatoTagsHelp" placeholder="tomato tags"/>
+                <br/>
+                <small id="tomatoTagsHelp" class="form-text text-muted">* please input the tomato tags</small>
+            </div>
+
+            <div class="form-group">
+                <label for="tomatoContent">Tomato Content</label>
+                <input type="text" class="form-control" id="tomatoContent" name="tomatoContent"
+                       th:value="${tomatoContent}" th:field="*{content}" aria-describedby="tomatoContentHelp" placeholder="tomato content"/>
+                <br/>
+                <small id="tomatoContentHelp" class="form-text text-muted">* please input the tomato content</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <br/><hr/>
+            <div id="weatherDiv" style="color:green; font-size: 16px; "/>
+        </form>
+
+
+    </div>
+
+    <script type="text/javascript">
+        function doAction(action) {
+            console.log(action)
+        }
+
+    </script>
+</div>
+
+
+
+
+</body>
+</html>

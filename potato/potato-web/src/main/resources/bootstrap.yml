@@ -1,13 +1,19 @@
 server:
-  port: 9003
+  port: 9005
 spring:
   application:
     name: potato-web
   cloud:
+    bus:
+      enabled: false
     consul:
       host: ${CONSUL_HOST:127.0.0.1}
       port: ${CONSUL_PORT:8500}
+      # enabble it to true if consul is started
+      enabled: ${CONSUL_ENABLED:false}
       config:
-        enabled: true
+        # enabble it to true if consul is started
+        enabled: ${CONSUL_CONFIG_ENABLED:false}
+        fail-fast: false
       discovery:
         preferIpAddress: true

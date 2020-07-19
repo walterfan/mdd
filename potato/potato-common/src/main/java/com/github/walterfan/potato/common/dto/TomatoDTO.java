@@ -12,7 +12,9 @@ import java.util.UUID;
 public class TomatoDTO extends AbstractDTO {
     private UUID potatoId;
     private UUID tomatoId;
-    private Integer sn;
+    private String name;
+    private String content;
+    private String tags;
     private Date startTime;
     private Date endTime;
 }

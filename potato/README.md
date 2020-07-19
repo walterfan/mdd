@@ -5,17 +5,13 @@ So Potato is a TODO list like application.
 
 # Potato Application
 
-* PotatoWeb
+* PotatoWeb: Web server of potato application
 
-* PotatoRegistry
+* PotatoService: API server of potato application
 
-* PotatoService
+* RemindService: Remind server of potato application
 
-* TomatoService
-
-* RemindService
-
-* PotatoIdentity
+there servers are registered to consul or eureka according to configuration
 
 # Application Framework
 
@@ -24,98 +20,32 @@ So Potato is a TODO list like application.
 * Spring Cloud
 
 # Quick Start
-spring init --list
 
-## registry
+* set the correct environment variables: 
 
-```
-spring init --java-version=1.8 --dependencies=web,actuator,cloud-eureka-server,devtools -packaging=jar --groupId=com.github.walterfan.potato --artifactId=registry 
-
-unzip registry.zip -d potato-registry
-```
-
-## common module
+for example
 
 ```
-spring init --java-version=1.8 --dependencies= web,jpa -packaging=jar --groupId=com.github.walterfan.potato --artifactId=common
-
-unzip common.zip -d potato-common
-```
-
-## server module
-
-```
-spring init --java-version=1.8 --dependencies=web,actuator,cloud-eureka,devtools -packaging=jar --groupId=com.github.walterfan.potato --artifactId=server
-
-unzip server.zip -d potato-server
-
-docker run -d --rm \
-    --env JDBC_URL=jdbc:sqlite:/opt/potato/potato.db \
-    -p 9003:9003 \
-    -v `pwd`:/opt/potato \
-    --name potato-server \
-    walterfan/potato-app
-```
-
-## client module
-
-```
-spring init --java-version=1.8 --dependencies=web -packaging=jar --groupId=com.github.walterfan.potato --artifactId=client
-
-unzip client.zip -d potato-client
-```
-
-## tomato module
-
-```
-spring init --java-version=1.8 --dependencies=web,actuator,cloud-eureka,devtools -packaging=jar --groupId=com.github.walterfan.potato --artifactId=tomato
-
-unzip tomato.zip -d potato-tomato
-```
-
-## identity module
-
-```
-spring init --java-version=1.8 --dependencies=web,actuator,cloud-eureka,devtools -packaging=jar --groupId=com.github.walterfan.potato --artifactId=identity
-
-unzip identity.zip -d potato-identity
-```
-
-## web module
-
-```
-spring init --java-version=1.8 --dependencies=web,actuator,devtools -packaging=jar --groupId=com.github.walterfan.potato --artifactId=web
-
-unzip web.zip -d potato-web
-```
-
-
-spring init --java-version=1.8 --dependencies=web,actuator,devtools -packaging=jar --groupId=com.github.walterfan.potato --artifactId=trail
-
-
-* run docker
+export EMAIL_SMTP_SERVER=smtp.gmail.com
+export EMAIL_USER=xxx@gmail.com
+export EMAIL_PWD=pass1234
+export MYSQL_PWD=pass1234
+export MYSQL_URL="jdbc:mysql://mysqldb/scheduler?useUnicode=true&characterEncoding=utf8"
+export MYSQL_USER=potato
 
 ```
 
-docker tag walterfan/potato-app:0.0.1 walterfan/potato-app:latest
-
-docker run --env JDBC_URL=jdbc:sqlite:/opt/potato/potato-server/sqlite/potato.db -d -p 9003:9003 --name potato-server walterfan/potato-app 
+* run all services
 
 ```
 
-# docker compose usage
+source setenv.sh
+docker-compose up -d
+```
 
-curl http://localhost:9002/scheduler/api/v1/ping
-
-curl http://localhost:9003/potato/api/v1/ping 
-
-# consul
+* only run consul
 
 ```
-docker run -d \
-    -p 8500:8500 \
-    -p 8600:8600/udp \
-    --name=potato-consul \
-    consul agent -server -ui -node=consul-server-1 \
-    -bootstrap-expect=1 -client=0.0.0.0
+source setenv.sh
+docker-compose up -d consul
 ```

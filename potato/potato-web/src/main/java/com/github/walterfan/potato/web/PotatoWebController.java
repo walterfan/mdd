@@ -1,6 +1,7 @@
 package com.github.walterfan.potato.web;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +18,7 @@ public class PotatoWebController {
     }
 
 
-    @RequestMapping(path = {"/tomatoes"})
-    public String tomatoes(Model model) {
-        return "admin/tomatoes";
-    }
+
 
     @RequestMapping(path = {"/bookmarks"})
     public String bookmarks(Model model) {
