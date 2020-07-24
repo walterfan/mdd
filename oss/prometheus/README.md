@@ -14,7 +14,7 @@ suppose your start them on your computer - localhost
 
 * prometheus: http://localhost:9090
 * cadvisor: http://localhost:8020
-* potato-web: http://localhost:8020
+* potato-web: http://localhost:9005
 * grafana: http://localhost:3000
 
 3. stop  prometheus, cadvisor, grafana and potato-web
