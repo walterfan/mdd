@@ -49,7 +49,7 @@ class MySQLClient(object):
             self.execute_cmd(cmd4user, False, True)
 
     def grant_privilege(self):
-        cmd4grant = "grant all on scheduler.* to 'walter'@'%'"
+        cmd4grant="grant all on {}.* to 'walter'@'%'".format(self.dbname)
         self.execute_cmd(cmd4grant, False, True)
 
     def query(self, sql):
@@ -128,7 +128,7 @@ def print_usage():
     print("python mysql-client.py --username=root --password=pass1234 --dbname=scheduler --command=query --sql='show tables'")
     print("python mysql-client.py --username=root --password=pass1234 --command=create_db")
     print("python mysql-client.py --username=root --password=pass1234 --command=create_user")
-    print("python mysql-client.py --username=root --password=pass1234 --command=grant_privilege")
+    print("python mysql-client.py --username=root --password=pass1234 --command=grant_privilege --dbname=scheduler")
     print("python mysql-client.py --username=walter --password=pass1234 --dbname=scheduler --command=execute_sql --sqlfile=src/main/resources/schema.sql")
  
 if __name__ == '__main__':

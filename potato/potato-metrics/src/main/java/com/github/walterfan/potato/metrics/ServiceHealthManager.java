@@ -4,7 +4,7 @@ import com.github.walterfan.potato.client.PotatoSchedulerClient;
 
 import com.github.walterfan.potato.common.metrics.AbstractServiceHealthChecker;
 import com.github.walterfan.potato.common.metrics.ServiceHealthChecker;
-import com.github.walterfan.potato.common.metrics.ServiceHealthIndicator;
+
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
 import org.h2.util.NetUtils;
@@ -35,13 +35,11 @@ public class ServiceHealthManager extends AbstractServiceHealthChecker implement
 
     private Map<String, Boolean> UPSTREAM_SERVICES = ImmutableMap.of(
             "diskSpace", true,
-            "db", true,
-            "schedulerService", true);
+            "db", true);
 
     @PostConstruct
     public void initialize() {
-        ServiceHealthIndicator serviceHealthIndicator = new ServiceHealthIndicator(potatoSchedulerClient, true);
-        this.healthIndicatorRegistry.register("schedulerService", serviceHealthIndicator);
+
         //this.healthIndicatorRegistry.register("influxDB", new InfluxDbHealthIndicator(InfluxDbHealthIndicator));
     }
     @Override

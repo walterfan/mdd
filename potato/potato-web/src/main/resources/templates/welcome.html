@@ -72,8 +72,8 @@
 
             <div class="jumbotron">
                 <div class="container" id="banner">
-                    <h2>今天只是未来生命中的一天, 但你的未来却取决于你今天做了什么 </h2>
-                    <p>Proper Planning Prevents Pretty Poor Performance</p>
+                    <h2> 度量驱动开发 </h2>
+                    <p>Metrics Driven Development</p>
                     <p><a class="btn btn-default" href="/potatoes" role="button">View details &raquo;</a></p>
                 </div>
             </div>
@@ -92,7 +92,31 @@
     </div>
 
    <div>
-        <div><img src="./image/pomodoro.png" width="60%"></div>
+<ul class="list-group">
+    <li class="list-group-item list-group-item-success"><a href="/actuator">Actuator</a></li>
+    <ul class="list-group">
+        <li  class="list-group-item"><a href="/actuator/info">info</a></li>
+        <li  class="list-group-item list-group-item-danger"><a href="/actuator/health">health</a></li>
+        <li  class="list-group-item list-group-item-warning"><a href="/actuator/metrics">metrics</a></li>
+        <li  class="list-group-item list-group-item-info"><a href="/actuator/prometheus">prometheus</a></li>
+        <li  class="list-group-item"><a href="/actuator/httptrace">httptrace</a></li>
+
+    </ul>
+    <li  class="list-group-item list-group-item-success">Swagger API Documents</li>
+    <ul class="list-group">
+        <li  class="list-group-item list-group-item-info"><a href="http://localhost:9005/swagger-ui.html">Potato Web</a></li>
+        <li  class="list-group-item list-group-item-info"><a href="http://localhost:9003/swagger-ui.html">Potato Service</a></li>
+        <li  class="list-group-item list-group-item-info"><a href="http://localhost:9002/swagger-ui.html">Potato Reminder</a></li>
+
+    </ul>
+    <li  class="list-group-item list-group-item-success">PING</li>
+    <ul class="list-group">
+        <li  class="list-group-item list-group-item-info"><a href="http://localhost:9005/api/v1/ping">Potato Web</a></li>
+        <li  class="list-group-item list-group-item-info"><a href="http://localhost:9003/api/v1/ping">Potato Service</a></li>
+        <li  class="list-group-item list-group-item-info"><a href="http://localhost:9002/api/v1/ping">Potato Reminder</a></li>
+
+    </ul>
+</ul>
 
 
    </div>

@@ -5,7 +5,9 @@ services:
         container_name: local-mysql
         environment:
             - MYSQL_DATABASE=potato
-            - MYSQL_ROOT_PASSWORD=pass1234
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PWD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PWD}
         ports:
             - 3306:3306
         command: --init-file /tmp/init.sql

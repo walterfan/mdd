@@ -92,9 +92,16 @@ def redeploy():
 	run_cmd("docker-compose up --force-recreate -d")
 
 @task
+def init_db():
+	run_cmd("docker-compose up -d mysqldb")
+	run_cmd("python ./potato-scheduler/mysql-client.py --username=root --password=pass1234 --command=grant_privilege  --dbname=scheduler")
+	run_cmd("python ./potato-scheduler/mysql-client.py --username=root --password=pass1234 --command=grant_privilege  --dbname=potato")
+	run_cmd("python ./potato-scheduler/mysql-client.py --username=root --password=pass1234 --command=grant_privilege  --dbname=userservice")
+
+@task
 def package():
-	run_cmd("docker-compose up mysqldb -d")	
-	run_cmd("mvn clean package")
+	run_cmd("docker-compose up -d mysqldb")
+	run_cmd("mvn clean package -Dmaven.test.skip=true")
 
 @task
 def registry_build():
