@@ -20,3 +20,21 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+
+  potato-web:
+    image: walterfan/potato-web:latest
+    container_name: potato-web
+    ports:
+      - 9005:9005
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    user: "root"
+    links:
+      - prometheus
+    volumes:
+      #please run "mkdir -p ./data/grafana"
+      - ./data/grafana:/var/lib/grafana

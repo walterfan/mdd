@@ -22,3 +22,9 @@ scrape_configs:
     static_configs:
       - targets:
         - cadvisor:8020
+  - job_name: potato-web
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+        - potato-web:9005
