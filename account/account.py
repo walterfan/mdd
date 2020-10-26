@@ -6,7 +6,6 @@ from flask_httpauth import HTTPBasicAuth
 from flask import make_response
 from flask import Flask
 from flask import request
-from werkzeug.exceptions import NotFound, ServiceUnavailable
 from flask import render_template
 
 ACCOUNTS_API_PATH = "/api/v1/accounts"
@@ -22,7 +21,7 @@ users = {
     "walter": "pass1234"
 }
 
-json_file = "{}/account.json".format(current_path)
+ACCOUNT_JSON_FILE = "{}/account.json".format(current_path)
 redis_enabled = False
 #docker run --restart always -p 6379:6379 -d --name local-redis redis
 
@@ -56,16 +55,19 @@ def read_data():
             jsonStr = "{}"
         return json.loads(jsonStr)
     else:
-        json_fp = open(json_file, "r")
-        return json.load(json_fp)
+        if not os.path.exists(ACCOUNT_JSON_FILE):
+            save_data({})
+
+        with open(ACCOUNT_JSON_FILE) as json_fp:
+            return json.load(json_fp)
 
 
 def save_data(accounts):
     if redis_enabled:
         redis_client.set(REDIS_KEY, json.dumps(accounts))
     else:
-        json_fp = open(json_file, "w")
-        json.dump(accounts, json_fp, sort_keys=True, indent=4)
+        with open(ACCOUNT_JSON_FILE, "w") as json_fp:
+            json.dump(accounts, json_fp, sort_keys=True, indent=4)
 
 
 @auth.get_password
