@@ -2,6 +2,9 @@ import os
 import json
 import requests
 import redis
+import time
+import utils
+
 from flask_httpauth import HTTPBasicAuth
 from flask import make_response
 from flask import Flask
@@ -24,6 +27,8 @@ users = {
 ACCOUNT_JSON_FILE = "{}/account.json".format(current_path)
 redis_enabled = False
 #docker run --restart always -p 6379:6379 -d --name local-redis redis
+
+logger = utils.init_logger("account-service")
 
 class RedisClient:
     def __init__(self):
@@ -48,7 +53,8 @@ redis_client = RedisClient()
 if(redis_enabled):
     redis_client.connect()
 
-def read_data():
+def read_data(trackingId):
+    start = time.time()
     if redis_enabled:
         jsonStr = redis_client.get(REDIS_KEY)
         if not jsonStr:
@@ -60,15 +66,16 @@ def read_data():
 
         with open(ACCOUNT_JSON_FILE) as json_fp:
             return json.load(json_fp)
+    logger.info("read_data: %d, %s", time.time() - start, trackingId)
 
-
-def save_data(accounts):
+def save_data(accounts, trackingId):
+    start = time.time()
     if redis_enabled:
         redis_client.set(REDIS_KEY, json.dumps(accounts))
     else:
         with open(ACCOUNT_JSON_FILE, "w") as json_fp:
             json.dump(accounts, json_fp, sort_keys=True, indent=4)
-
+    logger.info("save_data: %d, %s", time.time() - start, trackingId)
 
 @auth.get_password
 def get_pw(username):
@@ -92,7 +99,8 @@ def index():
 @auth.login_required
 @app.route(ACCOUNTS_API_PATH, methods=['GET'])
 def list_account():
-    accounts = read_data()
+    trackingId = request.headers.get("TrackingID", "")
+    accounts = read_data(trackingId)
     return generate_response(accounts)
 
 
@@ -101,12 +109,14 @@ def list_account():
 @app.route(ACCOUNTS_API_PATH, methods=['POST'])
 def create_account():
     account = request.json
+    trackingId = request.headers.get("TrackingID", "")
+    logger.info("create account: {}, trackingId=".format(account, trackingId))
     sitename = account["siteName"]
-    accounts = read_data()
+    accounts = read_data(trackingId)
     if sitename in accounts:
         return generate_response({"error": "conflict"}, 409)
     accounts[sitename] = account
-    save_data(accounts)
+    save_data(accounts, trackingId)
     return generate_response(account)
 
 
@@ -114,25 +124,28 @@ def create_account():
 @auth.login_required
 @app.route(ACCOUNTS_API_PATH + '/<sitename>', methods=['GET'])
 def retrieve_account(sitename):
-    accounts = read_data()
+    trackingId = request.headers.get("TrackingID", "")
+    accounts = read_data(trackingId)
     if sitename not in accounts:
         return generate_response({"error": "not found"}, 404)
-
-    return generate_response(accounts[sitename])
+    account = accounts[sitename]
+    logger.info("retrieve account: {}, trackingId=".format(account, trackingId))
+    return generate_response(account)
 
 
 # Update account
 @auth.login_required
 @app.route(ACCOUNTS_API_PATH + '/<sitename>', methods=['PUT'])
 def update_account(sitename):
-    accounts = read_data()
-    if sitename not in accounts:
+    trackingId = request.headers.get("TrackingID", "")
+    accounts = read_data(trackingId)
+    if accounts.has_key(sitename):
         return generate_response({"error": "not found"}, 404)
 
     account = request.json
-    print(account)
+    logger.info("update account: {}, trackingId=".format(account, trackingId))
     accounts[sitename] = account
-    save_data(accounts)
+    save_data(accounts, trackingId)
     return generate_response(account)
 
 
@@ -140,12 +153,14 @@ def update_account(sitename):
 @auth.login_required
 @app.route(ACCOUNTS_API_PATH + '/<sitename>', methods=['DELETE'])
 def delete_account(sitename):
-    accounts = read_data()
+    trackingId = request.headers.get("TrackingID", "")
+    accounts = read_data(trackingId)
     if sitename not in accounts:
         return generate_response({"error": "not found"}, 404)
 
     del (accounts[sitename])
-    save_data(accounts)
+    save_data(accounts, trackingId)
+    logger.info("delete account of {}, trackingId={}".format(sitename, trackingId))
     return generate_response("", 204)
 
 

@@ -1,7 +1,7 @@
 from fabric.api import local
 
 def app_run():
-    local("python account.py")
+    local("python account_service.py")
 
 
 def install_deps():
