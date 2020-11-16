@@ -139,7 +139,7 @@ def retrieve_account(sitename):
 def update_account(sitename):
     trackingId = request.headers.get("TrackingID", "")
     accounts = read_data(trackingId)
-    if accounts.has_key(sitename):
+    if not accounts[sitename]:
         return generate_response({"error": "not found"}, 404)
 
     account = request.json
