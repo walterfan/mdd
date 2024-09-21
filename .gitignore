@@ -11,6 +11,7 @@ bin/
 data/
 target/
 bin/
+.env
 .classpath
 .project
 .settings/

@@ -1,0 +1,43 @@
+version: "3"
+services:
+  kafka:
+    image: bitnami/kafka:3.6.1
+    container_name: kafka
+    restart: always
+    ports: 
+      - 9092:9092
+    env_file: 
+      - ./.env
+
+  telegraf:
+    image: telegraf:1.29.1
+    container_name: telegraf
+    restart: always
+    env_file: 
+      - ./.env
+    depends_on:
+      - influxdb
+      - kafka
+    volumes: 
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    
+  influxdb:
+    image: influxdb:2.7.4
+    container_name: influxdb
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - 8086:8086
+
+  grafana:
+    image: grafana/grafana:10.0.10
+    container_name: grafana
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - influxdb
+

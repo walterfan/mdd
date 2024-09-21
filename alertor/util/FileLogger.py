@@ -90,8 +90,7 @@ class CsvLogger(FileLogger):
 
     def printTitle(self, titles):
         self.titles = titles
-        super().
-        print(', '.join(titles))
+        super().print(', '.join(titles))
 
     def printRecord(self, metric, columns):
         cells = []
@@ -123,8 +122,7 @@ class CsvLogger(FileLogger):
                 strCell = strVal
             record.append(strCell)
         self.records.append(record)
-        super().
-        print(",".join(record))
+        super().print(",".join(record))
 
     def __del__(self):
         super().close()
@@ -136,16 +134,14 @@ class CsvLogger(FileLogger):
 class MarkdownLogger(FileLogger):
     def printTableTitle(self, titles):
         strTitles = '| '.join(titles)
-        super().
-        print("| {} |".format(strTitles))
+        super().print("| {} |".format(strTitles))
 
         strSeps = ""
         for i in range(len(titles)):
             strSeps = strSeps + "|---"
 
         strSeps = strSeps + '|'
-        super().
-        print(strSeps)
+        super().print(strSeps)
 
     def printTableBody(self, metric, columns):
         strColumns = ""
@@ -166,8 +162,7 @@ class MarkdownLogger(FileLogger):
             else:
                 strColumns = strColumns + '|'
 
-        super().
-        print(strColumns + '|')
+        super().print(strColumns + '|')
 
     def printTableRow(self, columns):
         strColumns = ""
@@ -177,19 +172,16 @@ class MarkdownLogger(FileLogger):
 
             strColumns = strColumns + '| {}'.format(column)
 
-        super().
-        print(strColumns + '|')
+        super().print(strColumns + '|')
 
     def printImage(self, imageUrl):
         if (not imageUrl.startswith('cid:')):
             imageUrl = 'cid:' + os.path.basename(imageUrl)
 
-        super().
-        print('![]({})'.format(imageUrl))
+        super().print('![]({})'.format(imageUrl))
 
     def printLink(self, linkText, linkUrl):
-        super().
-        print('[{}]({})'.format(linkText, linkUrl))
+        super().print('[{}]({})'.format(linkText, linkUrl))
 
     def toHtml(self):
         fileContent = super().getFileContent()

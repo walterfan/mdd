@@ -1,0 +1,24 @@
+---
+- hosts: walter_site
+  become: yes 
+  gather_facts: no
+  vars:
+    - remote_path: /home/walter/tig
+  tasks:
+  - name: mkdir tig
+    shell: mkdir -p {{ remote_path }}
+  - name: copy .env
+    copy: src=./.env dest={{ remote_path }}/.env
+  - name: copy telegraf.conf
+    copy: src=./telegraf.conf dest={{ remote_path }}/telegraf.conf
+  - name: copy docker-compose.yml
+    copy: src=./docker-compose.yml dest={{ remote_path }}/docker-compose.yml
+  - name: install docker docker-compose
+    shell: apt update && apt install docker docker-compose 
+  - name: run docker-compose
+    shell: cd {{ remote_path }} && docker-compose up -d
+
+
+
+
+
