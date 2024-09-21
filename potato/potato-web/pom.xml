@@ -22,7 +22,7 @@
         <java.version>1.8</java.version>
         <maven-compiler-plugin.version>3.5</maven-compiler-plugin.version>
         <lombok.version>1.16.18</lombok.version>
-		<jackson.version>2.11.1</jackson.version>
+		<jackson.version>2.12.7.1</jackson.version>
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
