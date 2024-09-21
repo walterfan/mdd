@@ -1,12 +1,67 @@
 # MDD (Metrics Driven Development)
 
-Samples for Metrics Driven Development Book
-Any issues, please raise a git issue of this repo.
+Author: Walter Fan [🤵](https://www.fanyamin.com)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/walterfan?style=social)](https://twitter.com/walterfan)
 
 
-如何在安装和测试中有任何问题，请在本仓库中提交问题，将会尽快回应和解决.
+## Overview
+### Why MDD
 
-## modules
+* If you can’t measure it, you can’t manage it
+* If you can’t measure it, you can’t prove it
+* If you can’t measure it, you can’t improve it
+
+### What's MDD
+
+A development approach driven by metrics to continuously improve software products and services:
+
+* Validate the achievement of goals based on metrics.
+* Optimize and enhance systems based on metrics.
+* Make decisions based on metrics.
+
+### Metrics Content
+
+**USED**
+
+- **Usage:** Measures how frequently and in what ways users interact with the system, indicating feature engagement and activity levels.
+- **Saturation:** Reflects how close the system is to its maximum capacity, such as CPU, memory, or network usage.
+- **Error:** Tracks the occurrence of failures or issues within the system, providing insights into stability and reliability.
+- **Delay:** Measures the time it takes for the system to respond to requests, reflecting its performance and responsiveness.
+
+### Metrics Type
+
+* Gauge: The instantaneous value of something.
+* Counter: An incrementing and decrementing value.
+* Meter: The average rate of events over a period of time.
+* Histogram: The statistical distribution of values in a stream of data.
+* Timer: A histogram of durations and a meter of calls.
+
+
+## MDD Tutorial
+
+* [如何模拟弱网条件 - 限流, 丢包, 延迟和抖动](https://www.jianshu.com/p/ce04bf2f9db6)
+* [分析网络抓包用 python 更高效](https://www.jianshu.com/p/1a616442aaca)
+* [WebRTC 之度量与统计: 到底出了什么问题](https://www.jianshu.com/p/419ca6fbdb60)
+* [WebRTC 内部度量文件的分析](https://www.jianshu.com/p/efb933d55bba)
+* [C++程序度量驱动调优实例：看狄更斯的双城记，寻找性能瓶颈](https://www.jianshu.com/p/a2988a17d146)
+* [微服务缓存的使用度量](https://www.jianshu.com/p/35023210e637)
+* [Redis 集群的构建和监控](https://www.jianshu.com/p/ced0a95cbc21)
+* [JVM 参数怎么调](https://www.jianshu.com/p/20fb5ccffd9f)
+* [使用 Redis 记录微服务的应用程序性能指数 APDEX](https://www.jianshu.com/p/684689942905)
+* [线程池的监控与优化](https://www.jianshu.com/p/6b71221792fb)
+* [内存溢出不可怕，手足无措才尴尬](https://www.jianshu.com/p/12d00ca68cda)
+* [微服务日志分析之ELKK](https://www.jianshu.com/p/d391c63adcaa)
+* [系统指标监控 collectd + influxDB + grafana](https://www.jianshu.com/p/e8c232228986)
+
+## MDD Book
+
+"The Way of Microservices: Metrics-Driven Development"
+ -- Walter Fan, Jian Fu
+
+If you encounter any issues during installation or testing, please submit an issue in this repository, and it will be addressed and resolved as soon as possible.
+
+### modules
 
 1. Account
 
@@ -50,7 +105,7 @@ Any issues, please raise a git issue of this repo.
 	The devops scripts
 
 
-# Environments
+### Environments
 
 Take Ubuntu 16 as example
 
@@ -60,7 +115,7 @@ apt install docker
 apt install docker-compose
 
 ```
-## python environment
+#### python environment
 
 ```
 apt install python3
@@ -74,20 +129,21 @@ source venv/bin/activate
 pip install fabric3
 ```
 
-## Java environment
+#### Java environment
 
 ```
 apt install openjdk-8-jdk
 apt install maven
 ```
 
-# Quick start
+### Quick start
 
 Please make sure the dependencies are ready.
 And you can start and debug the service one by one with consul and influxdb.
 
-请确保相关的依赖已经安装就绪， 这里使用 docker compose 来管理应用和其依赖组件。
-如果想逐个服务调试，可以先只启动 consule 和 influxdb
+≈
+Make sure that the relevant dependencies are installed, and that Doccompos is used to manage the application and its dependencies.
+If you want to debug on a service-by-service basis, you can start with just Consour and Inflix Deb
 
 ```
 cd potato
@@ -97,18 +153,18 @@ docker-compose start consul influxdb
 The fabric file (potao/fabfile.py) contains the building and deployment steps, so you can try it firstly, then try every stesp by yourself.
 
 
-## potato service
+### potato service example
 
 
-### Dependencies
+#### Dependencies
  * python3
  * fabric3
  * jdk8
  * maven3
- 
 
 
-* deployment
+
+#### deployment
 
 ```
 cd potato
@@ -134,7 +190,7 @@ local-mysql                             docker-entrypoint.sh --ini ...          
 potato-scheduler                        java -jar /opt/potato-sche ...          Up                                      0.0.0.0:9002->9002/tcp
 potato-server                           java -jar /opt/potato-app.jar           Up                                      0.0.0.0:9003->9003/tcp
 potato-web                              java -jar /opt/potato-web.jar           Up                                      0.0.0.0:9005->9005/tcp
-potato-zipkin                           /busybox/sh run.sh                      Up                                      9410/tcp, 0.0.0.0:9411->9411/tcp   
+potato-zipkin                           /busybox/sh run.sh                      Up                                      9410/tcp, 0.0.0.0:9411->9411/tcp
 ```
 
 * Open the web portal of potato application
