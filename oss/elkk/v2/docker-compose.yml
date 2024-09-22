@@ -1,0 +1,51 @@
+version: "3"
+
+volumes:
+  kibana_data:
+    driver: local
+  elastic_data:
+    driver: local
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - xpack.security.enabled=$ELASTIC_SECURITY
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elastic_data:/usr/share/elasticsearch/data
+  kibana:
+    image: kibana:8.11.0
+    container_name: kibana
+    restart: always
+    environment:
+      - I18N_LOCALE=zh-CN
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+    ports:
+      - 5601:5601
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+      - kibana_data:/usr/share/kibana/data
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: logstash:8.11.0
+    container_name: logstash
+    restart: always   
+    volumes:
+      - ./logstash.yml:/usr/share/logstash/config/logstash.yml 
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch

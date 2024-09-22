@@ -1,0 +1,51 @@
+filebeat.inputs:
+- type: filestream  #can have many types
+  enabled: true
+  scan_frequency: 2m
+  close_inactive: 5m
+  ignore_older: 10m
+  id: walter_rus_agent         #Unique Identification              
+  paths:
+    - /home/walter/Documents/Ultrasound_AI/log/*.log 
+  multiline:
+    pattern: ^\[\d{4}-\d{2}-\d{2}  
+    negate: true
+    match: after
+    max_lines: 500
+    timeout: 5s
+  include_lines: ['\[error\]', 'metrics=']
+  exclude_lines: ['\[debug\]', '\[trace\]']
+  tags: ["echo_pilot"]
+  fields:
+    app: "rus-agent"
+    env: {{ env }}
+    ip: {{ ip }}
+    device_id: {{ device_id }}
+- type: filestream  #can have many types
+  enabled: true
+  scan_frequency: 2m
+  close_inactive: 5m
+  ignore_older: 10m
+  id: walter_report_server         #Unique Identification              
+  paths:
+    - /home/walter/mysite/var/log/echo*.log*
+  multiline:
+    pattern: ^\d{4}-\d{2}-\d{2}  
+    negate: true
+    match: after
+    max_lines: 500
+    timeout: 5s
+  include_lines: [' ERROR ', 'metrics=']
+  exclude_lines: [' DEBUG ', ' TRACE ']
+  tags: ["echo_pilot"]
+  fields:
+    app: "report-server"
+    env: {{ env }}
+    ip: {{ ip }}
+    device_id: {{ device_id }}
+output.kafka:
+  hosts: ["{{ KAFKA_ADDR }}"]
+  topic: "filebeat"              
+  sasl.mechanism: PLAIN
+  username: "{{ KAFKA_USERNAME }}"
+  password: "{{ KAFKA_PASSWORD }}"

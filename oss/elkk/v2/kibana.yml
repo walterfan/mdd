@@ -1,0 +1,9 @@
+server.host: "0.0.0.0"
+server.publicBaseUrl: "http://192.168.1.10:5601/"
+server.shutdownTimeout: "5s"
+elasticsearch.hosts: ["http://192.168.1.10:9200"]
+monitoring.ui.container.elasticsearch.enabled: true
+i18n.locale: "zh-CN"
+xpack.encryptedSavedObjects.encryptionKey: "11112222333344445555666677778888"
+xpack.monitoring.kibana.collection.enabled: true
+xpack.monitoring.enabled: true

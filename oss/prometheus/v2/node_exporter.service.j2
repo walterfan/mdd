@@ -1,0 +1,11 @@
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User={{ node_exporter_username }}
+Group={{ node_exporter_group }}
+ExecStart=/usr/local/bin/node_exporter --web.config.file=/home/{{ node_exporter_username }}/node_exporter_config.yml
+
+[Install]
+WantedBy=multi-user.target

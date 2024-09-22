@@ -1,0 +1,28 @@
+- hosts: echo_pilot
+  become: true      
+  gather_facts: false
+  vars:
+    - remote_path: /home/walter/elk
+    - ELASTIC_PASSWORD: P@SS1234
+    - KIBANA_PASSWORD: walter5678
+  tasks:
+    - name: mkdir elk
+      shell: mkdir -p {{ remote_path }}
+
+    - name: copy files
+      copy:
+        src: ./{{ item }}
+        dest: "{{ remote_path }}"
+      with_items:
+        [docker-compose.yml, elasticsearch.yml, kibana.yml, logstash.conf, logstash.yml, .env]  
+
+    - name: run docker-compose(it will take some time to pull images)
+      shell: cd {{ remote_path }} && docker-compose down && docker-compose up -d
+
+    - name: update elastic search for kibana password
+      shell: >
+        curl -s -X POST -u "elastic:{{ ELASTIC_PASSWORD }}" -H "Content-Type: application/json" http://localhost:9200/_security/user/kibana_system/_password -d '{"password":"{{ KIBANA_PASSWORD }}"}'
+      register: curl_result
+      until: "curl_result is not failed"
+      retries: 10
+      delay: 10

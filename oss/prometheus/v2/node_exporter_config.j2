@@ -1,0 +1,5 @@
+tls_server_config:
+  cert_file: /home/{{ node_exporter_username }}/certs/server.crt
+  key_file: /home/{{ node_exporter_username }}/certs/server.key
+basic_auth_users:
+  {{ node_exporter_username }}: $2y$12$Ek9T1DzXt1ioZa69mrq.nuidUlO4D.4gRb0j9qXjqOIREAG0UGkyi

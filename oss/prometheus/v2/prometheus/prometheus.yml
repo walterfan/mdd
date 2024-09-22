@@ -1,0 +1,112 @@
+global:
+  scrape_timeout: 10s
+  scrape_interval: 10s # The default scrape interval is every 10 seconds.
+  evaluation_interval: 10s # The default evaluation interval is every 10 seconds.
+  # On this machine, every time series will be exported by default.
+  external_labels:
+    monitor: 'emqx-monitor'
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first.rules"
+  # - "second.rules"
+  - "/etc/prometheus/rules.yml"
+
+# Data pull configuration
+scrape_configs:
+  # EMQX monitoring
+  - job_name: 'emqx_tx_yun'
+    metrics_path: /api/v5/prometheus/stats
+    scrape_interval: 5s
+    honor_labels: true
+    scheme: 'http'
+    basic_auth:
+      username: '9066200187b799e5'
+      password: 'ZSRs0E0BFREb9AhHYpOMGElRWAiSgOctYYy0RqgVEjvJ'
+    static_configs:
+      # EMQX IP address and port
+      - targets: [1.117.217.137:18083]
+        labels:
+          instance: 1.117.217.137:18083
+
+  - job_name: 'emqx_yd_yun'
+    metrics_path: /api/v5/prometheus/stats
+    scrape_interval: 5s
+    honor_labels: true
+    scheme: 'http'
+    basic_auth:
+      username: '9066200187b799e5'
+      password: '6rN7weTnlfRtC4qf1rfrRfy49CX61sv2t6Aiil7qd1tE'
+    static_configs:
+      # EMQX IP address and port
+      - targets: [192.168.1.10:18083]
+        labels:
+          instance: 192.168.1.10:18083
+
+  - job_name: 'node-exporter-tx-yun'
+    scrape_interval: 5s
+    scheme: 'https'
+    basic_auth:
+      username: 'prometheus'
+      password: 'walter1@34'
+    static_configs:
+      # node-exporter IP address and port
+      - targets: ['1.117.217.137:9100']
+        labels:
+          instance: 1.117.217.137:9100
+    tls_config:
+      insecure_skip_verify: true
+
+  - job_name: 'node-exporter-yd-yun'
+    scrape_interval: 5s
+    scheme: 'https'
+    basic_auth:
+      username: 'prometheus'
+      password: 'walter1@34'
+    static_configs:
+      # node-exporter IP address and port
+      - targets: ['192.168.1.10:9100']
+        labels:
+          instance: 192.168.1.10:9100
+    tls_config:
+      insecure_skip_verify: true
+
+  - job_name: 'node-exporter-226'
+    scrape_interval: 5s
+    scheme: 'https'
+    basic_auth:
+      username: 'prometheus'
+      password: 'walter1@34'
+    static_configs:
+      # node-exporter IP address and port
+      - targets: ['192.168.1.10:9100']
+        labels:
+          instance: 192.168.1.10:9100
+    tls_config:
+      insecure_skip_verify: true
+
+  - job_name: 'node-exporter-221'
+    scrape_interval: 5s
+    scheme: 'https'
+    basic_auth:
+      username: 'prometheus'
+      password: 'walter1@34'
+    static_configs:
+      # node-exporter IP address and port
+      - targets: ['192.168.1.10:9200']
+        labels:
+          instance: 192.168.1.10:9200
+    tls_config:
+      insecure_skip_verify: true
+
+  - job_name: 'cadvisor'
+    scrape_interval: 5s
+    scheme: 'http'
+    static_configs:
+      - targets: ['192.168.1.10:8080']
+        labels:
+          instance: 192.168.1.10:8080

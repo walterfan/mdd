@@ -44,7 +44,7 @@
 * [ELKK 的用法](oss/elkk/readme.md) - ElasticSearch, LogStash, Kibana, Kafka
 * [TIGK 的用法](oss/tig/v2/README.md) - Telegraf, InfluxDB, Grafana, Kafka
 * [Hadoop 的用法](oss/hadoop/readme.md)
-* [Prometheus 的用法](oss/prometheus/README.md)
+* [Prometheus 的用法](oss/prometheus/v2/README.md): Promethues + Grafana
 * [如何模拟弱网条件 - 限流, 丢包, 延迟和抖动](https://www.jianshu.com/p/ce04bf2f9db6)
 * [分析网络抓包用 python 更高效](https://www.jianshu.com/p/1a616442aaca)
 * [WebRTC 之度量与统计: 到底出了什么问题](https://www.jianshu.com/p/419ca6fbdb60)

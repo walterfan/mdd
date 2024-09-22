@@ -20,6 +20,7 @@ bin/
 .iml
 *.jar
 .ipynb_checkpoints/
+hosts
 oss/elkk/elasticsearch/nodes/
 WEB-INF/lib/
 WEB-INF/classes/

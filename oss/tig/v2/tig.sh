@@ -39,7 +39,7 @@ fi
 
 # replace configuration to ignore warning
 # TODO: move sudo password
-echo 123456|sudo -S ls -l /etc/ansible
+echo P@ss1234|sudo -S ls -l /etc/ansible
 sudo sed -i 's/^#\(host_key_checking = False\)/\1/' /etc/ansible/ansible.cfg 
 sudo sed -i 's/^#deprecation_warnings = True/deprecation_warnings = False/' /etc/ansible/ansible.cfg
 

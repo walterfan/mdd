@@ -1,0 +1,13 @@
+groups:
+- name: cloud-nodes-status
+  rules:
+  - alert: emqx-node-up
+    expr: up{job="emqx_yd_yun"} == 0
+    for: 10s
+    labels:
+      severity: 1
+      team: devops
+    annotations:
+      summary: "{{ $labels.instance }} 已停止运行超过 15s"
+      description: "该节点已停止运行，需要立即检查 job {{ $labels.job }}。"
+

@@ -1,0 +1,83 @@
+---
+- name: Set up Node Exporter as a service on Linux
+  hosts: node_exporter_hosts
+  become: true
+  tasks:
+    - name: Download Node Exporter
+      uri:
+        url: "https://www.fanyamin.com/package/node_exporter-1.8.2.linux-amd64.tar.gz"
+        method: GET
+        user: "admin"
+        password: "walter1@34"
+        force_basic_auth: true
+        status_code: [200, 304]
+        dest: "/tmp/node_exporter-1.8.2.linux-amd64.tar.gz"
+
+    - name: Extract Node Exporter binary
+      unarchive:
+        src: "/tmp/node_exporter-1.8.2.linux-amd64.tar.gz"
+        dest: "/usr/local/bin"
+        remote_src: yes
+        extra_opts: "--strip-components=1"
+        creates: "/usr/local/bin/node_exporter"
+      tags: extract
+
+    - name: Create Prometheus group
+      group:
+        name: prometheus
+        state: present
+      tags: group
+
+    - name: Create Prometheus user
+      user:
+        name: "{{ node_exporter_username }}"
+        group: "{{ node_exporter_group }}"
+        create_home: yes
+        shell: /sbin/nologin
+        system: yes
+      notify: user_created
+      tags: user
+
+
+    - name: mkdir certs folder
+      shell: |
+        mkdir -p /home/{{ node_exporter_username }}/certs
+
+    - name: copy files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      with_items:
+        - { src: "./certs/server.crt", dest: "/home/{{ node_exporter_username }}/certs/server.crt" }
+        - { src: "./certs/server.key", dest: "/home/{{ node_exporter_username }}/certs/server.key" }
+
+
+    - name: Create config file for Node Exporter
+      template:
+        src: "node_exporter_config.j2"
+        dest: "/home/{{ node_exporter_username }}/node_exporter_config.yml"
+      tags: config
+
+    - name: Create systemd service file for Node Exporter
+      template:
+        src: "node_exporter.service.j2"
+        dest: "/etc/systemd/system/node_exporter.service"
+      notify: reload_daemon
+      tags: service
+
+    - name: Start and enable Node Exporter
+      systemd:
+        name: node_exporter
+        state: restarted
+        enabled: yes
+        daemon_reload: yes
+      tags: start
+
+  handlers:
+    - name: reload_daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: user_created
+      debug:
+        msg: "User {{ node_exporter_username }} created with home directory at /home/{{ node_exporter_username }}"

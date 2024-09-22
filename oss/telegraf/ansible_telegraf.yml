@@ -1,0 +1,32 @@
+---
+- hosts: echo_pilot
+  become: yes
+  vars:
+    config_file: /home/walter/deploy/telegraf/telegraf.conf
+  vars_files:
+    - ../default.yml
+  gather_facts: no
+  tasks:
+  - name: create deploy folder
+    shell: mkdir -p /home/walter/deploy/telegraf
+
+  - name: copy files
+    copy:
+      src: "{{playbook_dir}}/"
+      dest: /home/walter/deploy/telegraf
+      force: yes
+
+  - shell: cat /sys/firmware/devicetree/base/serial-number
+    register: cat_device
+
+  - set_fact:
+      device_id={{ cat_device.stdout | replace('\u0000', '') }}
+
+  - debug: msg="device_id={{ device_id }}"
+
+  - name: copy telegraf config file
+    template: src=telegraf.conf dest={{ config_file }}
+
+
+  - name: install telegraf
+    shell: cd /home/walter/deploy/telegraf && chmod +x ./telegraf.sh && ./telegraf.sh

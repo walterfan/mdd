@@ -1,0 +1,30 @@
+- hosts: echo_pilot
+  become: true
+  vars_files:
+    - ../default.yml
+  vars:
+    config_file: /home/walter/deploy/filebeat/filebeat.yml
+  gather_facts: false
+  tasks:
+  - name: create deploy folder
+    shell: mkdir -p /home/walter/deploy/filebeat
+
+  - name: copy files of filebeat
+    copy:
+      src: "{{playbook_dir}}/"
+      dest: /home/walter/deploy/filebeat
+      force: yes
+
+  - shell: cat /sys/firmware/devicetree/base/serial-number
+    register: cat_device
+
+  - set_fact:
+      device_id={{ cat_device.stdout | replace('\u0000', '') }}
+
+  - debug: msg="device_id={{ device_id }}"
+
+  - name: copy filebeat config file
+    template: src=filebeat.yml dest={{ config_file }}
+
+  - name: install filebeat
+    shell: cd /home/walter/deploy/filebeat && chmod +x ./filebeat.sh && ./filebeat.sh

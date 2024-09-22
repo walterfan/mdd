@@ -43,10 +43,10 @@ A development approach driven by metrics to continuously improve software produc
 ## MDD Tutorial
 
 * [Collected Usage](oss/collectd/README.md)
-* [ELKK Usage](oss/elkk/readme.md) - ElasticSearch, LogStash, Kibana, Kafka
-* [TIGK Usage](oss/tig/v2/README.md) - Telegraf, InfluxDB, Grafana, Kafka
+* [ELK Usage](oss/elkk/v2/readme.md) - ElasticSearch, LogStash/[Filebeat](oss/filebeat/REDEME.md), Kibana
+* [TIGK Usage](oss/tig/v2/README.md) - [Telegraf](oss/telegraf/REDEME.md), InfluxDB, Grafana, Kafka
 * [Hadoop Usage](oss/hadoop/readme.md)
-* [Prometheus Usage](oss/prometheus/README.md)
+* [Prometheus Usage](oss/prometheus/v2/README.md): Promethues + Grafana
 * [如何模拟弱网条件 - 限流, 丢包, 延迟和抖动](https://www.jianshu.com/p/ce04bf2f9db6)
 * [分析网络抓包用 python 更高效](https://www.jianshu.com/p/1a616442aaca)
 * [WebRTC 之度量与统计: 到底出了什么问题](https://www.jianshu.com/p/419ca6fbdb60)
