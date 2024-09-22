@@ -1,6 +1,6 @@
 # MDD (Metrics Driven Development)
 
-English | [简体中文](REAME_zh_CN.md)
+English | [简体中文](README_zh_CN.md)
 
 Author: Walter Fan [🤵](https://www.fanyamin.com)
 
