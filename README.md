@@ -1,5 +1,7 @@
 # MDD (Metrics Driven Development)
 
+English | [简体中文](REAME_zh_CN.md)
+
 Author: Walter Fan [🤵](https://www.fanyamin.com)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/walterfan?style=social)](https://twitter.com/walterfan)
@@ -40,13 +42,18 @@ A development approach driven by metrics to continuously improve software produc
 
 ## MDD Tutorial
 
+* [Collected Usage](oss/collectd/README.md)
+* [ELKK Usage](oss/elkk/readme.md) - ElasticSearch, LogStash, Kibana, Kafka
+* [TIGK Usage](oss/tig/v2/README.md) - Telegraf, InfluxDB, Grafana, Kafka
+* [Hadoop Usage](oss/hadoop/readme.md)
+* [Prometheus Usage](oss/prometheus/README.md)
 * [如何模拟弱网条件 - 限流, 丢包, 延迟和抖动](https://www.jianshu.com/p/ce04bf2f9db6)
 * [分析网络抓包用 python 更高效](https://www.jianshu.com/p/1a616442aaca)
 * [WebRTC 之度量与统计: 到底出了什么问题](https://www.jianshu.com/p/419ca6fbdb60)
 * [WebRTC 内部度量文件的分析](https://www.jianshu.com/p/efb933d55bba)
 * [C++程序度量驱动调优实例：看狄更斯的双城记，寻找性能瓶颈](https://www.jianshu.com/p/a2988a17d146)
 * [微服务缓存的使用度量](https://www.jianshu.com/p/35023210e637)
-* [Redis 集群的构建和监控](https://www.jianshu.com/p/ced0a95cbc21)
+* [Redis 集群的构建和监控](https://www.jianshu.com/p/ced0a95cbc21) - [script](oss/redis/README.md)
 * [JVM 参数怎么调](https://www.jianshu.com/p/20fb5ccffd9f)
 * [使用 Redis 记录微服务的应用程序性能指数 APDEX](https://www.jianshu.com/p/684689942905)
 * [线程池的监控与优化](https://www.jianshu.com/p/6b71221792fb)

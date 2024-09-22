@@ -1,6 +1,6 @@
-以下是翻译后的中文内容：
-
 # MDD (度量驱动开发)
+
+简体中文 | [English](REAME.md)
 
 作者: Walter Fan [🤵](https://www.fanyamin.com)
 
@@ -10,9 +10,9 @@
 ## 概览
 ### 为什么选择MDD
 
-* 如果你无法衡量它，你就无法管理它。
-* 如果你无法衡量它，你就无法证明它。
-* 如果你无法衡量它，你就无法改进它。
+* 如果你无法度量它，你就无法管理它。
+* 如果你无法度量它，你就无法证明它。
+* 如果你无法度量它，你就无法改进它。
 
 ### 什么是MDD
 
@@ -24,7 +24,7 @@
 
 ### 度量内容
 
-**USED**
+缩写 **USED**
 
 - **Usage（使用量）:** 衡量用户与系统交互的频率及方式，反映功能参与度和活动水平。
 - **Saturation（饱和度）:** 反映系统接近最大容量的程度，如CPU、内存或网络的使用情况。
@@ -40,7 +40,11 @@
 * Timer（计时器）: 持续时间的直方图和调用次数的计量器。
 
 ## MDD 教程
-
+* [Collected 的用法](oss/collectd/README.md)
+* [ELKK 的用法](oss/elkk/readme.md) - ElasticSearch, LogStash, Kibana, Kafka
+* [TIGK 的用法](oss/tig/v2/README.md) - Telegraf, InfluxDB, Grafana, Kafka
+* [Hadoop 的用法](oss/hadoop/readme.md)
+* [Prometheus 的用法](oss/prometheus/README.md)
 * [如何模拟弱网条件 - 限流, 丢包, 延迟和抖动](https://www.jianshu.com/p/ce04bf2f9db6)
 * [分析网络抓包用 python 更高效](https://www.jianshu.com/p/1a616442aaca)
 * [WebRTC 之度量与统计: 到底出了什么问题](https://www.jianshu.com/p/419ca6fbdb60)
