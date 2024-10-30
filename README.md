@@ -18,9 +18,10 @@ Author: Walter Fan [🤵](https://www.fanyamin.com)
 
 A development approach driven by metrics to continuously improve software products and services:
 
-* Validate the achievement of goals based on metrics.
-* Optimize and enhance systems based on metrics.
-* Make decisions based on metrics.
+* Build metrics into design, coding and DevOps from the beginning.
+* Validate the achievement of goals, optimize, enhance and make decision based on metrics.
+* Execute PDCA(Plan, Do, Check, Act) according to metrics.
+
 
 ### Metrics Content
 
