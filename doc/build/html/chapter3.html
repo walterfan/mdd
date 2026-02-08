@@ -1,0 +1,859 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 3 章 微服务度量设计 &mdash; 度量驱动开发 - Metrics Driven Development</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8ba3eb92"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 4 章 度量驱动的多语言实现" href="chapter4.html" />
+    <link rel="prev" title="第 2 章 微服务度量基本概念" href="chapter2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Metrics Driven Development
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id2">为什么要修订</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#ai">AI 时代的三大护法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id3">本书主线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id4">修订要点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id5">读者对象</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 微服务入门</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id2">1.1 单体服务的特点</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id3">服务是什么？</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id4">1.2 拆分微服务</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id5">1.2.1 分而治之以降低复杂性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id6">1.2.2 分而用之以提高可重用性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id7">1.2.3 分而做之以提高开发效率</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id8">1.3 微服务的特点</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id9">1.3.1 微服务架构的特点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id10">1.3.2 微服务架构的特征</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id11">1.3.3 微服务架构的风格</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id12">1.3.4 微服务的分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id13">1.3.5 多小的服务才是微服务</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id14">1.4 微服务之道</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id15">1.4.1 软件之道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id16">1.4.2 敏捷之道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id17">1.4.3 微服务的思考</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id18">1.5 土豆微服务案例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id19">1.5.1 系统架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id20">1.5.2 快速启动</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id21">1.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 微服务度量基本概念</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id2">2.1 微服务的局限</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id3">2.1.1 局限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id4">2.1.2 解决方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id5">2.2 度量的重要性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id6">2.3 度量内容</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id7">2.3.1 按度量的目标划分</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id8">2.3.2 按度量的层次划分</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id9">2.4 度量指标与术语</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id10">2.4.1 统计学指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id11">2.4.2 度量类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id12">2.4.3 度量处理相关术语</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id13">2.5 度量策略选择</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id14">2.5.1 如何做度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id15">2.5.2 如何选择度量方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id16">2.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">第 3 章 微服务度量设计</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3.1 微服务协议的选择与度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.1.1 协议概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.1.2 协议分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#http">3.2 HTTP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">3.2.1 HTTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rest-api">3.2.2 REST API 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sip">3.3 SIP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3.3.1 SIP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">3.3.2 SIP 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rtp">3.4 RTP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">3.4.1 RTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">3.4.2 RTP 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">3.5 基于度量的存储系统选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">3.6 基于度量实现高可用性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">3.6.1 可用性度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sli-slo-sla">3.6.2 SLI/SLO/SLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">3.6.3 容错模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">3.7 土豆微服务度量设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">3.8 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id2">4.1 度量代码质量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id3">4.1.1 静态分析指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id4">4.1.2 各语言的代码质量工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id5">4.2 度量进度</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#dora">4.2.1 DORA 指标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id6">4.3 度量性能</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id7">4.3.1 性能度量金三角</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id8">4.3.2 多语言性能测试</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id9">4.4 多语言度量实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#go">4.4.1 Go 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#python">4.4.2 Python 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#c">4.4.3 C++ 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#java">4.4.4 Java 度量实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#opentelemetry">4.5 OpenTelemetry: 统一的度量标准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#ai">4.6 AI 辅助编程中的度量实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#ai-prompt">4.6.1 正确的 AI Prompt 模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id10">4.6.2 度量设计先于代码实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id11">4.6.3 AI 生成代码的度量检查清单</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id12">4.7 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id2">5.1 度量数据的聚合和存储</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id3">5.1.1 聚合方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id4">5.1.2 时序数据库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id5">5.1.3 数据保留策略</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id6">5.2 度量数据的清洗和处理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id7">5.2.1 数据清洗</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id8">5.2.2 数据处理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id9">5.3 度量数据的可视化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id10">5.3.1 常用图表类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id11">5.3.2 仪表盘设计原则</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id12">5.4 常用度量聚合与展示方案</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#tig">5.4.1 TIG 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#elkk">5.4.2 ELKK 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#prometheus">5.4.3 Prometheus 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#opentelemetry">5.4.4 OpenTelemetry (新增)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id13">5.5 土豆微服务的度量聚合与展示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id14">5.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id2">6.1 度量数据的分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id3">6.1.1 分析方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#use">6.1.2 USE 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#red">6.1.3 RED 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#golden-signals">6.1.4 黄金信号 (Golden Signals)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id4">6.2 报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id5">6.2.1 报警策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id6">6.2.2 报警规则</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id7">6.2.3 报警通知渠道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id8">6.2.4 报警抑制与聚合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id9">6.3 多语言报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#go">6.3.1 Go: 自定义健康检查与告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#python-elasticsearch">6.3.2 Python: 基于 Elasticsearch 的报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#c">6.3.3 C++: 嵌入式系统的度量报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#apdex">6.3.2 APDEX 应用性能指数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id10">6.4 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id2">7.1 部署升级</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id3">7.1.1 部署策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id4">7.1.2 金丝雀发布的度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#ci-cd">7.1.3 CI/CD 流水线度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id5">7.2 数据运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id6">7.2.1 数据库运维度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id7">7.2.2 缓存运维度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id8">7.3 配置调整</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#jvm">7.3.1 JVM 调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id9">7.3.2 线程池调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id10">7.3.3 连接池调优</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id11">7.4 开源组件的度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#kafka">7.4.1 Kafka 度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#nginx">7.4.2 Nginx 度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#kubernetes">7.5 Kubernetes 环境下的运维度量 (新增)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#pod">7.5.1 Pod 级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id12">7.5.2 集群级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#hpa">7.5.3 HPA 自动伸缩</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#ebpf">7.6 eBPF: 无侵入式度量采集 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#gitops">7.7 GitOps 与度量驱动部署 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id13">7.8 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 AI 时代的全程度量驱动</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id1">8.1 AI 辅助编程的悖论</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id2">8.1.1 速度与质量的矛盾</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id3">8.1.2 三大护法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#mdd-ai">8.2 MDD: AI 时代的可观测性护法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id4">8.2.1 为什么 MDD 在 AI 时代更重要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#ai-build-in-mdd">8.2.2 让 AI Build in MDD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id5">8.3 完整的 AI 辅助开发流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id6">8.3.1 实战示例: 消息推送服务</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id7">8.4 可观测性三支柱</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#metrics-logs-traces">8.4.1 Metrics + Logs + Traces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#opentelemetry">8.4.2 OpenTelemetry: 统一框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id8">8.4.3 结构化日志</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id9">8.5 客户端度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#web-core-web-vitals">8.5.1 Web 前端: Core Web Vitals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id10">8.5.2 移动端度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#aiops-ai">8.6 AIOps: AI 驱动的智能运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id11">8.6.1 从规则告警到智能告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id12">8.6.2 大数据与度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id13">8.7 度量驱动开发的回顾与展望</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#mdd">8.7.1 MDD 方法论全景图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id14">8.7.2 未来趋势</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id15">8.7.3 一句话总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id16">8.8 实战检查清单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id17">8.9 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-1">A.1 开源软件</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-1">A.1.1 数据采集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-2">A.1.2 数据存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-3">A.1.3 数据处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-4">A.1.4 数据展示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-5">A.1.5 监控告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-6">A.1.6 分布式追踪</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-7">A.1.7 其他工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-2">A.2 商业软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-3">A.3 度量类库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Metrics Driven Development</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">第 3 章 微服务度量设计</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chapter3.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chapter3">
+<span id="id1"></span><h1>第 3 章 微服务度量设计<a class="headerlink" href="#chapter3" title="Link to this heading"></a></h1>
+<p>本章从微服务的协议入手，介绍如何选用和分析微服务的协议，
+然后讨论基于度量的存储系统选型和高可用性设计。</p>
+<section id="id2">
+<h2>3.1 微服务协议的选择与度量<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>3.1.1 协议概述<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>微服务之间的通信协议是度量的基础。选择合适的协议不仅影响性能，
+也决定了我们能采集到什么样的度量数据。</p>
+<p>常见的微服务通信协议:</p>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">微服务通信协议</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>协议</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>特点</p></th>
+<th class="head"><p>度量要点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HTTP/REST</p></td>
+<td><p>同步、请求-响应</p></td>
+<td><p>简单、通用、无状态</p></td>
+<td><p>状态码、延迟、吞吐量</p></td>
+</tr>
+<tr class="row-odd"><td><p>gRPC</p></td>
+<td><p>同步/流式、RPC</p></td>
+<td><p>高性能、强类型、HTTP/2</p></td>
+<td><p>调用次数、延迟、错误码</p></td>
+</tr>
+<tr class="row-even"><td><p>GraphQL</p></td>
+<td><p>同步、查询语言</p></td>
+<td><p>灵活查询、减少过度获取</p></td>
+<td><p>查询复杂度、延迟、错误</p></td>
+</tr>
+<tr class="row-odd"><td><p>WebSocket</p></td>
+<td><p>全双工、长连接</p></td>
+<td><p>实时通信、低延迟</p></td>
+<td><p>连接数、消息延迟、断线率</p></td>
+</tr>
+<tr class="row-even"><td><p>AMQP/Kafka</p></td>
+<td><p>异步、消息传递</p></td>
+<td><p>解耦、缓冲、可靠投递</p></td>
+<td><p>队列深度、消费延迟、吞吐量</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h3>3.1.2 协议分析<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>分析协议的关键维度:</p>
+<ul class="simple">
+<li><p><strong>性能</strong>: 序列化/反序列化效率、传输效率</p></li>
+<li><p><strong>可靠性</strong>: 消息投递保证、重试机制</p></li>
+<li><p><strong>可观测性</strong>: 是否易于采集度量数据</p></li>
+<li><p><strong>互操作性</strong>: 跨语言、跨平台支持</p></li>
+<li><p><strong>安全性</strong>: 加密、认证、授权支持</p></li>
+</ul>
+</section>
+</section>
+<section id="http">
+<h2>3.2 HTTP 协议及其度量<a class="headerlink" href="#http" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>3.2.1 HTTP 协议简介<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>HTTP 是微服务中最常用的通信协议，基于请求-响应模式。</p>
+<p>HTTP/1.1 到 HTTP/2 再到 HTTP/3 的演进:</p>
+<ul class="simple">
+<li><p><strong>HTTP/1.1</strong>: 文本协议，持久连接，管线化</p></li>
+<li><p><strong>HTTP/2</strong>: 二进制分帧，多路复用，头部压缩，服务端推送</p></li>
+<li><p><strong>HTTP/3</strong>: 基于 QUIC，减少连接延迟</p></li>
+</ul>
+</section>
+<section id="rest-api">
+<h3>3.2.2 REST API 度量要点<a class="headerlink" href="#rest-api" title="Link to this heading"></a></h3>
+<p>对于 RESTful API，核心度量指标:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────┐
+│              REST API 度量维度                    │
+├─────────────────────────────────────────────────┤
+│                                                  │
+│  延迟 (Latency)                                  │
+│  ├── 请求处理时间 (P50, P90, P95, P99)           │
+│  ├── 上游依赖延迟                                │
+│  └── 队列等待时间                                │
+│                                                  │
+│  流量 (Traffic)                                  │
+│  ├── QPS (每秒查询数)                            │
+│  ├── 并发请求数                                  │
+│  └── 请求/响应大小                               │
+│                                                  │
+│  错误 (Errors)                                   │
+│  ├── HTTP 状态码分布 (4xx, 5xx)                  │
+│  ├── 超时率                                      │
+│  └── 业务错误码                                  │
+│                                                  │
+│  饱和度 (Saturation)                             │
+│  ├── 线程池使用率                                │
+│  ├── 连接池使用率                                │
+│  └── 队列深度                                    │
+└─────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>HTTP 度量的多语言实现</strong></p>
+<p><strong>Go (Gin + Prometheus)</strong></p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="c1">// Go 中使用 Prometheus 度量 HTTP 请求</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">PrometheusMiddleware</span><span class="p">()</span><span class="w"> </span><span class="nx">gin</span><span class="p">.</span><span class="nx">HandlerFunc</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">httpRequestsTotal</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">promauto</span><span class="p">.</span><span class="nx">NewCounterVec</span><span class="p">(</span>
+<span class="w">        </span><span class="nx">prometheus</span><span class="p">.</span><span class="nx">CounterOpts</span><span class="p">{</span>
+<span class="w">            </span><span class="nx">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http_requests_total&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">Help</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total HTTP requests&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;method&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;path&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;status&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="w">    </span><span class="nx">httpDuration</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">promauto</span><span class="p">.</span><span class="nx">NewHistogramVec</span><span class="p">(</span>
+<span class="w">        </span><span class="nx">prometheus</span><span class="p">.</span><span class="nx">HistogramOpts</span><span class="p">{</span>
+<span class="w">            </span><span class="nx">Name</span><span class="p">:</span><span class="w">    </span><span class="s">&quot;http_request_duration_seconds&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">Help</span><span class="p">:</span><span class="w">    </span><span class="s">&quot;HTTP request duration&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">Buckets</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="kt">float64</span><span class="p">{</span><span class="mf">0.01</span><span class="p">,</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;method&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;path&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">gin</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">start</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">()</span>
+<span class="w">        </span><span class="nx">c</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span>
+<span class="w">        </span><span class="nx">duration</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Since</span><span class="p">(</span><span class="nx">start</span><span class="p">).</span><span class="nx">Seconds</span><span class="p">()</span>
+<span class="w">        </span><span class="nx">status</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">strconv</span><span class="p">.</span><span class="nx">Itoa</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">Writer</span><span class="p">.</span><span class="nx">Status</span><span class="p">())</span>
+<span class="w">        </span><span class="nx">httpRequestsTotal</span><span class="p">.</span><span class="nx">WithLabelValues</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">Request</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">FullPath</span><span class="p">(),</span><span class="w"> </span><span class="nx">status</span><span class="p">).</span><span class="nx">Inc</span><span class="p">()</span>
+<span class="w">        </span><span class="nx">httpDuration</span><span class="p">.</span><span class="nx">WithLabelValues</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">Request</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">FullPath</span><span class="p">()).</span><span class="nx">Observe</span><span class="p">(</span><span class="nx">duration</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python (FastAPI + Prometheus)</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python 中使用 prometheus_client 度量 HTTP 请求</span>
+<span class="kn">from</span> <span class="nn">prometheus_client</span> <span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">Histogram</span>
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+<span class="n">REQUEST_COUNT</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;http_requests_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Total HTTP requests&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">REQUEST_DURATION</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;http_request_duration_seconds&quot;</span><span class="p">,</span> <span class="s2">&quot;HTTP request duration&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">metrics_middleware</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="n">REQUEST_COUNT</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+    <span class="n">REQUEST_DURATION</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p><strong>Java (Spring Boot + Micrometer)</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Spring Boot 自动集成，只需配置</span>
+<span class="nd">@Bean</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">MeterRegistryCustomizer</span><span class="o">&lt;</span><span class="n">MeterRegistry</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">metricsCommonTags</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">registry</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">config</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">commonTags</span><span class="p">(</span><span class="s">&quot;application&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;potato-server&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>C++ (prometheus-cpp)</strong></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// C++ 中使用 prometheus-cpp 度量 HTTP 请求</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;prometheus/counter.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;prometheus/histogram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;prometheus/registry.h&gt;</span>
+
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">http_requests</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prometheus</span><span class="o">::</span><span class="n">BuildCounter</span><span class="p">()</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Name</span><span class="p">(</span><span class="s">&quot;http_requests_total&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Help</span><span class="p">(</span><span class="s">&quot;Total HTTP requests&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Register</span><span class="p">(</span><span class="o">*</span><span class="n">registry</span><span class="p">);</span>
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">request_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">http_requests</span><span class="p">.</span><span class="n">Add</span><span class="p">({{</span><span class="s">&quot;method&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;path&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/api&quot;</span><span class="p">}});</span>
+
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">http_duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prometheus</span><span class="o">::</span><span class="n">BuildHistogram</span><span class="p">()</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Name</span><span class="p">(</span><span class="s">&quot;http_request_duration_seconds&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Help</span><span class="p">(</span><span class="s">&quot;HTTP request duration&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Register</span><span class="p">(</span><span class="o">*</span><span class="n">registry</span><span class="p">);</span>
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">duration_metric</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">http_duration</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span>
+<span class="w">    </span><span class="p">{{</span><span class="s">&quot;method&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;path&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/api&quot;</span><span class="p">}},</span>
+<span class="w">    </span><span class="n">prometheus</span><span class="o">::</span><span class="n">Histogram</span><span class="o">::</span><span class="n">BucketBoundaries</span><span class="p">{</span><span class="mf">0.01</span><span class="p">,</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">5.0</span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="sip">
+<h2>3.3 SIP 协议及其度量<a class="headerlink" href="#sip" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3>3.3.1 SIP 协议简介<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>SIP (Session Initiation Protocol) 是一种信令协议，
+用于创建、修改和终止多媒体会话（如语音和视频通话）。</p>
+<p>SIP 消息类型:</p>
+<ul class="simple">
+<li><p><strong>请求方法</strong>: INVITE, ACK, BYE, CANCEL, REGISTER, OPTIONS</p></li>
+<li><p><strong>响应状态</strong>: 1xx (临时), 2xx (成功), 3xx (重定向), 4xx (客户端错误), 5xx (服务器错误), 6xx (全局错误)</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>3.3.2 SIP 度量要点<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>呼叫建立成功率</strong>: INVITE 请求成功完成的比例</p></li>
+<li><p><strong>呼叫建立时间</strong>: 从发送 INVITE 到收到 200 OK 的耗时</p></li>
+<li><p><strong>注册成功率</strong>: REGISTER 请求成功的比例</p></li>
+<li><p><strong>并发会话数</strong>: 当前活跃的 SIP 会话数</p></li>
+</ul>
+</section>
+</section>
+<section id="rtp">
+<h2>3.4 RTP 协议及其度量<a class="headerlink" href="#rtp" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3>3.4.1 RTP 协议简介<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>RTP (Real-time Transport Protocol) 是用于传输实时音视频数据的协议。
+RTCP (RTP Control Protocol) 是 RTP 的控制协议，用于传递度量和控制信息。</p>
+</section>
+<section id="id9">
+<h3>3.4.2 RTP 度量要点<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>丢包率 (Packet Loss)</strong>: 传输过程中丢失的数据包比例</p></li>
+<li><p><strong>抖动 (Jitter)</strong>: 数据包到达时间间隔的变化</p></li>
+<li><p><strong>延迟 (Latency)</strong>: 端到端的传输延迟</p></li>
+<li><p><strong>MOS 值 (Mean Opinion Score)</strong>: 语音质量评分 (1-5)</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────┐
+│     RTP 质量度量模型                  │
+│                                      │
+│  丢包率 &lt; 1%     → 优秀              │
+│  丢包率 1-3%     → 良好              │
+│  丢包率 3-5%     → 一般              │
+│  丢包率 &gt; 5%     → 差                │
+│                                      │
+│  抖动 &lt; 30ms     → 优秀              │
+│  抖动 30-50ms    → 良好              │
+│  抖动 50-100ms   → 一般              │
+│  抖动 &gt; 100ms    → 差                │
+│                                      │
+│  延迟 &lt; 150ms    → 优秀              │
+│  延迟 150-300ms  → 良好              │
+│  延迟 300-450ms  → 一般              │
+│  延迟 &gt; 450ms    → 差                │
+└──────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2>3.5 基于度量的存储系统选型<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<p>选择存储系统时，度量数据是重要的决策依据:</p>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">数据存储选型</span><a class="headerlink" href="#id17" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>存储类型</p></th>
+<th class="head"><p>代表产品</p></th>
+<th class="head"><p>适用场景</p></th>
+<th class="head"><p>关键度量</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>关系型数据库</p></td>
+<td><p>MySQL, PostgreSQL</p></td>
+<td><p>事务性数据、关系查询</p></td>
+<td><p>QPS、连接数、慢查询</p></td>
+</tr>
+<tr class="row-odd"><td><p>文档数据库</p></td>
+<td><p>MongoDB</p></td>
+<td><p>灵活 Schema、文档存储</p></td>
+<td><p>写入吞吐、查询延迟</p></td>
+</tr>
+<tr class="row-even"><td><p>缓存</p></td>
+<td><p>Redis, Memcached</p></td>
+<td><p>高频读取、会话存储</p></td>
+<td><p>命中率、内存使用、延迟</p></td>
+</tr>
+<tr class="row-odd"><td><p>消息队列</p></td>
+<td><p>Kafka, RabbitMQ</p></td>
+<td><p>异步通信、事件流</p></td>
+<td><p>消费延迟、吞吐量</p></td>
+</tr>
+<tr class="row-even"><td><p>时序数据库</p></td>
+<td><p>InfluxDB, TimescaleDB</p></td>
+<td><p>度量数据、监控数据</p></td>
+<td><p>写入速率、查询延迟</p></td>
+</tr>
+<tr class="row-odd"><td><p>搜索引擎</p></td>
+<td><p>Elasticsearch</p></td>
+<td><p>全文搜索、日志分析</p></td>
+<td><p>索引速率、搜索延迟</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id11">
+<h2>3.6 基于度量实现高可用性<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<p>高可用性 (High Availability) 的目标是通过消除单点故障来保证系统的连续运行。</p>
+<section id="id12">
+<h3>3.6.1 可用性度量<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>可用性 = (总时间 - 停机时间) / 总时间 × 100%
+</pre></div>
+</div>
+<p>常见的可用性级别:</p>
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-text">可用性级别</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>级别</p></th>
+<th class="head"><p>可用性</p></th>
+<th class="head"><p>年停机时间</p></th>
+<th class="head"><p>适用场景</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>两个 9</p></td>
+<td><p>99%</p></td>
+<td><p>3.65 天</p></td>
+<td><p>内部工具</p></td>
+</tr>
+<tr class="row-odd"><td><p>三个 9</p></td>
+<td><p>99.9%</p></td>
+<td><p>8.76 小时</p></td>
+<td><p>一般业务系统</p></td>
+</tr>
+<tr class="row-even"><td><p>四个 9</p></td>
+<td><p>99.99%</p></td>
+<td><p>52.6 分钟</p></td>
+<td><p>核心业务系统</p></td>
+</tr>
+<tr class="row-odd"><td><p>五个 9</p></td>
+<td><p>99.999%</p></td>
+<td><p>5.26 分钟</p></td>
+<td><p>金融、通信</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sli-slo-sla">
+<h3>3.6.2 SLI/SLO/SLA<a class="headerlink" href="#sli-slo-sla" title="Link to this heading"></a></h3>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>Google SRE 提出的可靠性度量框架:</p>
+<ul class="simple">
+<li><p><strong>SLI (Service Level Indicator)</strong>: 服务级别指标，如可用性、延迟、吞吐量</p></li>
+<li><p><strong>SLO (Service Level Objective)</strong>: 服务级别目标，如 99.9% 可用性</p></li>
+<li><p><strong>SLA (Service Level Agreement)</strong>: 服务级别协议，违反 SLO 时的补偿条款</p></li>
+</ul>
+</div>
+</section>
+<section id="id13">
+<h3>3.6.3 容错模式<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>重试 (Retry)</strong>: 遇到临时错误时自动重试</p></li>
+<li><p><strong>超时 (Timeout)</strong>: 设置合理的超时时间，避免长时间等待</p></li>
+<li><p><strong>断路器 (Circuit Breaker)</strong>: 在下游服务故障时快速失败</p></li>
+<li><p><strong>降级 (Degradation)</strong>: 在部分功能不可用时提供降级服务</p></li>
+<li><p><strong>限流 (Rate Limiting)</strong>: 保护服务不被过多请求压垮</p></li>
+<li><p><strong>隔舱 (Bulkhead)</strong>: 隔离不同的调用，防止故障扩散</p></li>
+</ul>
+<p><strong>Go: 使用标准库实现带度量的断路器</strong></p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="c1">// Go 中使用 sony/gobreaker 实现断路器</span>
+<span class="kn">import</span><span class="w"> </span><span class="s">&quot;github.com/sony/gobreaker&quot;</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nx">cb</span><span class="w"> </span><span class="o">*</span><span class="nx">gobreaker</span><span class="p">.</span><span class="nx">CircuitBreaker</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">init</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">settings</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">gobreaker</span><span class="p">.</span><span class="nx">Settings</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">Name</span><span class="p">:</span><span class="w">        </span><span class="s">&quot;potato-service&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">MaxRequests</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Interval</span><span class="p">:</span><span class="w">    </span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Timeout</span><span class="p">:</span><span class="w">     </span><span class="mi">30</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">ReadyToTrip</span><span class="p">:</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">counts</span><span class="w"> </span><span class="nx">gobreaker</span><span class="p">.</span><span class="nx">Counts</span><span class="p">)</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">failureRatio</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">float64</span><span class="p">(</span><span class="nx">counts</span><span class="p">.</span><span class="nx">TotalFailures</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">float64</span><span class="p">(</span><span class="nx">counts</span><span class="p">.</span><span class="nx">Requests</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">counts</span><span class="p">.</span><span class="nx">Requests</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">failureRatio</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0.6</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">OnStateChange</span><span class="p">:</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">from</span><span class="p">,</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">gobreaker</span><span class="p">.</span><span class="nx">State</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">circuitBreakerState</span><span class="p">.</span><span class="nx">WithLabelValues</span><span class="p">(</span><span class="nx">name</span><span class="p">).</span><span class="nx">Set</span><span class="p">(</span><span class="nb">float64</span><span class="p">(</span><span class="nx">to</span><span class="p">))</span>
+<span class="w">            </span><span class="nx">log</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Circuit breaker %s: %s -&gt; %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">from</span><span class="p">,</span><span class="w"> </span><span class="nx">to</span><span class="p">)</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">cb</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">gobreaker</span><span class="p">.</span><span class="nx">NewCircuitBreaker</span><span class="p">(</span><span class="nx">settings</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">GetPotato</span><span class="p">(</span><span class="nx">id</span><span class="w"> </span><span class="kt">int64</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">Potato</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">cb</span><span class="p">.</span><span class="nx">Execute</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">potatoClient</span><span class="p">.</span><span class="nx">GetPotato</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">defaultPotato</span><span class="p">(),</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="c1">// fallback</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">result</span><span class="p">.(</span><span class="o">*</span><span class="nx">Potato</span><span class="p">),</span><span class="w"> </span><span class="kc">nil</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python: 使用 tenacity 实现带度量的重试</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tenacity</span> <span class="kn">import</span> <span class="n">retry</span><span class="p">,</span> <span class="n">stop_after_attempt</span><span class="p">,</span> <span class="n">wait_exponential</span>
+<span class="kn">from</span> <span class="nn">prometheus_client</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">retry_count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s2">&quot;http_retry_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Retry attempts&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;service&quot;</span><span class="p">])</span>
+
+<span class="nd">@retry</span><span class="p">(</span>
+    <span class="n">stop</span><span class="o">=</span><span class="n">stop_after_attempt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">wait</span><span class="o">=</span><span class="n">wait_exponential</span><span class="p">(</span><span class="n">multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+    <span class="n">before_sleep</span><span class="o">=</span><span class="k">lambda</span> <span class="n">info</span><span class="p">:</span> <span class="n">retry_count</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="s2">&quot;potato&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_potato</span><span class="p">(</span><span class="n">potato_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://potato-server/api/potatoes/</span><span class="si">{</span><span class="n">potato_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id14">
+<h2>3.7 土豆微服务度量设计<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<p>结合以上理论，土豆微服务的度量设计方案:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────┐
+│             土豆微服务度量设计                      │
+├──────────────────────────────────────────────────┤
+│                                                   │
+│  业务层度量                                       │
+│  ├── 待办事项创建数/完成数                         │
+│  ├── 提醒发送成功率                               │
+│  └── 用户活跃度                                   │
+│                                                   │
+│  应用层度量                                       │
+│  ├── API 响应时间 (P50, P90, P99)                 │
+│  ├── API 错误率                                   │
+│  ├── 并发请求数                                   │
+│  └── JVM 指标 (GC, 堆内存, 线程)                  │
+│                                                   │
+│  中间件度量                                       │
+│  ├── MySQL 慢查询、连接池                         │
+│  ├── Consul 健康检查                              │
+│  └── InfluxDB 写入速率                            │
+│                                                   │
+│  基础设施度量                                     │
+│  ├── CPU, Memory, Disk                            │
+│  ├── Docker 容器状态                              │
+│  └── 网络连通性                                   │
+└──────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h2>3.8 本章小结<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<p>本章讨论了微服务度量设计的各个方面:</p>
+<ul class="simple">
+<li><p>微服务通信协议的选择影响可采集的度量数据</p></li>
+<li><p>HTTP/REST、SIP、RTP 各有不同的度量要点</p></li>
+<li><p>存储系统选型应以度量数据为依据</p></li>
+<li><p>高可用性设计需要 SLI/SLO/SLA 框架</p></li>
+<li><p>容错模式（重试、断路器、限流等）是度量驱动设计的重要组成部分</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="chapter2.html" class="btn btn-neutral float-left" title="第 2 章 微服务度量基本概念" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="chapter4.html" class="btn btn-neutral float-right" title="第 4 章 度量驱动的多语言实现" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2020-2026, Walter Fan, Jian Fu。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

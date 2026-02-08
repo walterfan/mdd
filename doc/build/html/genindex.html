@@ -1,0 +1,605 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="./">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>索引 &mdash; 度量驱动开发 - Metrics Driven Development</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8ba3eb92"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="#" />
+    <link rel="search" title="搜索" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Metrics Driven Development
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">目录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id2">为什么要修订</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#ai">AI 时代的三大护法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id3">本书主线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id4">修订要点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id5">读者对象</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 微服务入门</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id2">1.1 单体服务的特点</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id3">服务是什么？</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id4">1.2 拆分微服务</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id5">1.2.1 分而治之以降低复杂性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id6">1.2.2 分而用之以提高可重用性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id7">1.2.3 分而做之以提高开发效率</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id8">1.3 微服务的特点</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id9">1.3.1 微服务架构的特点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id10">1.3.2 微服务架构的特征</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id11">1.3.3 微服务架构的风格</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id12">1.3.4 微服务的分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id13">1.3.5 多小的服务才是微服务</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id14">1.4 微服务之道</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id15">1.4.1 软件之道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id16">1.4.2 敏捷之道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id17">1.4.3 微服务的思考</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id18">1.5 土豆微服务案例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id19">1.5.1 系统架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id20">1.5.2 快速启动</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id21">1.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 微服务度量基本概念</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id2">2.1 微服务的局限</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id3">2.1.1 局限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id4">2.1.2 解决方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id5">2.2 度量的重要性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id6">2.3 度量内容</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id7">2.3.1 按度量的目标划分</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id8">2.3.2 按度量的层次划分</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id9">2.4 度量指标与术语</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id10">2.4.1 统计学指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id11">2.4.2 度量类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id12">2.4.3 度量处理相关术语</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id13">2.5 度量策略选择</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id14">2.5.1 如何做度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id15">2.5.2 如何选择度量方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id16">2.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id2">3.1 微服务协议的选择与度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id3">3.1.1 协议概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id4">3.1.2 协议分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#http">3.2 HTTP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id5">3.2.1 HTTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#rest-api">3.2.2 REST API 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#sip">3.3 SIP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id6">3.3.1 SIP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id7">3.3.2 SIP 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#rtp">3.4 RTP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id8">3.4.1 RTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id9">3.4.2 RTP 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id10">3.5 基于度量的存储系统选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id11">3.6 基于度量实现高可用性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id12">3.6.1 可用性度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#sli-slo-sla">3.6.2 SLI/SLO/SLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id13">3.6.3 容错模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id14">3.7 土豆微服务度量设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id15">3.8 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id2">4.1 度量代码质量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id3">4.1.1 静态分析指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id4">4.1.2 各语言的代码质量工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id5">4.2 度量进度</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#dora">4.2.1 DORA 指标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id6">4.3 度量性能</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id7">4.3.1 性能度量金三角</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id8">4.3.2 多语言性能测试</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id9">4.4 多语言度量实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#go">4.4.1 Go 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#python">4.4.2 Python 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#c">4.4.3 C++ 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#java">4.4.4 Java 度量实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#opentelemetry">4.5 OpenTelemetry: 统一的度量标准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#ai">4.6 AI 辅助编程中的度量实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#ai-prompt">4.6.1 正确的 AI Prompt 模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id10">4.6.2 度量设计先于代码实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id11">4.6.3 AI 生成代码的度量检查清单</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id12">4.7 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id2">5.1 度量数据的聚合和存储</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id3">5.1.1 聚合方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id4">5.1.2 时序数据库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id5">5.1.3 数据保留策略</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id6">5.2 度量数据的清洗和处理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id7">5.2.1 数据清洗</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id8">5.2.2 数据处理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id9">5.3 度量数据的可视化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id10">5.3.1 常用图表类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id11">5.3.2 仪表盘设计原则</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id12">5.4 常用度量聚合与展示方案</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#tig">5.4.1 TIG 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#elkk">5.4.2 ELKK 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#prometheus">5.4.3 Prometheus 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#opentelemetry">5.4.4 OpenTelemetry (新增)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id13">5.5 土豆微服务的度量聚合与展示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id14">5.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id2">6.1 度量数据的分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id3">6.1.1 分析方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#use">6.1.2 USE 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#red">6.1.3 RED 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#golden-signals">6.1.4 黄金信号 (Golden Signals)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id4">6.2 报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id5">6.2.1 报警策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id6">6.2.2 报警规则</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id7">6.2.3 报警通知渠道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id8">6.2.4 报警抑制与聚合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id9">6.3 多语言报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#go">6.3.1 Go: 自定义健康检查与告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#python-elasticsearch">6.3.2 Python: 基于 Elasticsearch 的报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#c">6.3.3 C++: 嵌入式系统的度量报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#apdex">6.3.2 APDEX 应用性能指数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id10">6.4 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id2">7.1 部署升级</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id3">7.1.1 部署策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id4">7.1.2 金丝雀发布的度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#ci-cd">7.1.3 CI/CD 流水线度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id5">7.2 数据运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id6">7.2.1 数据库运维度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id7">7.2.2 缓存运维度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id8">7.3 配置调整</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#jvm">7.3.1 JVM 调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id9">7.3.2 线程池调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id10">7.3.3 连接池调优</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id11">7.4 开源组件的度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#kafka">7.4.1 Kafka 度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#nginx">7.4.2 Nginx 度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#kubernetes">7.5 Kubernetes 环境下的运维度量 (新增)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#pod">7.5.1 Pod 级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id12">7.5.2 集群级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#hpa">7.5.3 HPA 自动伸缩</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#ebpf">7.6 eBPF: 无侵入式度量采集 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#gitops">7.7 GitOps 与度量驱动部署 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id13">7.8 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 AI 时代的全程度量驱动</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id1">8.1 AI 辅助编程的悖论</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id2">8.1.1 速度与质量的矛盾</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id3">8.1.2 三大护法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#mdd-ai">8.2 MDD: AI 时代的可观测性护法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id4">8.2.1 为什么 MDD 在 AI 时代更重要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#ai-build-in-mdd">8.2.2 让 AI Build in MDD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id5">8.3 完整的 AI 辅助开发流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id6">8.3.1 实战示例: 消息推送服务</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id7">8.4 可观测性三支柱</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#metrics-logs-traces">8.4.1 Metrics + Logs + Traces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#opentelemetry">8.4.2 OpenTelemetry: 统一框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id8">8.4.3 结构化日志</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id9">8.5 客户端度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#web-core-web-vitals">8.5.1 Web 前端: Core Web Vitals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id10">8.5.2 移动端度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#aiops-ai">8.6 AIOps: AI 驱动的智能运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id11">8.6.1 从规则告警到智能告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id12">8.6.2 大数据与度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id13">8.7 度量驱动开发的回顾与展望</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#mdd">8.7.1 MDD 方法论全景图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id14">8.7.2 未来趋势</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id15">8.7.3 一句话总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id16">8.8 实战检查清单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id17">8.9 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-1">A.1 开源软件</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-1">A.1.1 数据采集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-2">A.1.2 数据存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-3">A.1.3 数据处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-4">A.1.4 数据展示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-5">A.1.5 监控告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-6">A.1.6 分布式追踪</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-7">A.1.7 其他工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-2">A.2 商业软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-3">A.3 度量类库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Metrics Driven Development</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">索引</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">索引</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-AIOps"><strong>AIOps</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-APDEX"><strong>APDEX</strong></a>
+</li>
+      <li><a href="glossary.html#term-APM"><strong>APM</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-CI-CD"><strong>CI/CD</strong></a>
+</li>
+      <li><a href="glossary.html#term-Circuit-Breaker"><strong>Circuit Breaker</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-CLS"><strong>CLS</strong></a>
+</li>
+      <li><a href="glossary.html#term-Counter"><strong>Counter</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-DAU"><strong>DAU</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-DORA"><strong>DORA</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-eBPF"><strong>eBPF</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-EWMA"><strong>EWMA</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-Gauge"><strong>Gauge</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-Golden-Signals"><strong>Golden Signals</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-Histogram"><strong>Histogram</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-HPA"><strong>HPA</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-INP"><strong>INP</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-JMT"><strong>JMT</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-LCP"><strong>LCP</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-MDD"><strong>MDD</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-Meter"><strong>Meter</strong></a>
+</li>
+      <li><a href="glossary.html#term-MTTR"><strong>MTTR</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-NPS"><strong>NPS</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-OpenTelemetry"><strong>OpenTelemetry</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-OTLP"><strong>OTLP</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-P50-P90-P95-P99"><strong>P50/P90/P95/P99</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-PDCA"><strong>PDCA</strong></a>
+</li>
+      <li><a href="glossary.html#term-PromQL"><strong>PromQL</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-QPS"><strong>QPS</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-RED"><strong>RED</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-RUM"><strong>RUM</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-SLA"><strong>SLA</strong></a>
+</li>
+      <li><a href="glossary.html#term-SLI"><strong>SLI</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-SLO"><strong>SLO</strong></a>
+</li>
+      <li><a href="glossary.html#term-SRE"><strong>SRE</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-Timer"><strong>Timer</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-TPS"><strong>TPS</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-USE"><strong>USE</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2020-2026, Walter Fan, Jian Fu。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

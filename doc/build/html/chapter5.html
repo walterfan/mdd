@@ -1,0 +1,855 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第 5 章 度量数据的聚合与展示 &mdash; 度量驱动开发 - Metrics Driven Development</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8ba3eb92"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 6 章 度量数据的分析与报警" href="chapter6.html" />
+    <link rel="prev" title="第 4 章 度量驱动的多语言实现" href="chapter4.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Metrics Driven Development
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id2">为什么要修订</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#ai">AI 时代的三大护法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id3">本书主线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id4">修订要点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id5">读者对象</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 微服务入门</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id2">1.1 单体服务的特点</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id3">服务是什么？</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id4">1.2 拆分微服务</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id5">1.2.1 分而治之以降低复杂性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id6">1.2.2 分而用之以提高可重用性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id7">1.2.3 分而做之以提高开发效率</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id8">1.3 微服务的特点</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id9">1.3.1 微服务架构的特点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id10">1.3.2 微服务架构的特征</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id11">1.3.3 微服务架构的风格</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id12">1.3.4 微服务的分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id13">1.3.5 多小的服务才是微服务</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id14">1.4 微服务之道</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id15">1.4.1 软件之道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id16">1.4.2 敏捷之道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id17">1.4.3 微服务的思考</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id18">1.5 土豆微服务案例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id19">1.5.1 系统架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id20">1.5.2 快速启动</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id21">1.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 微服务度量基本概念</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id2">2.1 微服务的局限</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id3">2.1.1 局限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id4">2.1.2 解决方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id5">2.2 度量的重要性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id6">2.3 度量内容</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id7">2.3.1 按度量的目标划分</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id8">2.3.2 按度量的层次划分</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id9">2.4 度量指标与术语</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id10">2.4.1 统计学指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id11">2.4.2 度量类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id12">2.4.3 度量处理相关术语</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id13">2.5 度量策略选择</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id14">2.5.1 如何做度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id15">2.5.2 如何选择度量方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id16">2.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id2">3.1 微服务协议的选择与度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id3">3.1.1 协议概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id4">3.1.2 协议分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#http">3.2 HTTP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id5">3.2.1 HTTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#rest-api">3.2.2 REST API 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#sip">3.3 SIP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id6">3.3.1 SIP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id7">3.3.2 SIP 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#rtp">3.4 RTP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id8">3.4.1 RTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id9">3.4.2 RTP 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id10">3.5 基于度量的存储系统选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id11">3.6 基于度量实现高可用性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id12">3.6.1 可用性度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#sli-slo-sla">3.6.2 SLI/SLO/SLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id13">3.6.3 容错模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id14">3.7 土豆微服务度量设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id15">3.8 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id2">4.1 度量代码质量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id3">4.1.1 静态分析指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id4">4.1.2 各语言的代码质量工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id5">4.2 度量进度</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#dora">4.2.1 DORA 指标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id6">4.3 度量性能</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id7">4.3.1 性能度量金三角</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id8">4.3.2 多语言性能测试</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id9">4.4 多语言度量实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#go">4.4.1 Go 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#python">4.4.2 Python 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#c">4.4.3 C++ 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#java">4.4.4 Java 度量实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#opentelemetry">4.5 OpenTelemetry: 统一的度量标准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#ai">4.6 AI 辅助编程中的度量实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#ai-prompt">4.6.1 正确的 AI Prompt 模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id10">4.6.2 度量设计先于代码实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id11">4.6.3 AI 生成代码的度量检查清单</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id12">4.7 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">第 5 章 度量数据的聚合与展示</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">5.1 度量数据的聚合和存储</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">5.1.1 聚合方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">5.1.2 时序数据库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">5.1.3 数据保留策略</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">5.2 度量数据的清洗和处理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">5.2.1 数据清洗</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">5.2.2 数据处理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">5.3 度量数据的可视化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">5.3.1 常用图表类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">5.3.2 仪表盘设计原则</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">5.4 常用度量聚合与展示方案</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tig">5.4.1 TIG 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#elkk">5.4.2 ELKK 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prometheus">5.4.3 Prometheus 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#opentelemetry">5.4.4 OpenTelemetry (新增)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">5.5 土豆微服务的度量聚合与展示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">5.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id2">6.1 度量数据的分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id3">6.1.1 分析方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#use">6.1.2 USE 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#red">6.1.3 RED 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#golden-signals">6.1.4 黄金信号 (Golden Signals)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id4">6.2 报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id5">6.2.1 报警策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id6">6.2.2 报警规则</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id7">6.2.3 报警通知渠道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id8">6.2.4 报警抑制与聚合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id9">6.3 多语言报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#go">6.3.1 Go: 自定义健康检查与告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#python-elasticsearch">6.3.2 Python: 基于 Elasticsearch 的报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#c">6.3.3 C++: 嵌入式系统的度量报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#apdex">6.3.2 APDEX 应用性能指数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id10">6.4 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id2">7.1 部署升级</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id3">7.1.1 部署策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id4">7.1.2 金丝雀发布的度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#ci-cd">7.1.3 CI/CD 流水线度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id5">7.2 数据运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id6">7.2.1 数据库运维度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id7">7.2.2 缓存运维度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id8">7.3 配置调整</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#jvm">7.3.1 JVM 调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id9">7.3.2 线程池调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id10">7.3.3 连接池调优</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id11">7.4 开源组件的度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#kafka">7.4.1 Kafka 度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#nginx">7.4.2 Nginx 度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#kubernetes">7.5 Kubernetes 环境下的运维度量 (新增)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#pod">7.5.1 Pod 级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id12">7.5.2 集群级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#hpa">7.5.3 HPA 自动伸缩</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#ebpf">7.6 eBPF: 无侵入式度量采集 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#gitops">7.7 GitOps 与度量驱动部署 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id13">7.8 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 AI 时代的全程度量驱动</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id1">8.1 AI 辅助编程的悖论</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id2">8.1.1 速度与质量的矛盾</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id3">8.1.2 三大护法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#mdd-ai">8.2 MDD: AI 时代的可观测性护法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id4">8.2.1 为什么 MDD 在 AI 时代更重要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#ai-build-in-mdd">8.2.2 让 AI Build in MDD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id5">8.3 完整的 AI 辅助开发流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id6">8.3.1 实战示例: 消息推送服务</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id7">8.4 可观测性三支柱</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#metrics-logs-traces">8.4.1 Metrics + Logs + Traces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#opentelemetry">8.4.2 OpenTelemetry: 统一框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id8">8.4.3 结构化日志</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id9">8.5 客户端度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#web-core-web-vitals">8.5.1 Web 前端: Core Web Vitals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id10">8.5.2 移动端度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#aiops-ai">8.6 AIOps: AI 驱动的智能运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id11">8.6.1 从规则告警到智能告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id12">8.6.2 大数据与度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id13">8.7 度量驱动开发的回顾与展望</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#mdd">8.7.1 MDD 方法论全景图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id14">8.7.2 未来趋势</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id15">8.7.3 一句话总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id16">8.8 实战检查清单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id17">8.9 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-1">A.1 开源软件</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-1">A.1.1 数据采集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-2">A.1.2 数据存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-3">A.1.3 数据处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-4">A.1.4 数据展示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-5">A.1.5 监控告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-6">A.1.6 分布式追踪</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-7">A.1.7 其他工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-2">A.2 商业软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-3">A.3 度量类库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Metrics Driven Development</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">第 5 章 度量数据的聚合与展示</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chapter5.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chapter5">
+<span id="id1"></span><h1>第 5 章 度量数据的聚合与展示<a class="headerlink" href="#chapter5" title="Link to this heading"></a></h1>
+<p>本章讲述如何聚合和存储度量数据，如何进行清洗和处理，
+然后重点讲解度量的可视化技术和常用的技术栈。</p>
+<section id="id2">
+<h2>5.1 度量数据的聚合和存储<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>5.1.1 聚合方式<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>度量数据的聚合方式:</p>
+<ul class="simple">
+<li><p><strong>时间聚合</strong>: 按时间窗口聚合 (1 分钟、5 分钟、1 小时)</p></li>
+<li><p><strong>空间聚合</strong>: 按维度聚合 (按服务、按实例、按区域)</p></li>
+<li><p><strong>层次聚合</strong>: 从底层到高层逐步汇总</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>原始数据 (每秒)
+    │
+    ▼ 时间聚合
+1 分钟粒度
+    │
+    ▼ 时间聚合
+5 分钟粒度
+    │
+    ▼ 降采样
+1 小时粒度
+    │
+    ▼ 降采样
+1 天粒度
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>5.1.2 时序数据库<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>度量数据本质上是 <strong>时间序列数据 (Time Series Data)</strong>，
+推荐使用专门的时序数据库:</p>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">时序数据库对比</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>数据库</p></th>
+<th class="head"><p>语言</p></th>
+<th class="head"><p>特点</p></th>
+<th class="head"><p>适用场景</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>InfluxDB</p></td>
+<td><p>Go</p></td>
+<td><p>类 SQL 查询、易用</p></td>
+<td><p>中小规模度量</p></td>
+</tr>
+<tr class="row-odd"><td><p>Prometheus</p></td>
+<td><p>Go</p></td>
+<td><p>Pull 模型、告警集成</p></td>
+<td><p>Kubernetes 生态</p></td>
+</tr>
+<tr class="row-even"><td><p>TimescaleDB</p></td>
+<td><p>C (PostgreSQL 扩展)</p></td>
+<td><p>SQL 兼容、成熟</p></td>
+<td><p>需要关系查询的场景</p></td>
+</tr>
+<tr class="row-odd"><td><p>VictoriaMetrics</p></td>
+<td><p>Go</p></td>
+<td><p>高压缩、高性能</p></td>
+<td><p>大规模度量存储</p></td>
+</tr>
+<tr class="row-even"><td><p>ClickHouse</p></td>
+<td><p>C++</p></td>
+<td><p>列式存储、极高吞吐</p></td>
+<td><p>分析型查询</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h3>5.1.3 数据保留策略<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>保留策略示例:
+
+高精度数据 (1s 粒度)  → 保留 7 天
+中精度数据 (1min 粒度) → 保留 30 天
+低精度数据 (1h 粒度)  → 保留 1 年
+汇总数据 (1d 粒度)    → 永久保留
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2>5.2 度量数据的清洗和处理<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="id7">
+<h3>5.2.1 数据清洗<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>原始度量数据可能包含噪声和异常，需要清洗:</p>
+<ul class="simple">
+<li><p><strong>去重</strong>: 去除重复的度量数据点</p></li>
+<li><p><strong>补值</strong>: 填充缺失的数据点 (线性插值、前值填充)</p></li>
+<li><p><strong>去噪</strong>: 使用移动平均或中位数滤波去除噪声</p></li>
+<li><p><strong>异常检测</strong>: 识别并标记异常数据点</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>5.2.2 数据处理<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>常用的数据处理方法:</p>
+<ul class="simple">
+<li><p><strong>移动平均 (Moving Average)</strong>: 平滑数据波动</p></li>
+<li><p><strong>指数加权移动平均 (EWMA)</strong>: 近期数据权重更高</p></li>
+<li><p><strong>差分 (Derivative)</strong>: 计算变化率</p></li>
+<li><p><strong>积分 (Integral)</strong>: 计算累积量</p></li>
+<li><p><strong>百分位计算</strong>: 计算 P50, P90, P95, P99</p></li>
+</ul>
+<p><strong>Python (Pandas)</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># 移动平均</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency_ma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># 指数加权移动平均</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency_ewma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># 百分位计算</span>
+<span class="n">p50</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.50</span><span class="p">)</span>
+<span class="n">p90</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.90</span><span class="p">)</span>
+<span class="n">p99</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Go (实时流处理)</strong></p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="c1">// Go 中使用滑动窗口计算 P99</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">LatencyTracker</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">mu</span><span class="w">      </span><span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+<span class="w">    </span><span class="nx">window</span><span class="w">  </span><span class="p">[]</span><span class="kt">float64</span>
+<span class="w">    </span><span class="nx">maxSize</span><span class="w"> </span><span class="kt">int</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">t</span><span class="w"> </span><span class="o">*</span><span class="nx">LatencyTracker</span><span class="p">)</span><span class="w"> </span><span class="nx">Record</span><span class="p">(</span><span class="nx">latency</span><span class="w"> </span><span class="kt">float64</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Lock</span><span class="p">()</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Unlock</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">,</span><span class="w"> </span><span class="nx">latency</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">)</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">maxSize</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">t</span><span class="w"> </span><span class="o">*</span><span class="nx">LatencyTracker</span><span class="p">)</span><span class="w"> </span><span class="nx">Percentile</span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="kt">float64</span><span class="p">)</span><span class="w"> </span><span class="kt">float64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Lock</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">sorted</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">))</span>
+<span class="w">    </span><span class="nb">copy</span><span class="p">(</span><span class="nx">sorted</span><span class="p">,</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Unlock</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">sort</span><span class="p">.</span><span class="nx">Float64s</span><span class="p">(</span><span class="nx">sorted</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="nb">float64</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">sorted</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">p</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">sorted</span><span class="p">[</span><span class="nx">idx</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>PromQL 查询示例</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># 计算 P99 延迟
+histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+
+# 计算错误率
+sum(rate(http_requests_total{status=~&quot;5..&quot;}[5m]))
+/ sum(rate(http_requests_total[5m]))
+
+# 计算 QPS
+sum(rate(http_requests_total[1m]))
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id9">
+<h2>5.3 度量数据的可视化<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3>5.3.1 常用图表类型<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">度量可视化图表</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 35.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>图表类型</p></th>
+<th class="head"><p>适用场景</p></th>
+<th class="head"><p>示例</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>折线图 (Line Chart)</p></td>
+<td><p>趋势变化</p></td>
+<td><p>CPU 使用率随时间的变化</p></td>
+</tr>
+<tr class="row-odd"><td><p>柱状图 (Bar Chart)</p></td>
+<td><p>分类比较</p></td>
+<td><p>各服务的错误数比较</p></td>
+</tr>
+<tr class="row-even"><td><p>面积图 (Area Chart)</p></td>
+<td><p>累积量变化</p></td>
+<td><p>各状态码请求的堆叠分布</p></td>
+</tr>
+<tr class="row-odd"><td><p>饼图 (Pie Chart)</p></td>
+<td><p>占比分布</p></td>
+<td><p>错误类型分布</p></td>
+</tr>
+<tr class="row-even"><td><p>热力图 (Heatmap)</p></td>
+<td><p>二维分布</p></td>
+<td><p>请求延迟的时间-频率分布</p></td>
+</tr>
+<tr class="row-odd"><td><p>仪表盘 (Gauge)</p></td>
+<td><p>单一指标</p></td>
+<td><p>当前 CPU 使用率</p></td>
+</tr>
+<tr class="row-even"><td><p>表格 (Table)</p></td>
+<td><p>精确数值</p></td>
+<td><p>Top N 慢查询</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id11">
+<h3>5.3.2 仪表盘设计原则<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>一个好的度量仪表盘应该:</p>
+<ol class="arabic simple">
+<li><p><strong>一目了然</strong>: 关键指标一眼可见</p></li>
+<li><p><strong>层次清晰</strong>: 从总览到详情逐层钻取</p></li>
+<li><p><strong>实时更新</strong>: 数据自动刷新</p></li>
+<li><p><strong>可交互</strong>: 支持时间范围选择、维度筛选</p></li>
+<li><p><strong>告警集成</strong>: 异常指标高亮显示</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────┐
+│                 系统总览 Dashboard                    │
+├─────────────┬─────────────┬─────────────────────────┤
+│  可用性      │  错误率      │  平均响应时间            │
+│  99.95%     │   0.3%      │  125ms                  │
+│  ●(绿)      │  ●(绿)      │  ●(绿)                  │
+├─────────────┴─────────────┴─────────────────────────┤
+│                                                      │
+│  ┌──────────────────────────────────────────────┐   │
+│  │  请求量趋势 (折线图)                           │   │
+│  │  ~~~~~~~~~~~~~~~~~~~~~~~~                     │   │
+│  └──────────────────────────────────────────────┘   │
+│                                                      │
+│  ┌──────────────────┐  ┌────────────────────────┐   │
+│  │ 延迟分布 (热力图) │  │ 错误类型分布 (饼图)     │   │
+│  │                   │  │                         │   │
+│  └──────────────────┘  └────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id12">
+<h2>5.4 常用度量聚合与展示方案<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<section id="tig">
+<h3>5.4.1 TIG 技术栈<a class="headerlink" href="#tig" title="Link to this heading"></a></h3>
+<p><strong>Telegraf + InfluxDB + Grafana</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────┐    ┌───────────┐    ┌──────────┐
+│ Telegraf  │───&gt;│ InfluxDB  │───&gt;│ Grafana  │
+│ (采集)    │    │ (存储)     │    │ (展示)   │
+└──────────┘    └───────────┘    └──────────┘
+</pre></div>
+</div>
+<p><strong>Telegraf 配置示例:</strong></p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># telegraf.conf</span>
+<span class="k">[agent]</span>
+<span class="w">  </span><span class="n">interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10s&quot;</span>
+<span class="w">  </span><span class="n">round_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="c1"># 输入: 系统指标</span>
+<span class="k">[[inputs.cpu]]</span>
+<span class="w">  </span><span class="n">percpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="n">totalcpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[[inputs.mem]]</span>
+
+<span class="k">[[inputs.disk]]</span>
+<span class="w">  </span><span class="n">ignore_fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tmpfs&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;devtmpfs&quot;</span><span class="p">]</span>
+
+<span class="c1"># 输入: Docker 容器指标</span>
+<span class="k">[[inputs.docker]]</span>
+<span class="w">  </span><span class="n">endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unix:///var/run/docker.sock&quot;</span>
+
+<span class="c1"># 输出: InfluxDB</span>
+<span class="k">[[outputs.influxdb]]</span>
+<span class="w">  </span><span class="n">urls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;http://influxdb:8086&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="n">database</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;telegraf&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="elkk">
+<h3>5.4.2 ELKK 技术栈<a class="headerlink" href="#elkk" title="Link to this heading"></a></h3>
+<p><strong>Elasticsearch + Logstash + Kibana + Kafka</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────┐    ┌──────────┐    ┌───────────────┐    ┌──────────┐
+│ Filebeat  │───&gt;│  Kafka   │───&gt;│  Logstash     │───&gt;│  Elastic │
+│ (采集)    │    │ (缓冲)   │    │ (处理/转换)    │    │  search  │
+└──────────┘    └──────────┘    └───────────────┘    └────┬─────┘
+                                                           │
+                                                           ▼
+                                                     ┌──────────┐
+                                                     │  Kibana  │
+                                                     │  (展示)   │
+                                                     └──────────┘
+</pre></div>
+</div>
+<p><strong>Logstash 配置示例:</strong></p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="c1"># logstash.conf</span>
+<span class="n">input</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">kafka</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">bootstrap_servers</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;kafka:9092&quot;</span>
+<span class="w">    </span><span class="n">topics</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;app-logs&quot;</span><span class="o">]</span>
+<span class="w">    </span><span class="n">codec</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">json</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">filter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="n">type</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;access_log&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">grok</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">match</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;message&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;%{COMBINEDAPACHELOG}&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">date</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">match</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dd/MMM/yyyy:HH:mm:ss Z&quot;</span><span class="w"> </span><span class="o">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">mutate</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">convert</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;response&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="n">convert</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;bytes&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">output</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">elasticsearch</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hosts</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;elasticsearch:9200&quot;</span><span class="o">]</span>
+<span class="w">    </span><span class="n">index</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;app-logs-%{+YYYY.MM.dd}&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="prometheus">
+<h3>5.4.3 Prometheus 技术栈<a class="headerlink" href="#prometheus" title="Link to this heading"></a></h3>
+<p><strong>Prometheus + Grafana + Alertmanager</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────┐
+│        微服务集群             │
+│  ┌─────┐ ┌─────┐ ┌─────┐   │
+│  │svc-1│ │svc-2│ │svc-3│   │
+│  │/met │ │/met │ │/met │   │
+│  └──┬──┘ └──┬──┘ └──┬──┘   │
+└─────┼───────┼───────┼──────┘
+      │       │       │  Pull
+      ▼       ▼       ▼
+┌──────────────────────────┐
+│      Prometheus          │
+│   (抓取、存储、查询)       │
+└──────┬──────────┬────────┘
+       │          │
+       ▼          ▼
+┌──────────┐  ┌──────────────┐
+│ Grafana  │  │ Alertmanager │
+│ (展示)    │  │ (告警)        │
+└──────────┘  └──────────────┘
+</pre></div>
+</div>
+<p><strong>Prometheus 配置示例:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># prometheus.yml</span>
+<span class="nt">global</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scrape_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+<span class="w">  </span><span class="nt">evaluation_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+
+<span class="nt">rule_files</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;rules/*.yml&quot;</span>
+
+<span class="nt">alerting</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">alertmanagers</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;alertmanager:9093&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="nt">scrape_configs</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;potato-server&#39;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/actuator/prometheus&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;potato-server:9003&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;potato-scheduler&#39;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/actuator/prometheus&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;potato-scheduler:9002&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+<section id="opentelemetry">
+<h3>5.4.4 OpenTelemetry (新增)<a class="headerlink" href="#opentelemetry" title="Link to this heading"></a></h3>
+<p>OpenTelemetry 是 CNCF 的统一可观测性框架，
+将 Metrics、Traces、Logs 三大信号统一收集:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────┐
+│           应用程序                     │
+│  ┌──────────────────────────────┐    │
+│  │   OpenTelemetry SDK          │    │
+│  │  ┌────────┬───────┬────────┐ │    │
+│  │  │Metrics │Traces │ Logs   │ │    │
+│  │  └────────┴───────┴────────┘ │    │
+│  └──────────────┬───────────────┘    │
+└─────────────────┼────────────────────┘
+                  │ OTLP
+                  ▼
+┌──────────────────────────────────────┐
+│      OTel Collector                   │
+│  ┌─────────┬──────────┬───────────┐  │
+│  │Receivers│Processors│ Exporters │  │
+│  └─────────┴──────────┴───────────┘  │
+└──────┬──────────┬──────────┬─────────┘
+       │          │          │
+       ▼          ▼          ▼
+┌──────────┐ ┌────────┐ ┌────────┐
+│Prometheus│ │ Jaeger │ │  Loki  │
+│(Metrics) │ │(Traces)│ │ (Logs) │
+└──────────┘ └────────┘ └────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>5.5 土豆微服务的度量聚合与展示<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<p>在土豆微服务中，我们使用以下方案:</p>
+<ul class="simple">
+<li><p><strong>系统指标</strong>: Telegraf 采集 → InfluxDB 存储 → Grafana 展示</p></li>
+<li><p><strong>应用日志</strong>: Filebeat 采集 → Kafka 缓冲 → Logstash 处理 → Elasticsearch 存储 → Kibana 展示</p></li>
+<li><p><strong>业务度量</strong>: Micrometer → InfluxDB → Grafana</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose.yml (度量相关组件)</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">influxdb</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb:2.7</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8086:8086&quot;</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb-data:/var/lib/influxdb2</span>
+
+<span class="w">  </span><span class="nt">grafana</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grafana/grafana:10.0</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb</span>
+
+<span class="w">  </span><span class="nt">telegraf</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">telegraf:1.27</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./telegraf.conf:/etc/telegraf/telegraf.conf</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb</span>
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h2>5.6 本章小结<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<p>本章介绍了度量数据从采集到展示的完整流程:</p>
+<ul class="simple">
+<li><p>度量数据的聚合方式和时序数据库选型</p></li>
+<li><p>数据清洗和处理的常用方法</p></li>
+<li><p>度量可视化的图表类型和仪表盘设计原则</p></li>
+<li><p>四种主流的度量技术栈: TIG、ELKK、Prometheus、OpenTelemetry</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点:</strong></p>
+<ul class="simple">
+<li><p>时序数据库是度量数据存储的首选</p></li>
+<li><p>使用百分位数而非均值来展示延迟</p></li>
+<li><p>仪表盘应该层次清晰、一目了然</p></li>
+<li><p>OpenTelemetry 正在成为可观测性的统一标准</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="chapter4.html" class="btn btn-neutral float-left" title="第 4 章 度量驱动的多语言实现" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="chapter6.html" class="btn btn-neutral float-right" title="第 6 章 度量数据的分析与报警" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2020-2026, Walter Fan, Jian Fu。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
