@@ -6,9 +6,9 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>第 1 章 微服务入门 &mdash; 度量驱动开发 - Metrics Driven Development</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+  <title>第 1 章 度量驱动开发概论 &mdash; 度量驱动开发 - Metrics Driven Development</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
   
@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
-    <link rel="next" title="第 2 章 微服务度量基本概念" href="chapter2.html" />
+    <link rel="next" title="第 2 章 度量的基本概念与方法论" href="chapter2.html" />
     <link rel="prev" title="前言" href="preface.html" /> 
 </head>
 
@@ -44,123 +44,131 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
-              <p class="caption" role="heading"><span class="caption-text">目录</span></p>
-<ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="preface.html#id2">为什么要修订</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id2">从一次线上排查说起</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id3">为什么要写这本书</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preface.html#ai">AI 时代的三大护法</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preface.html#id3">本书主线</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preface.html#id4">修订要点</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preface.html#id5">读者对象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id4">谁应该读这本书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id5">如何阅读本书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id6">本书约定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id7">致谢</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">第 1 章 微服务入门</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">1.1 单体服务的特点</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">服务是什么？</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">第 1 章 度量驱动开发概论</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.1 从单体到微服务：可观测性的挑战</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.1.1 微服务的优势与代价</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">1.1.2 为什么微服务让问题诊断变得困难</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">1.2 拆分微服务</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id5">1.2.1 分而治之以降低复杂性</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">1.2.2 分而用之以提高可重用性</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">1.2.3 分而做之以提高开发效率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.2 什么是度量驱动开发</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mdd">1.2.1 MDD 的定义</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mdd-vs">1.2.2 MDD vs 传统监控</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pdca-mdd">1.2.3 PDCA 循环在 MDD 中的应用</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">1.3 微服务的特点</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id9">1.3.1 微服务架构的特点</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">1.3.2 微服务架构的特征</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">1.3.3 微服务架构的风格</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">1.3.4 微服务的分类</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">1.3.5 多小的服务才是微服务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ai">1.3 AI 时代的服务架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">1.4 度量驱动开发的全景图</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">1.4.1 MDD 方法论概览</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">1.4.2 度量的三个层次</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#used">1.4.3 USED 框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tdd-mdd">1.4.4 三大护法：TDD + MDD + 活文档</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id14">1.4 微服务之道</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id15">1.4.1 软件之道</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id16">1.4.2 敏捷之道</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id17">1.4.3 微服务的思考</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">1.5 土豆微服务案例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">1.6 本章小结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id18">1.5 土豆微服务案例</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id19">1.5.1 系统架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id20">1.5.2 快速启动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id3">2.1 微服务的局限</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id4">2.1.1 局限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id5">2.1.2 解决方案</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id21">1.6 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id6">2.2 度量的重要性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id7">2.3 度量内容</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id8">2.3.1 按度量的目标划分</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id9">2.3.2 按度量的层次划分</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#ai">2.3.3 AI 应用度量层次（新增）</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 微服务度量基本概念</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id2">2.1 微服务的局限</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id3">2.1.1 局限</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id4">2.1.2 解决方案</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id10">2.4 度量指标与术语</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id11">2.4.1 统计学指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id12">2.4.2 度量类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id13">2.4.3 度量处理相关术语</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id5">2.2 度量的重要性</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id6">2.3 度量内容</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id7">2.3.1 按度量的目标划分</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id8">2.3.2 按度量的层次划分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id14">2.5 度量策略选择</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id15">2.5.1 如何做度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id16">2.5.2 如何选择度量方案</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id9">2.4 度量指标与术语</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id10">2.4.1 统计学指标</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id11">2.4.2 度量类型</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id12">2.4.3 度量处理相关术语</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id13">2.5 度量策略选择</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id14">2.5.1 如何做度量</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id15">2.5.2 如何选择度量方案</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id16">2.6 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id17">2.6 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id2">3.1 微服务协议的选择与度量</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id3">3.1.1 协议概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id4">3.1.2 协议分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id3">3.1 微服务协议的选择与度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id4">3.1.1 协议概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id5">3.1.2 协议分析</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="chapter3.html#http">3.2 HTTP 协议及其度量</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id5">3.2.1 HTTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id6">3.2.1 HTTP 协议简介</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter3.html#rest-api">3.2.2 REST API 度量要点</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter3.html#sip">3.3 SIP 协议及其度量</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id6">3.3.1 SIP 协议简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id7">3.3.2 SIP 度量要点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#grpc">3.3 gRPC 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id7">3.3.1 gRPC 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id8">3.3.2 gRPC 度量要点</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter3.html#rtp">3.4 RTP 协议及其度量</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id8">3.4.1 RTP 协议简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id9">3.4.2 RTP 度量要点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#websocket">3.4 WebSocket 与实时通信度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id9">3.4.1 WebSocket 度量要点</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id10">3.5 基于度量的存储系统选型</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id11">3.6 基于度量实现高可用性</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id12">3.6.1 可用性度量</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#sli-slo-sla">3.6.2 SLI/SLO/SLA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id13">3.6.3 容错模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#llm-api">3.5 LLM API 协议及其度量（新增）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id10">3.5.1 LLM API 协议概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id11">3.5.2 LLM API 度量要点</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id14">3.7 土豆微服务度量设计</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id15">3.8 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id12">3.6 基于度量的存储系统选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id13">3.7 基于度量实现高可用性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id14">3.7.1 可用性度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#sli-slo-sla">3.7.2 SLI/SLO/SLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id15">3.7.3 容错模式</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id16">3.8 土豆微服务度量设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id17">3.9 本章小结</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id2">4.1 度量代码质量</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id3">4.1.1 静态分析指标</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id4">4.1.2 各语言的代码质量工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id3">4.1 度量代码质量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id4">4.1.1 静态分析指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id5">4.1.2 各语言的代码质量工具</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id5">4.2 度量进度</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id6">4.2 度量进度</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter4.html#dora">4.2.1 DORA 指标</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id6">4.3 度量性能</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id7">4.3.1 性能度量金三角</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id8">4.3.2 多语言性能测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id7">4.3 度量性能</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id8">4.3.1 性能度量金三角</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id9">4.3.2 多语言性能测试</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id9">4.4 多语言度量实现</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id10">4.4 多语言度量实现</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter4.html#go">4.4.1 Go 度量实现</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter4.html#python">4.4.2 Python 度量实现</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter4.html#c">4.4.3 C++ 度量实现</a></li>
@@ -170,141 +178,283 @@
 <li class="toctree-l2"><a class="reference internal" href="chapter4.html#opentelemetry">4.5 OpenTelemetry: 统一的度量标准</a></li>
 <li class="toctree-l2"><a class="reference internal" href="chapter4.html#ai">4.6 AI 辅助编程中的度量实践</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter4.html#ai-prompt">4.6.1 正确的 AI Prompt 模式</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id10">4.6.2 度量设计先于代码实现</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id11">4.6.3 AI 生成代码的度量检查清单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id11">4.6.2 度量设计先于代码实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id12">4.6.3 AI 生成代码的度量检查清单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id13">4.6.4 AI 应用的度量代码模式</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id12">4.7 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id14">4.7 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id2">5.1 度量数据的聚合和存储</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id3">5.1.1 聚合方式</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id4">5.1.2 时序数据库</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id5">5.1.3 数据保留策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id3">5.1 度量数据的聚合和存储</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id4">5.1.1 聚合方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id5">5.1.2 时序数据库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id6">5.1.3 数据保留策略</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id6">5.2 度量数据的清洗和处理</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id7">5.2.1 数据清洗</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id8">5.2.2 数据处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id7">5.2 度量数据的清洗和处理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id8">5.2.1 数据清洗</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id9">5.2.2 数据处理</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id9">5.3 度量数据的可视化</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id10">5.3.1 常用图表类型</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id11">5.3.2 仪表盘设计原则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id10">5.3 度量数据的可视化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id11">5.3.1 常用图表类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id12">5.3.2 仪表盘设计原则</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id12">5.4 常用度量聚合与展示方案</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id13">5.4 常用度量聚合与展示方案</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter5.html#tig">5.4.1 TIG 技术栈</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter5.html#elkk">5.4.2 ELKK 技术栈</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter5.html#prometheus">5.4.3 Prometheus 技术栈</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter5.html#opentelemetry">5.4.4 OpenTelemetry (新增)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id13">5.5 土豆微服务的度量聚合与展示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id14">5.6 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id14">5.5 土豆微服务的度量聚合与展示</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#ai">5.5.1 AI 应用的度量聚合特殊考量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id15">5.6 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id2">6.1 度量数据的分析</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id3">6.1.1 分析方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id3">6.1 度量数据的分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id4">6.1.1 分析方法</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter6.html#use">6.1.2 USE 方法</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter6.html#red">6.1.3 RED 方法</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter6.html#golden-signals">6.1.4 黄金信号 (Golden Signals)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id4">6.2 报警实现</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id5">6.2.1 报警策略</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id6">6.2.2 报警规则</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id7">6.2.3 报警通知渠道</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id8">6.2.4 报警抑制与聚合</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id5">6.2 报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id6">6.2.1 报警策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id7">6.2.2 报警规则</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id8">6.2.3 报警通知渠道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id9">6.2.4 报警抑制与聚合</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id9">6.3 多语言报警实现</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id10">6.3 多语言报警实现</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter6.html#go">6.3.1 Go: 自定义健康检查与告警</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter6.html#python-elasticsearch">6.3.2 Python: 基于 Elasticsearch 的报警</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter6.html#c">6.3.3 C++: 嵌入式系统的度量报警</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter6.html#apdex">6.3.2 APDEX 应用性能指数</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id10">6.4 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#ai">6.4 AI 应用的分析与告警策略</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#ai-used">6.4.1 AI 应用的 USED 告警矩阵</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id11">6.4.2 成本告警：AI 应用的特有需求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id12">6.4.3 质量告警：从&quot;能用&quot;到&quot;好用&quot;</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id13">6.5 本章小结</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id2">7.1 部署升级</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id3">7.1.1 部署策略</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id4">7.1.2 金丝雀发布的度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id3">7.1 部署升级</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id4">7.1.1 部署策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id5">7.1.2 金丝雀发布的度量</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter7.html#ci-cd">7.1.3 CI/CD 流水线度量</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id5">7.2 数据运维</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id6">7.2.1 数据库运维度量</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id7">7.2.2 缓存运维度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id6">7.2 数据运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id7">7.2.1 数据库运维度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id8">7.2.2 缓存运维度量</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id8">7.3 配置调整</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id9">7.3 配置调整</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter7.html#jvm">7.3.1 JVM 调优</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id9">7.3.2 线程池调优</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id10">7.3.3 连接池调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id10">7.3.2 线程池调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id11">7.3.3 连接池调优</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id11">7.4 开源组件的度量</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id12">7.4 开源组件的度量</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter7.html#kafka">7.4.1 Kafka 度量</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter7.html#nginx">7.4.2 Nginx 度量</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="chapter7.html#kubernetes">7.5 Kubernetes 环境下的运维度量 (新增)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter7.html#pod">7.5.1 Pod 级别度量</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id12">7.5.2 集群级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id13">7.5.2 集群级别度量</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter7.html#hpa">7.5.3 HPA 自动伸缩</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="chapter7.html#ebpf">7.6 eBPF: 无侵入式度量采集 (新增)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="chapter7.html#gitops">7.7 GitOps 与度量驱动部署 (新增)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id13">7.8 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#ai">7.8 AI 应用的运维度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id14">7.8.1 模型版本管理与灰度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id15">7.8.2 向量数据库运维</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#prompt">7.8.3 Prompt 版本管理</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 AI 时代的全程度量驱动</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id1">8.1 AI 辅助编程的悖论</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id2">8.1.1 速度与质量的矛盾</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id3">8.1.2 三大护法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id16">7.9 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#ai">8.1 AI 辅助编程的悖论</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id3">8.1.1 速度与质量的矛盾</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id4">8.1.2 三大护法</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="chapter8.html#mdd-ai">8.2 MDD: AI 时代的可观测性护法</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id4">8.2.1 为什么 MDD 在 AI 时代更重要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id5">8.2.1 为什么 MDD 在 AI 时代更重要</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter8.html#ai-build-in-mdd">8.2.2 让 AI Build in MDD</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id5">8.3 完整的 AI 辅助开发流程</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id6">8.3.1 实战示例: 消息推送服务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id6">8.3 完整的 AI 辅助开发流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id7">8.3.1 实战示例: 消息推送服务</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id7">8.4 可观测性三支柱</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id8">8.4 可观测性三支柱</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter8.html#metrics-logs-traces">8.4.1 Metrics + Logs + Traces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chapter8.html#opentelemetry">8.4.2 OpenTelemetry: 统一框架</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id8">8.4.3 结构化日志</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id9">8.4.3 结构化日志</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id9">8.5 客户端度量</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id10">8.5 客户端度量</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter8.html#web-core-web-vitals">8.5.1 Web 前端: Core Web Vitals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id10">8.5.2 移动端度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id11">8.5.2 移动端度量</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="chapter8.html#aiops-ai">8.6 AIOps: AI 驱动的智能运维</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id11">8.6.1 从规则告警到智能告警</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id12">8.6.2 大数据与度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id12">8.6.1 从规则告警到智能告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id13">8.6.2 大数据与度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#ai-agent">8.6.3 AI Agent 自主运维</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id13">8.7 度量驱动开发的回顾与展望</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id14">8.7 度量驱动开发的回顾与展望</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="chapter8.html#mdd">8.7.1 MDD 方法论全景图</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id14">8.7.2 未来趋势</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id15">8.7.3 一句话总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id15">8.7.2 未来趋势</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id16">8.7.3 一句话总结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id16">8.8 实战检查清单</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id17">8.9 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id17">8.8 实战检查清单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id18">8.9 本章小结</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id1">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id2">9.1 为什么 LLM 需要专门的度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id3">9.2 LLM 性能度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id4">9.2.1 延迟指标详解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#vs">9.2.2 流式 vs 非流式的度量差异</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id5">9.2.3 性能度量代码实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id6">9.3 LLM 成本度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#token">9.3.1 Token 成本模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id7">9.3.2 成本追踪实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id8">9.3.3 成本归因与预算控制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#finops-for-ai">9.3.4 FinOps for AI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id9">9.4 LLM 质量度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id10">9.4.1 自动评估指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#llm-as-judge">9.4.2 LLM-as-Judge 实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id11">9.4.3 幻觉检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id12">9.4.4 人工评估 vs 自动评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id13">9.5 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#id1">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#rag">10.1 RAG 系统度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id2">10.1.1 RAG 架构与度量点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id3">10.1.2 检索质量度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id4">10.1.3 生成质量度量（RAG 专用）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id5">10.1.4 向量数据库度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#grafana">10.1.5 端到端度量与 Grafana 面板</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#ai-agent">10.2 AI Agent 度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#agent">10.2.1 Agent 架构与度量点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id6">10.2.2 Agent 核心度量指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id7">10.2.3 循环与卡死检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id8">10.2.4 多 Agent 系统度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#ai">10.3 AI 应用的可观测性工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id9">10.3.1 专用可观测性工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#opentelemetry-genai">10.3.2 OpenTelemetry GenAI 语义约定</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#id10">10.4 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id1">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id2">11.1 什么是评估驱动开发</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#tdd-edd">11.1.1 从 TDD 到 EDD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id3">11.1.2 EDD 的核心循环</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id4">11.2 评估数据集的构建</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id5">11.2.1 黄金数据集的设计</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id6">11.2.2 自动生成评估数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id7">11.2.3 评估数据的版本管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id8">11.3 评估框架实战</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id9">11.3.1 框架对比</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#deepeval">11.3.2 DeepEval 实战</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#ci-cd">11.3.3 集成到 CI/CD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#mdd-edd">11.4 度量金字塔：从 MDD 到 EDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id10">11.5 EDD 实践检查清单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id11">11.6 本章小结</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#mdd">12.1 MDD 方法论全景图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id3">12.2 度量体系建设路线图</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id4">12.2.1 第 1 阶段：基础监控（1-2 周）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id5">12.2.2 第 2 阶段：应用度量（2-4 周）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id6">12.2.3 第 3 阶段：业务度量（1-2 月）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#ai">12.2.4 第 4 阶段：AI 应用度量（按需）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id7">12.3 实战检查清单</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id8">12.3.1 开发者检查清单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#sre">12.3.2 SRE 检查清单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id9">12.3.3 技术管理者检查清单</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id10">12.4 常见反模式与避坑指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id11">12.4.1 反模式 1：指标爆炸</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id12">12.4.2 反模式 2：盲人摸象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id13">12.4.3 反模式 3：仪表盘收藏家</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id14">12.4.4 反模式 4：告警疲劳</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id15">12.4.5 反模式 5：虚荣指标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id16">12.5 未来趋势</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#ebpf">12.5.1 eBPF 无侵入式度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#opentelemetry">12.5.2 OpenTelemetry 统一标准</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id17">12.5.3 AI 原生可观测性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#finops-for-ai">12.5.4 FinOps for AI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id18">12.6 结语</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="appendix.html#a-1">A.1 开源软件</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-1">A.1.1 数据采集</a></li>
@@ -317,7 +467,43 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="appendix.html#a-2">A.2 商业软件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-3">A.3 度量类库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-3-ai">A.3 AI 应用度量工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-1-llm">A.3.1 LLM 可观测性平台</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-2-rag-llm">A.3.2 RAG/LLM 评估框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-3-ai-agent">A.3.3 AI Agent 度量工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-4">A.3.4 向量数据库监控</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-4">A.4 度量类库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-1-web-api">B.1 Web API 度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-2">B.2 数据库度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-3">B.3 缓存度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-4">B.4 消息队列度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-5-llm">B.5 LLM 度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-6-rag">B.6 RAG 度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-7-ai-agent">B.7 AI Agent 度量</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix_c.html#c-1-prometheus">C.1 Prometheus 告警规则</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix_c.html#c-1-1">C.1.1 基础设施告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix_c.html#c-1-2">C.1.2 应用层告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix_c.html#c-1-3-ai">C.1.3 AI 应用告警</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_c.html#c-2">C.2 告警通知模板</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix_c.html#c-2-1-lark">C.2.1 飞书/Lark 通知模板</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix_c.html#c-2-2-slack">C.2.2 Slack 通知模板</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_c.html#c-3-grafana">C.3 Grafana 面板设计参考</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix_c.html#c-3-1">C.3.1 服务概览面板</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix_c.html#c-3-2-ai">C.3.2 AI 应用面板</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
@@ -337,7 +523,7 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">第 1 章 微服务入门</li>
+      <li class="breadcrumb-item active">第 1 章 度量驱动开发概论</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/chapter1.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
@@ -348,246 +534,430 @@
            <div itemprop="articleBody">
              
   <section id="chapter1">
-<span id="id1"></span><h1>第 1 章 微服务入门<a class="headerlink" href="#chapter1" title="Link to this heading"></a></h1>
-<p>微服务架构是一种将应用程序构建为一组小型服务的方法，每个服务运行在自己的进程中，
-服务之间通过轻量级机制（通常是 HTTP/REST API 或消息队列）进行通信。</p>
+<span id="id1"></span><h1>第 1 章 度量驱动开发概论<a class="headerlink" href="#chapter1" title="Link to this heading"></a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>微服务架构为什么需要度量</p></li>
+<li><p>什么是度量驱动开发（MDD），它与传统监控有何不同</p></li>
+<li><p>AI 时代服务架构的演进与度量的新挑战</p></li>
+<li><p>MDD 方法论的全景图和核心框架</p></li>
+<li><p>度量驱动开发与 TDD、活文档的协同关系</p></li>
+</ul>
+</div>
 <section id="id2">
-<h2>1.1 单体服务的特点<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<h2>开篇故事<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><em>线上出了问题，日志里没有明显错误，CPU 和内存看起来都正常。
+你在十几个微服务之间来回排查，翻日志、加临时打印、重启服务碰运气……
+折腾了很久，才发现问题出在一个不起眼的地方——连接池耗尽、下游超时、
+或者某个配置被悄悄改了。</em></p>
+<p><em>如果有完善的度量体系——连接池使用率、请求排队时间、上下游延迟的关联分析——
+这个问题本可以在几分钟内定位。</em></p>
+</div></blockquote>
+<p>这个场景，几乎每个做过微服务的工程师都经历过。
+系统越复杂，&quot;不知道问题出在哪里&quot;的痛苦就越深。
+度量驱动开发，正是为了解决这个痛苦而生的方法论。</p>
+</section>
 <section id="id3">
-<h3>服务是什么？<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
-<p>简单来说，服务就是一组功能的集合，以标准的接口对外提供功能。
-在软件工程中，服务通常指一个独立的程序或进程，它通过网络提供特定的功能。</p>
-<p>单体服务（Monolithic Service）是将所有功能都打包在一个程序中的传统架构模式。
-它具有以下特点:</p>
-<ul class="simple">
-<li><p><strong>开发简单</strong>: 所有代码在一个代码库中，容易理解和调试</p></li>
-<li><p><strong>部署简单</strong>: 只需要部署一个应用</p></li>
-<li><p><strong>测试简单</strong>: 可以进行端到端测试</p></li>
-<li><p><strong>初期开发效率高</strong>: 不需要处理分布式系统的复杂性</p></li>
-</ul>
-<p>但随着系统规模的增长，单体服务会面临以下挑战:</p>
-<ul class="simple">
-<li><p><strong>代码库膨胀</strong>: 代码量增大，难以维护</p></li>
-<li><p><strong>部署风险高</strong>: 任何小的改动都需要重新部署整个应用</p></li>
-<li><p><strong>技术栈锁定</strong>: 整个应用被限制在同一技术栈</p></li>
-<li><p><strong>伸缩性差</strong>: 无法针对特定模块进行水平扩展</p></li>
-<li><p><strong>可靠性低</strong>: 一个模块的故障可能导致整个系统崩溃</p></li>
-</ul>
-</section>
-</section>
+<h2>1.1 从单体到微服务：可观测性的挑战<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <section id="id4">
-<h2>1.2 拆分微服务<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
-<section id="id5">
-<h3>1.2.1 分而治之以降低复杂性<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<p>软件工程中管理复杂性的核心策略就是 <strong>分而治之</strong>。</p>
-<p><strong>1. 分层 (Layering)</strong></p>
-<p>经典的应用程序分层:</p>
-<table class="docutils align-default" id="id22">
-<caption><span class="caption-text">应用程序分层</span><a class="headerlink" href="#id22" title="Link to this table"></a></caption>
+<h3>1.1.1 微服务的优势与代价<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>微服务架构将一个大型应用拆分为多个小型、独立的服务，
+每个服务围绕特定的业务能力构建，可以独立开发、部署和扩展。
+这种架构带来了显著的优势，但也引入了新的复杂性：</p>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">单体架构 vs 微服务架构</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
 <colgroup>
-<col style="width: 25.0%" />
-<col style="width: 75.0%" />
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>层次</p></th>
-<th class="head"><p>职责</p></th>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>单体架构</p></th>
+<th class="head"><p>微服务架构</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>表示层 (Presentation)</p></td>
-<td><p>用户界面和交互逻辑</p></td>
+<tr class="row-even"><td><p>开发效率</p></td>
+<td><p>初期高，后期低</p></td>
+<td><p>初期低，后期高</p></td>
 </tr>
-<tr class="row-odd"><td><p>业务层 (Business)</p></td>
-<td><p>核心业务规则和逻辑</p></td>
+<tr class="row-odd"><td><p>部署</p></td>
+<td><p>整体部署，风险集中</p></td>
+<td><p>独立部署，风险分散</p></td>
 </tr>
-<tr class="row-even"><td><p>持久层 (Persistence)</p></td>
-<td><p>数据访问和存储</p></td>
+<tr class="row-even"><td><p>技术栈</p></td>
+<td><p>统一，受限</p></td>
+<td><p>多样，灵活</p></td>
 </tr>
-<tr class="row-odd"><td><p>数据层 (Database)</p></td>
-<td><p>数据库引擎和存储</p></td>
+<tr class="row-odd"><td><p>故障影响</p></td>
+<td><p>一个模块崩溃，全局受影响</p></td>
+<td><p>故障隔离，影响范围可控</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>问题诊断</strong></p></td>
+<td><p><strong>相对简单，一个进程内排查</strong></p></td>
+<td><p><strong>极其困难，跨多个服务和网络</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>可观测性需求</strong></p></td>
+<td><p><strong>低：日志 + 简单监控即可</strong></p></td>
+<td><p><strong>高：需要分布式追踪、度量、日志三位一体</strong></p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>2. 分块 (Modularization)</strong></p>
-<p>将系统按业务域划分为独立的模块，每个模块拥有自己的数据和逻辑。
-这是微服务架构的前身 —— 领域驱动设计 (DDD) 中 <strong>限界上下文 (Bounded Context)</strong> 的体现。</p>
+<p>最后两行是关键——微服务让问题诊断的难度呈指数级增长。
+一个请求可能经过 5-10 个服务，任何一个环节出问题都可能导致用户感知到异常。
+而传统的&quot;看日志&quot;方式在分布式环境下几乎失效。</p>
+</section>
+<section id="id5">
+<h3>1.1.2 为什么微服务让问题诊断变得困难<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>微服务环境下的问题诊断面临三大挑战：</p>
+<p><strong>1. 信息屏障</strong></p>
+<p>每个服务是一个独立的进程，有自己的日志、自己的状态。
+当问题发生时，你需要在多个服务的日志中拼凑出完整的故事。</p>
+<p><strong>2. 网络不确定性</strong></p>
+<p>服务之间通过网络通信，网络延迟、抖动、丢包都可能导致问题。
+而这些问题往往是间歇性的，难以复现。</p>
+<p><strong>3. 级联故障</strong></p>
+<p>一个服务的延迟升高，可能导致调用它的服务超时，
+进而引发连锁反应，最终整个系统雪崩。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>用户请求 → API 网关 → 服务 A → 服务 B → 服务 C → 数据库
+                                   ↓
+                                服务 D → 缓存
+                                   ↓
+                                服务 E → 消息队列
+
+问题：用户感知到延迟升高。
+原因可能在上述任何一个环节。
+没有度量，你只能逐个排查。
+</pre></div>
+</div>
+<p>这就是为什么微服务架构 <strong>必须</strong> 有完善的度量体系。
+度量不是锦上添花，而是微服务能否在生产环境中可靠运行的 <strong>必要条件</strong>。</p>
+</section>
 </section>
 <section id="id6">
-<h3>1.2.2 分而用之以提高可重用性<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
-<p>将通用功能提取为独立的服务，如:</p>
-<ul class="simple">
-<li><p>用户认证与授权服务</p></li>
-<li><p>通知服务（邮件、短信、推送）</p></li>
-<li><p>文件存储服务</p></li>
-<li><p>配置管理服务</p></li>
-</ul>
-<p>这样不同的应用可以复用相同的服务，避免重复建设。</p>
-</section>
-<section id="id7">
-<h3>1.2.3 分而做之以提高开发效率<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
-<p>微服务架构允许不同的团队独立开发、测试和部署自己负责的服务，
-大大提高了并行开发效率。这与 Conway 定律相吻合:</p>
+<h2>1.2 什么是度量驱动开发<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="mdd">
+<h3>1.2.1 MDD 的定义<a class="headerlink" href="#mdd" title="Link to this heading"></a></h3>
+<p>度量驱动开发（Metrics Driven Development, MDD）是一种软件工程方法论，
+其核心理念是：</p>
 <blockquote>
-<div><p><em>&quot;设计系统的架构受制于产生这些设计的组织的沟通结构。&quot;</em></p>
-<p class="attribution">—Melvin Conway</p>
+<div><p><strong>在软件开发的全生命周期中，将度量作为一等公民。
+度量代码与业务代码同等重要，同步设计、同步开发、同步上线。</strong></p>
 </div></blockquote>
-</section>
-</section>
-<section id="id8">
-<h2>1.3 微服务的特点<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
-<section id="id9">
-<h3>1.3.1 微服务架构的特点<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
-<p>微服务架构具备以下核心特点:</p>
+<p>MDD 不是简单的&quot;加个监控&quot;，而是一种思维方式的转变：</p>
 <ul class="simple">
-<li><p><strong>服务组件化</strong>: 每个服务是一个独立的组件，可以独立部署和替换</p></li>
-<li><p><strong>围绕业务能力组织</strong>: 按业务域而非技术层次来组织团队和服务</p></li>
-<li><p><strong>产品而非项目</strong>: 团队负责服务的全生命周期</p></li>
-<li><p><strong>智能端点与哑管道</strong>: 服务之间通过简单协议通信</p></li>
-<li><p><strong>去中心化治理</strong>: 每个服务可以选择最适合的技术栈</p></li>
-<li><p><strong>去中心化数据管理</strong>: 每个服务管理自己的数据</p></li>
-<li><p><strong>基础设施自动化</strong>: CI/CD 和自动化运维是必需的</p></li>
-<li><p><strong>容错设计</strong>: 服务必须能够优雅地处理故障</p></li>
-<li><p><strong>演进式设计</strong>: 架构应该能够随需求演进</p></li>
+<li><p><strong>传统方式</strong>：先写业务代码 → 上线 → 出问题 → 补监控</p></li>
+<li><p><strong>MDD 方式</strong>：设计度量方案 → 业务代码 + 度量代码同步开发 → 上线即可观测</p></li>
 </ul>
 </section>
-<section id="id10">
-<h3>1.3.2 微服务架构的特征<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
-<p>Martin Fowler 总结了微服务的九大特征:</p>
-<ol class="arabic simple">
-<li><p>服务组件化</p></li>
-<li><p>围绕业务组织</p></li>
-<li><p>产品而非项目</p></li>
-<li><p>智能端点和哑管道</p></li>
-<li><p>去中心化治理</p></li>
-<li><p>去中心化数据管理</p></li>
-<li><p>基础设施自动化</p></li>
-<li><p>容错设计</p></li>
-<li><p>演进式设计</p></li>
-</ol>
-</section>
-<section id="id11">
-<h3>1.3.3 微服务架构的风格<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
-<p>常见的微服务架构风格:</p>
-<ul class="simple">
-<li><p><strong>RESTful 微服务</strong>: 基于 HTTP/REST 的同步通信</p></li>
-<li><p><strong>事件驱动微服务</strong>: 基于消息队列的异步通信</p></li>
-<li><p><strong>CQRS 微服务</strong>: 命令查询职责分离</p></li>
-<li><p><strong>Saga 模式</strong>: 分布式事务管理</p></li>
-</ul>
-</section>
-<section id="id12">
-<h3>1.3.4 微服务的分类<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
-<table class="docutils align-default" id="id23">
-<caption><span class="caption-text">微服务分类</span><a class="headerlink" href="#id23" title="Link to this table"></a></caption>
+<section id="mdd-vs">
+<h3>1.2.2 MDD vs 传统监控<a class="headerlink" href="#mdd-vs" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-text">MDD vs 传统监控</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 35.0%" />
 <col style="width: 40.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>类型</p></th>
-<th class="head"><p>说明</p></th>
-<th class="head"><p>示例</p></th>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>传统监控</p></th>
+<th class="head"><p>度量驱动开发</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>无状态服务</p></td>
-<td><p>不保持会话状态，易于水平扩展</p></td>
-<td><p>API 网关、计算服务</p></td>
+<tr class="row-even"><td><p>时机</p></td>
+<td><p>事后补救</p></td>
+<td><p>事前设计</p></td>
 </tr>
-<tr class="row-odd"><td><p>有状态服务</p></td>
-<td><p>维护会话或连接状态</p></td>
-<td><p>WebSocket 服务、流媒体服务</p></td>
+<tr class="row-odd"><td><p>范围</p></td>
+<td><p>基础设施为主</p></td>
+<td><p>基础设施 + 应用 + 业务全覆盖</p></td>
 </tr>
-<tr class="row-even"><td><p>数据服务</p></td>
-<td><p>负责数据的存取和管理</p></td>
-<td><p>用户服务、订单服务</p></td>
+<tr class="row-even"><td><p>目的</p></td>
+<td><p>发现问题</p></td>
+<td><p>发现问题 + 指导决策 + 持续改进</p></td>
 </tr>
-<tr class="row-odd"><td><p>聚合服务</p></td>
-<td><p>聚合多个服务的结果</p></td>
-<td><p>BFF (Backend for Frontend)</p></td>
+<tr class="row-odd"><td><p>责任人</p></td>
+<td><p>运维团队</p></td>
+<td><p>开发团队（Own your code on production）</p></td>
+</tr>
+<tr class="row-even"><td><p>与开发流程的关系</p></td>
+<td><p>独立于开发流程</p></td>
+<td><p>嵌入开发流程（PDCA 循环）</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="id13">
-<h3>1.3.5 多小的服务才是微服务<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
-<p>关于微服务的&quot;微&quot;，有几个指导原则:</p>
-<ul class="simple">
-<li><p><strong>一个团队能负责</strong>: 通常 2-pizza team (6-10 人) 负责几个微服务</p></li>
-<li><p><strong>单一职责</strong>: 一个服务只做好一件事</p></li>
-<li><p><strong>可独立部署</strong>: 修改一个服务不需要修改和重新部署其他服务</p></li>
-<li><p><strong>代码量适中</strong>: 新人能在几周内理解整个服务</p></li>
-</ul>
+<section id="pdca-mdd">
+<h3>1.2.3 PDCA 循环在 MDD 中的应用<a class="headerlink" href="#pdca-mdd" title="Link to this heading"></a></h3>
+<p>MDD 遵循经典的 PDCA（Plan-Do-Check-Act）循环：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────┐
+│              MDD 的 PDCA 循环                 │
+│                                               │
+│   Plan（计划）          Do（执行）             │
+│   ┌──────────┐         ┌──────────┐          │
+│   │ 确定度量  │ ──────&gt; │ 实现度量  │          │
+│   │ 目标和    │         │ 代码，    │          │
+│   │ 关键指标  │         │ 采集数据  │          │
+│   └──────────┘         └──────────┘          │
+│        ▲                     │                │
+│        │                     ▼                │
+│   ┌──────────┐         ┌──────────┐          │
+│   │ 基于数据  │ &lt;────── │ 分析度量  │          │
+│   │ 采取行动  │         │ 数据，    │          │
+│   │ 持续改进  │         │ 发现问题  │          │
+│   └──────────┘         └──────────┘          │
+│   Act（行动）          Check（检查）           │
+└─────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>每一次迭代都让系统的可观测性更加完善，
+让团队对系统的理解更加深入。</p>
 </section>
 </section>
-<section id="id14">
-<h2>1.4 微服务之道<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
-<section id="id15">
-<h3>1.4.1 软件之道<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
-<p><strong>KISS (Keep It Simple, Stupid)</strong></p>
-<p>简单是软件设计的最高原则。微服务应该尽量简单，接口清晰，职责单一。</p>
-<p><strong>DOTADIW (Do One Thing and Do It Well)</strong></p>
-<p>源自 Unix 哲学，每个程序做好一件事。微服务同样应该专注于一个业务领域。</p>
-<p><strong>Unix 的哲学</strong></p>
+<section id="ai">
+<h2>1.3 AI 时代的服务架构演进<a class="headerlink" href="#ai" title="Link to this heading"></a></h2>
+<p>2023 年以来，AI 应用的兴起为服务架构带来了新的变化。
+传统微服务主要处理确定性的业务逻辑，而 AI 应用引入了大量不确定性：</p>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">传统微服务 vs AI 应用服务</span><a class="headerlink" href="#id14" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>传统微服务</p></th>
+<th class="head"><p>AI 应用服务</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>响应时间</p></td>
+<td><p>毫秒级，可预测</p></td>
+<td><p>秒级，随输入长度波动</p></td>
+</tr>
+<tr class="row-odd"><td><p>成本模型</p></td>
+<td><p>按计算资源计费</p></td>
+<td><p>按 Token 计费，与输入输出长度相关</p></td>
+</tr>
+<tr class="row-even"><td><p>正确性</p></td>
+<td><p>确定性，可用单元测试验证</p></td>
+<td><p>概率性，需要统计评估</p></td>
+</tr>
+<tr class="row-odd"><td><p>依赖</p></td>
+<td><p>内部服务 + 数据库</p></td>
+<td><p>LLM API + 向量数据库 + 外部工具</p></td>
+</tr>
+<tr class="row-even"><td><p>扩展性</p></td>
+<td><p>水平扩展相对简单</p></td>
+<td><p>受限于 LLM API 速率限制和成本</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>AI 应用的典型架构：</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────────┐
+│                    AI 应用架构                        │
+│                                                       │
+│  ┌─────────┐   ┌──────────┐   ┌──────────────────┐  │
+│  │ Web/API │──&gt;│ AI 网关   │──&gt;│ LLM Provider     │  │
+│  │ Gateway │   │ (路由/    │   │ (OpenAI/Claude/  │  │
+│  │         │   │  限流/    │   │  本地模型)        │  │
+│  │         │   │  缓存)    │   │                  │  │
+│  └─────────┘   └──────────┘   └──────────────────┘  │
+│       │              │                                │
+│       │         ┌────┴────┐                           │
+│       │         │ RAG     │                           │
+│       │         │ Engine  │                           │
+│       │         └────┬────┘                           │
+│       │              │                                │
+│       │         ┌────┴────┐                           │
+│       │         │ Vector  │                           │
+│       │         │ DB      │                           │
+│       │         └─────────┘                           │
+│       │                                               │
+│  ┌────┴────────────────────────────────────────────┐  │
+│  │           传统微服务层                            │  │
+│  │  用户服务 │ 订单服务 │ 通知服务 │ ...            │  │
+│  └─────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>这种架构下，度量的重要性更加突出：</p>
 <ul class="simple">
-<li><p>小即是美</p></li>
-<li><p>让每个程序只做好一件事</p></li>
-<li><p>尽快建立原型</p></li>
-<li><p>选择可移植性而非效率</p></li>
-<li><p>使用纯文本存储数据</p></li>
-<li><p>充分利用软件的杠杆效应</p></li>
-<li><p>使用 shell 脚本来提高杠杆效应和可移植性</p></li>
-<li><p>避免强制性的用户界面</p></li>
-<li><p>让每个程序都成为过滤器</p></li>
+<li><p><strong>LLM 调用成本不可控</strong> —— 必须度量 Token 使用量和费用</p></li>
+<li><p><strong>响应质量不确定</strong> —— 必须度量生成质量（幻觉率、相关性）</p></li>
+<li><p><strong>延迟波动大</strong> —— 必须度量 TTFT、TPS 等 LLM 特有指标</p></li>
+<li><p><strong>Agent 行为不可预测</strong> —— 必须度量工具调用准确率、循环检测</p></li>
 </ul>
-<p><strong>Python 之禅</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Beautiful is better than ugly.
-Explicit is better than implicit.
-Simple is better than complex.
-Complex is better than complicated.
-Flat is better than nested.
-Sparse is better than dense.
-Readability counts.
+<p>传统的度量体系（HTTP 状态码 + 响应时间）已经远远不够。
+我们需要一套覆盖 <strong>性能、成本、质量</strong> 三个维度的全新度量体系。
+本书第 9-11 章将详细介绍 AI 应用的度量方法。</p>
+</section>
+<section id="id7">
+<h2>1.4 度量驱动开发的全景图<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3>1.4.1 MDD 方法论概览<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>度量驱动开发贯穿软件开发的全生命周期：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────┐
+│                MDD 全生命周期                             │
+│                                                          │
+│  需求分析        开发实现        测试验证        运维监控  │
+│  ┌──────┐       ┌──────┐       ┌──────┐       ┌──────┐  │
+│  │定义   │──────&gt;│实现   │──────&gt;│验证   │──────&gt;│监控   │  │
+│  │SLI/SLO│       │度量   │       │度量   │       │分析   │  │
+│  │确定   │       │代码   │       │覆盖   │       │告警   │  │
+│  │关键   │       │埋点   │       │度     │       │优化   │  │
+│  │指标   │       │采集   │       │       │       │       │  │
+│  └──────┘       └──────┘       └──────┘       └──────┘  │
+│      │                                            │       │
+│      └────────────── 反馈循环 ─────────────────────┘       │
+└─────────────────────────────────────────────────────────┘
 </pre></div>
 </div>
 </section>
-<section id="id16">
-<h3>1.4.2 敏捷之道<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
-<p>敏捷开发强调:</p>
+<section id="id9">
+<h3>1.4.2 度量的三个层次<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>度量体系分为三个层次，从下到上依次是：</p>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">度量的三个层次</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>层次</p></th>
+<th class="head"><p>关注点</p></th>
+<th class="head"><p>典型指标</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>基础设施层</p></td>
+<td><p>硬件和操作系统</p></td>
+<td><p>CPU、内存、磁盘、网络、GPU</p></td>
+</tr>
+<tr class="row-odd"><td><p>应用层</p></td>
+<td><p>服务性能和健康</p></td>
+<td><p>TPS、响应时间、错误率、连接池</p></td>
+</tr>
+<tr class="row-even"><td><p>业务层</p></td>
+<td><p>业务目标和用户体验</p></td>
+<td><p>DAU、转化率、APDEX、任务完成率</p></td>
+</tr>
+</tbody>
+</table>
+<p>对于 AI 应用，还需要增加两个特有层次：</p>
 <ul class="simple">
-<li><p><strong>个体和互动</strong> 高于流程和工具</p></li>
-<li><p><strong>工作的软件</strong> 高于详尽的文档</p></li>
-<li><p><strong>客户合作</strong> 高于合同谈判</p></li>
-<li><p><strong>响应变化</strong> 高于遵循计划</p></li>
-</ul>
-<p>度量驱动开发与敏捷开发天然契合:
-通过度量数据来验证 Sprint 目标的达成，
-通过度量指标来指导迭代方向。</p>
-</section>
-<section id="id17">
-<h3>1.4.3 微服务的思考<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
-<p>微服务不是银弹，选择微服务架构需要考虑:</p>
-<ul class="simple">
-<li><p>团队规模和技术能力</p></li>
-<li><p>系统复杂度和业务需求</p></li>
-<li><p>基础设施和运维能力</p></li>
-<li><p>组织结构和沟通模式</p></li>
+<li><p><strong>质量层</strong>：LLM 输出的忠实度、相关性、幻觉率</p></li>
+<li><p><strong>成本层</strong>：Token 使用量、API 调用费用、每查询成本</p></li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">小技巧</p>
-<p>微服务架构适合大型、复杂的系统。
-对于小型项目，单体架构可能是更好的选择。
-可以从单体开始，在需要时逐步演化为微服务。</p>
+<p>度量的一个核心原则：<strong>越往上越重要，越往下越容易量化。</strong>
+基础设施层的 CPU 利用率很容易测量，但业务层的&quot;用户是否满意&quot;很难量化。
+好的度量体系需要从上到下全覆盖。</p>
 </div>
 </section>
+<section id="used">
+<h3>1.4.3 USED 框架<a class="headerlink" href="#used" title="Link to this heading"></a></h3>
+<p>本书提出 <strong>USED 框架</strong> 作为度量的核心维度：</p>
+<ul class="simple">
+<li><p><strong>U — Usage（使用量）</strong>：系统被使用了多少？QPS、并发数、Token 消耗</p></li>
+<li><p><strong>S — Saturation（饱和度）</strong>：系统还有多少余量？CPU 使用率、连接池占用率、队列深度</p></li>
+<li><p><strong>E — Error（错误）</strong>：系统出了多少错？错误率、超时率、幻觉率</p></li>
+<li><p><strong>D — Delay（延迟）</strong>：系统有多快？P50、P99 延迟、TTFT</p></li>
+</ul>
+<p>USED 框架可以应用于任何层次的度量：</p>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">USED 框架应用示例</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 14.6%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>层次</p></th>
+<th class="head"><p>Usage</p></th>
+<th class="head"><p>Saturation</p></th>
+<th class="head"><p>Error</p></th>
+<th class="head"><p>Delay</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>基础设施</p></td>
+<td><p>网络带宽</p></td>
+<td><p>CPU 使用率</p></td>
+<td><p>磁盘错误</p></td>
+<td><p>磁盘 IO 延迟</p></td>
+</tr>
+<tr class="row-odd"><td><p>应用</p></td>
+<td><p>QPS</p></td>
+<td><p>连接池占用率</p></td>
+<td><p>HTTP 5xx 率</p></td>
+<td><p>P99 延迟</p></td>
+</tr>
+<tr class="row-even"><td><p>LLM</p></td>
+<td><p>Token 消耗量</p></td>
+<td><p>API 速率限制</p></td>
+<td><p>幻觉率</p></td>
+<td><p>TTFT</p></td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="id18">
-<h2>1.5 土豆微服务案例<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
-<p>本书以一个名为&quot;土豆 (Potato)&quot;的微服务示例贯穿全书。
-它本质上是一个 Todo List 待办事项应用，被拆分为以下微服务:</p>
-<table class="docutils align-default" id="id24">
-<caption><span class="caption-text">土豆微服务</span><a class="headerlink" href="#id24" title="Link to this table"></a></caption>
+<section id="tdd-mdd">
+<h3>1.4.4 三大护法：TDD + MDD + 活文档<a class="headerlink" href="#tdd-mdd" title="Link to this heading"></a></h3>
+<p>度量驱动开发不是孤立的，它与测试驱动开发（TDD）和活文档（Living Documentation）
+共同构成 AI 时代软件质量的&quot;三大护法&quot;：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>护法</p></th>
+<th class="head"><p>核心问题</p></th>
+<th class="head"><p>实现方法</p></th>
+<th class="head"><p>AI 时代的价值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>可验证性</strong></p></td>
+<td><p>代码写对了吗？</p></td>
+<td><p>TDD</p></td>
+<td><p>让 AI 先写测试，再写实现</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>可观测性</strong></p></td>
+<td><p>代码跑得好吗？</p></td>
+<td><p>MDD</p></td>
+<td><p>上线即可观测，问题秒级定位</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>可理解性</strong></p></td>
+<td><p>人能看懂吗？</p></td>
+<td><p>活文档</p></td>
+<td><p>架构图、注释、运维手册自动生成</p></td>
+</tr>
+</tbody>
+</table>
+<p>三者相互支撑：TDD 确保代码正确，MDD 确保运行健康，活文档确保团队理解。
+缺少任何一个，系统都会在某个维度上失控。</p>
+</section>
+</section>
+<section id="id10">
+<h2>1.5 土豆微服务案例<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<p>本书以一个名为&quot;土豆（Potato）&quot;的微服务示例贯穿全书。
+它是一个待办事项管理应用，被拆分为以下微服务：</p>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">土豆微服务</span><a class="headerlink" href="#id17" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 30.0%" />
 <col style="width: 70.0%" />
@@ -598,80 +968,69 @@ Readability counts.
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>土豆管理微服务 (potato-server)</p></td>
+<tr class="row-even"><td><p>potato-server</p></td>
 <td><p>提供待办事项的 CRUD API</p></td>
 </tr>
-<tr class="row-odd"><td><p>土豆提醒微服务 (potato-scheduler)</p></td>
+<tr class="row-odd"><td><p>potato-scheduler</p></td>
 <td><p>定时检查并发送提醒通知</p></td>
 </tr>
-<tr class="row-even"><td><p>土豆网页微服务 (potato-web)</p></td>
+<tr class="row-even"><td><p>potato-web</p></td>
 <td><p>提供 Web 前端界面</p></td>
 </tr>
 </tbody>
 </table>
-<section id="id19">
-<h3>1.5.1 系统架构<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
-<p>整个系统使用以下技术栈:</p>
-<ul class="simple">
-<li><p><strong>语言</strong>: Java (Spring Boot)</p></li>
-<li><p><strong>数据库</strong>: MySQL</p></li>
-<li><p><strong>服务发现</strong>: Consul</p></li>
-<li><p><strong>度量数据库</strong>: InfluxDB</p></li>
-<li><p><strong>容器化</strong>: Docker + Docker Compose</p></li>
-</ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────┐    ┌──────────────────┐    ┌──────────────────┐
 │ potato-web  │───&gt;│  potato-server   │&lt;───│potato-scheduler  │
 │  (Web UI)   │    │   (REST API)     │    │  (定时任务)       │
 └─────────────┘    └──────────────────┘    └──────────────────┘
-       │                    │                       │
-       │                    ▼                       │
-       │              ┌──────────┐                  │
-       │              │  MySQL   │                  │
-       │              └──────────┘                  │
-       │                    │                       │
-       ▼                    ▼                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Consul (服务发现)                       │
-└─────────────────────────────────────────────────────────────┘
-       │                    │                       │
-       ▼                    ▼                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    InfluxDB (度量存储)                       │
-└─────────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+                     ┌──────────┐
+                     │  MySQL   │
+                     └──────────┘
 </pre></div>
 </div>
-</section>
-<section id="id20">
-<h3>1.5.2 快速启动<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 克隆仓库</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 快速启动</span>
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/walterfan/mdd.git
 <span class="nb">cd</span><span class="w"> </span>mdd/potato
-
-<span class="c1"># 启动基础设施</span>
-docker-compose<span class="w"> </span>start<span class="w"> </span>consul<span class="w"> </span>influxdb<span class="w"> </span>mysql
-
-<span class="c1"># 构建并启动所有服务</span>
-fab<span class="w"> </span>redeploy
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d
 </pre></div>
 </div>
+<p>在后续章节中，我们将以这个案例为基础，逐步添加度量代码，
+展示如何从零构建一个完整的度量体系。</p>
+<div class="warning admonition">
+<p class="admonition-title">💡 避坑指南：度量系统建设的 3 个常见误区</p>
+<p><strong>误区 1：度量越多越好</strong></p>
+<p>有些团队一上来就定义了上百个指标，结果没人看、没人维护。
+正确做法：从 USED 框架的 4 个维度出发，每个服务先定义 5-10 个核心指标。</p>
+<p><strong>误区 2：只度量基础设施</strong></p>
+<p>CPU、内存、磁盘这些指标当然重要，但它们无法告诉你&quot;用户体验好不好&quot;。
+正确做法：从业务层往下设计度量，确保每个层次都有覆盖。</p>
+<p><strong>误区 3：度量代码是事后补的</strong></p>
+<p>&quot;先上线，后面再加监控&quot;——这是最常见的技术债。
+正确做法：度量代码和业务代码同步设计、同步开发、同步上线。</p>
+</div>
 </section>
-</section>
-<section id="id21">
-<h2>1.6 本章小结<a class="headerlink" href="#id21" title="Link to this heading"></a></h2>
-<p>本章介绍了微服务的基本概念、特点和设计原则。
-从单体服务的局限出发，阐述了微服务的优势和挑战。
-通过&quot;土豆微服务&quot;实例，展示了一个典型的微服务架构。</p>
-<p>在接下来的章节中，我们将详细介绍度量驱动开发的概念、方法和实践，
-展示如何通过度量来提升微服务的质量和运维效率。</p>
+<section id="id11">
+<h2>1.6 本章小结<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p><strong>关键要点:</strong></p>
+<p><strong>关键要点：</strong></p>
 <ul class="simple">
-<li><p>微服务不是银弹，需要根据实际情况选择</p></li>
-<li><p>分而治之是管理复杂性的核心策略</p></li>
-<li><p>微服务架构需要强大的基础设施和运维支持</p></li>
-<li><p>度量是微服务成功的必要条件</p></li>
+<li><p>微服务架构让问题诊断的难度呈指数级增长，度量是必要条件而非锦上添花</p></li>
+<li><p>MDD 的核心理念：度量代码与业务代码同等重要，遵循 PDCA 循环</p></li>
+<li><p>AI 时代的服务架构引入了新的不确定性，需要覆盖性能、成本、质量三个维度</p></li>
+<li><p>USED 框架（Usage/Saturation/Error/Delay）是度量的核心维度</p></li>
+<li><p>TDD + MDD + 活文档构成 AI 时代软件质量的&quot;三大护法&quot;</p></li>
 </ul>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>回顾你当前负责的系统，它的度量覆盖了 USED 框架的哪些维度？哪些维度是缺失的？</p></li>
+<li><p>如果你的系统引入了 LLM 调用，你会增加哪些度量指标？</p></li>
+<li><p>你的团队是&quot;先上线后加监控&quot;还是&quot;度量代码同步开发&quot;？如果是前者，你会如何推动改变？</p></li>
+</ol>
 </div>
 </section>
 </section>
@@ -681,7 +1040,7 @@ fab<span class="w"> </span>redeploy
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
         <a href="preface.html" class="btn btn-neutral float-left" title="前言" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="chapter2.html" class="btn btn-neutral float-right" title="第 2 章 微服务度量基本概念" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="chapter2.html" class="btn btn-neutral float-right" title="第 2 章 度量的基本概念与方法论" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

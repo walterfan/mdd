@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>附录 C 告警规则与 Grafana 面板模板 &mdash; 度量驱动开发 - Metrics Driven Development</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8ba3eb92"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=beaddf03"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="术语表" href="glossary.html" />
+    <link rel="prev" title="附录 B 度量指标速查表" href="appendix_b.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Metrics Driven Development
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id2">从一次线上排查说起</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id3">为什么要写这本书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#ai">AI 时代的三大护法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id4">谁应该读这本书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id5">如何阅读本书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id6">本书约定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preface.html#id7">致谢</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id3">1.1 从单体到微服务：可观测性的挑战</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id4">1.1.1 微服务的优势与代价</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id5">1.1.2 为什么微服务让问题诊断变得困难</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id6">1.2 什么是度量驱动开发</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#mdd">1.2.1 MDD 的定义</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#mdd-vs">1.2.2 MDD vs 传统监控</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#pdca-mdd">1.2.3 PDCA 循环在 MDD 中的应用</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#ai">1.3 AI 时代的服务架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id7">1.4 度量驱动开发的全景图</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id8">1.4.1 MDD 方法论概览</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#id9">1.4.2 度量的三个层次</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#used">1.4.3 USED 框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1.html#tdd-mdd">1.4.4 三大护法：TDD + MDD + 活文档</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id10">1.5 土豆微服务案例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1.html#id11">1.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id3">2.1 微服务的局限</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id4">2.1.1 局限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id5">2.1.2 解决方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id6">2.2 度量的重要性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id7">2.3 度量内容</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id8">2.3.1 按度量的目标划分</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id9">2.3.2 按度量的层次划分</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#ai">2.3.3 AI 应用度量层次（新增）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id10">2.4 度量指标与术语</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id11">2.4.1 统计学指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id12">2.4.2 度量类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id13">2.4.3 度量处理相关术语</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id14">2.5 度量策略选择</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id15">2.5.1 如何做度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2.html#id16">2.5.2 如何选择度量方案</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2.html#id17">2.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id3">3.1 微服务协议的选择与度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id4">3.1.1 协议概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id5">3.1.2 协议分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#http">3.2 HTTP 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id6">3.2.1 HTTP 协议简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#rest-api">3.2.2 REST API 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#grpc">3.3 gRPC 协议及其度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id7">3.3.1 gRPC 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id8">3.3.2 gRPC 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#websocket">3.4 WebSocket 与实时通信度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id9">3.4.1 WebSocket 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#llm-api">3.5 LLM API 协议及其度量（新增）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id10">3.5.1 LLM API 协议概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id11">3.5.2 LLM API 度量要点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id12">3.6 基于度量的存储系统选型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id13">3.7 基于度量实现高可用性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id14">3.7.1 可用性度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#sli-slo-sla">3.7.2 SLI/SLO/SLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3.html#id15">3.7.3 容错模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id16">3.8 土豆微服务度量设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3.html#id17">3.9 本章小结</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id3">4.1 度量代码质量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id4">4.1.1 静态分析指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id5">4.1.2 各语言的代码质量工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id6">4.2 度量进度</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#dora">4.2.1 DORA 指标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id7">4.3 度量性能</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id8">4.3.1 性能度量金三角</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id9">4.3.2 多语言性能测试</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id10">4.4 多语言度量实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#go">4.4.1 Go 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#python">4.4.2 Python 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#c">4.4.3 C++ 度量实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#java">4.4.4 Java 度量实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#opentelemetry">4.5 OpenTelemetry: 统一的度量标准</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#ai">4.6 AI 辅助编程中的度量实践</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#ai-prompt">4.6.1 正确的 AI Prompt 模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id11">4.6.2 度量设计先于代码实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id12">4.6.3 AI 生成代码的度量检查清单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4.html#id13">4.6.4 AI 应用的度量代码模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4.html#id14">4.7 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id3">5.1 度量数据的聚合和存储</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id4">5.1.1 聚合方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id5">5.1.2 时序数据库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id6">5.1.3 数据保留策略</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id7">5.2 度量数据的清洗和处理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id8">5.2.1 数据清洗</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id9">5.2.2 数据处理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id10">5.3 度量数据的可视化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id11">5.3.1 常用图表类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#id12">5.3.2 仪表盘设计原则</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id13">5.4 常用度量聚合与展示方案</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#tig">5.4.1 TIG 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#elkk">5.4.2 ELKK 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#prometheus">5.4.3 Prometheus 技术栈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#opentelemetry">5.4.4 OpenTelemetry (新增)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id14">5.5 土豆微服务的度量聚合与展示</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5.html#ai">5.5.1 AI 应用的度量聚合特殊考量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5.html#id15">5.6 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id3">6.1 度量数据的分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id4">6.1.1 分析方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#use">6.1.2 USE 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#red">6.1.3 RED 方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#golden-signals">6.1.4 黄金信号 (Golden Signals)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id5">6.2 报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id6">6.2.1 报警策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id7">6.2.2 报警规则</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id8">6.2.3 报警通知渠道</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id9">6.2.4 报警抑制与聚合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id10">6.3 多语言报警实现</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#go">6.3.1 Go: 自定义健康检查与告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#python-elasticsearch">6.3.2 Python: 基于 Elasticsearch 的报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#c">6.3.3 C++: 嵌入式系统的度量报警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#apdex">6.3.2 APDEX 应用性能指数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#ai">6.4 AI 应用的分析与告警策略</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#ai-used">6.4.1 AI 应用的 USED 告警矩阵</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id11">6.4.2 成本告警：AI 应用的特有需求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6.html#id12">6.4.3 质量告警：从&quot;能用&quot;到&quot;好用&quot;</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6.html#id13">6.5 本章小结</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id3">7.1 部署升级</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id4">7.1.1 部署策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id5">7.1.2 金丝雀发布的度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#ci-cd">7.1.3 CI/CD 流水线度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id6">7.2 数据运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id7">7.2.1 数据库运维度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id8">7.2.2 缓存运维度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id9">7.3 配置调整</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#jvm">7.3.1 JVM 调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id10">7.3.2 线程池调优</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id11">7.3.3 连接池调优</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id12">7.4 开源组件的度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#kafka">7.4.1 Kafka 度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#nginx">7.4.2 Nginx 度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#kubernetes">7.5 Kubernetes 环境下的运维度量 (新增)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#pod">7.5.1 Pod 级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id13">7.5.2 集群级别度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#hpa">7.5.3 HPA 自动伸缩</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#ebpf">7.6 eBPF: 无侵入式度量采集 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#gitops">7.7 GitOps 与度量驱动部署 (新增)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#ai">7.8 AI 应用的运维度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id14">7.8.1 模型版本管理与灰度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#id15">7.8.2 向量数据库运维</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7.html#prompt">7.8.3 Prompt 版本管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7.html#id16">7.9 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#ai">8.1 AI 辅助编程的悖论</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id3">8.1.1 速度与质量的矛盾</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id4">8.1.2 三大护法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#mdd-ai">8.2 MDD: AI 时代的可观测性护法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id5">8.2.1 为什么 MDD 在 AI 时代更重要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#ai-build-in-mdd">8.2.2 让 AI Build in MDD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id6">8.3 完整的 AI 辅助开发流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id7">8.3.1 实战示例: 消息推送服务</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id8">8.4 可观测性三支柱</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#metrics-logs-traces">8.4.1 Metrics + Logs + Traces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#opentelemetry">8.4.2 OpenTelemetry: 统一框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id9">8.4.3 结构化日志</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id10">8.5 客户端度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#web-core-web-vitals">8.5.1 Web 前端: Core Web Vitals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id11">8.5.2 移动端度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#aiops-ai">8.6 AIOps: AI 驱动的智能运维</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id12">8.6.1 从规则告警到智能告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id13">8.6.2 大数据与度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#ai-agent">8.6.3 AI Agent 自主运维</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id14">8.7 度量驱动开发的回顾与展望</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#mdd">8.7.1 MDD 方法论全景图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id15">8.7.2 未来趋势</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter8.html#id16">8.7.3 一句话总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id17">8.8 实战检查清单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter8.html#id18">8.9 本章小结</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id1">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id2">9.1 为什么 LLM 需要专门的度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id3">9.2 LLM 性能度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id4">9.2.1 延迟指标详解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#vs">9.2.2 流式 vs 非流式的度量差异</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id5">9.2.3 性能度量代码实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id6">9.3 LLM 成本度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#token">9.3.1 Token 成本模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id7">9.3.2 成本追踪实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id8">9.3.3 成本归因与预算控制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#finops-for-ai">9.3.4 FinOps for AI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id9">9.4 LLM 质量度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id10">9.4.1 自动评估指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#llm-as-judge">9.4.2 LLM-as-Judge 实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id11">9.4.3 幻觉检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter9.html#id12">9.4.4 人工评估 vs 自动评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter9.html#id13">9.5 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#id1">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#rag">10.1 RAG 系统度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id2">10.1.1 RAG 架构与度量点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id3">10.1.2 检索质量度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id4">10.1.3 生成质量度量（RAG 专用）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id5">10.1.4 向量数据库度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#grafana">10.1.5 端到端度量与 Grafana 面板</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#ai-agent">10.2 AI Agent 度量</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#agent">10.2.1 Agent 架构与度量点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id6">10.2.2 Agent 核心度量指标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id7">10.2.3 循环与卡死检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id8">10.2.4 多 Agent 系统度量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#ai">10.3 AI 应用的可观测性工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#id9">10.3.1 专用可观测性工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter10.html#opentelemetry-genai">10.3.2 OpenTelemetry GenAI 语义约定</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter10.html#id10">10.4 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id1">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id2">11.1 什么是评估驱动开发</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#tdd-edd">11.1.1 从 TDD 到 EDD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id3">11.1.2 EDD 的核心循环</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id4">11.2 评估数据集的构建</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id5">11.2.1 黄金数据集的设计</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id6">11.2.2 自动生成评估数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id7">11.2.3 评估数据的版本管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id8">11.3 评估框架实战</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#id9">11.3.1 框架对比</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#deepeval">11.3.2 DeepEval 实战</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter11.html#ci-cd">11.3.3 集成到 CI/CD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#mdd-edd">11.4 度量金字塔：从 MDD 到 EDD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id10">11.5 EDD 实践检查清单</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter11.html#id11">11.6 本章小结</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id2">开篇故事</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#mdd">12.1 MDD 方法论全景图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id3">12.2 度量体系建设路线图</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id4">12.2.1 第 1 阶段：基础监控（1-2 周）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id5">12.2.2 第 2 阶段：应用度量（2-4 周）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id6">12.2.3 第 3 阶段：业务度量（1-2 月）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#ai">12.2.4 第 4 阶段：AI 应用度量（按需）</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id7">12.3 实战检查清单</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id8">12.3.1 开发者检查清单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#sre">12.3.2 SRE 检查清单</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id9">12.3.3 技术管理者检查清单</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id10">12.4 常见反模式与避坑指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id11">12.4.1 反模式 1：指标爆炸</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id12">12.4.2 反模式 2：盲人摸象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id13">12.4.3 反模式 3：仪表盘收藏家</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id14">12.4.4 反模式 4：告警疲劳</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id15">12.4.5 反模式 5：虚荣指标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id16">12.5 未来趋势</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#ebpf">12.5.1 eBPF 无侵入式度量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#opentelemetry">12.5.2 OpenTelemetry 统一标准</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#id17">12.5.3 AI 原生可观测性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter12.html#finops-for-ai">12.5.4 FinOps for AI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter12.html#id18">12.6 结语</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-1">A.1 开源软件</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-1">A.1.1 数据采集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-2">A.1.2 数据存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-3">A.1.3 数据处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-4">A.1.4 数据展示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-5">A.1.5 监控告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-6">A.1.6 分布式追踪</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-1-7">A.1.7 其他工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-2">A.2 商业软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-3-ai">A.3 AI 应用度量工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-1-llm">A.3.1 LLM 可观测性平台</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-2-rag-llm">A.3.2 RAG/LLM 评估框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-3-ai-agent">A.3.3 AI Agent 度量工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#a-3-4">A.3.4 向量数据库监控</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#a-4">A.4 度量类库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-1-web-api">B.1 Web API 度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-2">B.2 数据库度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-3">B.3 缓存度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-4">B.4 消息队列度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-5-llm">B.5 LLM 度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-6-rag">B.6 RAG 度量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix_b.html#b-7-ai-agent">B.7 AI Agent 度量</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">附录 C 告警规则与 Grafana 面板模板</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#c-1-prometheus">C.1 Prometheus 告警规则</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#c-1-1">C.1.1 基础设施告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-1-2">C.1.2 应用层告警</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-1-3-ai">C.1.3 AI 应用告警</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#c-2">C.2 告警通知模板</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#c-2-1-lark">C.2.1 飞书/Lark 通知模板</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-2-2-slack">C.2.2 Slack 通知模板</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#c-3-grafana">C.3 Grafana 面板设计参考</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#c-3-1">C.3.1 服务概览面板</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-3-2-ai">C.3.2 AI 应用面板</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Metrics Driven Development</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">附录 C 告警规则与 Grafana 面板模板</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/appendix_c.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="c-grafana">
+<span id="appendix-c"></span><h1>附录 C 告警规则与 Grafana 面板模板<a class="headerlink" href="#c-grafana" title="Link to this heading"></a></h1>
+<p>本附录提供可直接复制使用的 Prometheus 告警规则和 Grafana 面板设计参考。
+完整的 JSON 面板文件请访问 GitHub 仓库：<a class="reference external" href="https://github.com/walterfan/mdd">https://github.com/walterfan/mdd</a></p>
+<section id="c-1-prometheus">
+<h2>C.1 Prometheus 告警规则<a class="headerlink" href="#c-1-prometheus" title="Link to this heading"></a></h2>
+<section id="c-1-1">
+<h3>C.1.1 基础设施告警<a class="headerlink" href="#c-1-1" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">groups</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">infrastructure-alerts</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># 服务宕机</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceDown</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">up == 0</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;服务</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$labels.instance</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">已宕机&quot;</span>
+
+<span class="w">      </span><span class="c1"># CPU 使用率过高</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HighCPUUsage</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">100 - (avg by(instance)</span>
+<span class="w">            </span><span class="no">(rate(node_cpu_seconds_total{mode=&quot;idle&quot;}[5m])) * 100) &gt; 85</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CPU</span><span class="nv"> </span><span class="s">使用率</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">85%:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}%&quot;</span>
+
+<span class="w">      </span><span class="c1"># 内存使用率过高</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HighMemoryUsage</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">(1 - node_memory_MemAvailable_bytes</span>
+<span class="w">            </span><span class="no">/ node_memory_MemTotal_bytes) * 100 &gt; 90</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;内存使用率</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">90%:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}%&quot;</span>
+
+<span class="w">      </span><span class="c1"># 磁盘空间不足</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiskSpaceLow</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">(1 - node_filesystem_avail_bytes</span>
+<span class="w">            </span><span class="no">/ node_filesystem_size_bytes) * 100 &gt; 85</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;磁盘使用率</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">85%:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}%&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="c-1-2">
+<h3>C.1.2 应用层告警<a class="headerlink" href="#c-1-2" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">groups</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application-alerts</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># 错误率升高</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HighErrorRate</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">sum(rate(http_requests_total{status=~&quot;5..&quot;}[5m]))</span>
+<span class="w">          </span><span class="no">/ sum(rate(http_requests_total[5m])) &gt; 0.05</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;HTTP</span><span class="nv"> </span><span class="s">5xx</span><span class="nv"> </span><span class="s">错误率</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">5%:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">humanizePercentage</span><span class="nv"> </span><span class="s">}}&quot;</span>
+
+<span class="w">      </span><span class="c1"># P99 延迟过高</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HighLatency</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">histogram_quantile(0.99,</span>
+<span class="w">            </span><span class="no">rate(http_request_duration_seconds_bucket[5m])) &gt; 2</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;P99</span><span class="nv"> </span><span class="s">延迟</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">2s:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}s&quot;</span>
+
+<span class="w">      </span><span class="c1"># 连接池耗尽</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConnectionPoolExhausted</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">db_pool_active / db_pool_max &gt; 0.9</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;数据库连接池使用率</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">90%:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">humanizePercentage</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="c-1-3-ai">
+<h3>C.1.3 AI 应用告警<a class="headerlink" href="#c-1-3-ai" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">groups</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ai-application-alerts</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># LLM 成本激增</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LLMCostSpike</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">increase(llm_cost_dollars_total[1h]) &gt; 10</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LLM</span><span class="nv"> </span><span class="s">成本激增:</span><span class="nv"> </span><span class="s">过去</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">小时</span><span class="nv"> </span><span class="s">${{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}&quot;</span>
+
+<span class="w">      </span><span class="c1"># LLM 日成本超限</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LLMDailyCostExceeded</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">increase(llm_cost_dollars_total[24h]) &gt; 100</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LLM</span><span class="nv"> </span><span class="s">日成本超限:</span><span class="nv"> </span><span class="s">${{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}/天&quot;</span>
+
+<span class="w">      </span><span class="c1"># RAG 错误率升高</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RAGHighErrorRate</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">sum(rate(rag_queries_total{status=&quot;error&quot;}[5m]))</span>
+<span class="w">          </span><span class="no">/ sum(rate(rag_queries_total[5m])) &gt; 0.05</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RAG</span><span class="nv"> </span><span class="s">错误率</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">5%&quot;</span>
+
+<span class="w">      </span><span class="c1"># RAG 延迟过高</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RAGHighLatency</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">histogram_quantile(0.99,</span>
+<span class="w">            </span><span class="no">rate(rag_e2e_latency_seconds_bucket[5m])) &gt; 10</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RAG</span><span class="nv"> </span><span class="s">P99</span><span class="nv"> </span><span class="s">延迟</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">10s:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}s&quot;</span>
+
+<span class="w">      </span><span class="c1"># RAG 质量下降</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RAGLowFaithfulness</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rag_faithfulness_score &lt; 0.7</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RAG</span><span class="nv"> </span><span class="s">忠实度下降:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}&quot;</span>
+
+<span class="w">      </span><span class="c1"># Agent 循环检测</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AgentLoopDetected</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">increase(agent_loops_detected_total[1h]) &gt; 0</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;检测到</span><span class="nv"> </span><span class="s">Agent</span><span class="nv"> </span><span class="s">循环:</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">次/小时&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="c-2">
+<h2>C.2 告警通知模板<a class="headerlink" href="#c-2" title="Link to this heading"></a></h2>
+<section id="c-2-1-lark">
+<h3>C.2.1 飞书/Lark 通知模板<a class="headerlink" href="#c-2-1-lark" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;msg_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;interactive&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;card&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;header&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🚨 {{ .CommonLabels.alertname }}&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;template&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;red&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;elements&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;div&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;tag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lark_md&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;**严重级别**: {{ .CommonLabels.severity }}\n**摘要**: {{ .CommonAnnotations.summary }}\n**时间**: {{ .StartsAt }}&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="c-2-2-slack">
+<h3>C.2.2 Slack 通知模板<a class="headerlink" href="#c-2-2-slack" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;channel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#alerts&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Prometheus&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;icon_emoji&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;:rotating_light:&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;attachments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ if eq .Status \&quot;firing\&quot; }}danger{{ else }}good{{ end }}&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ .CommonLabels.alertname }}&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ .CommonAnnotations.summary }}&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Severity&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ .CommonLabels.severity }}&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;short&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Status&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ .Status }}&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;short&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="c-3-grafana">
+<h2>C.3 Grafana 面板设计参考<a class="headerlink" href="#c-3-grafana" title="Link to this heading"></a></h2>
+<section id="c-3-1">
+<h3>C.3.1 服务概览面板<a class="headerlink" href="#c-3-1" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────┐
+│              服务概览面板                                  │
+├──────────┬──────────┬──────────┬────────────────────────┤
+│ 总请求量  │ 成功率    │ P99 延迟  │ 活跃连接数             │
+│ Stat     │ Stat     │ Stat     │ Stat                  │
+├──────────┴──────────┴──────────┴────────────────────────┤
+│  ┌────────────────────────────────────────────────────┐  │
+│  │  请求速率 + 错误率 (双轴折线图)                      │  │
+│  │  左轴: rate(http_requests_total[5m])                │  │
+│  │  右轴: error_rate                                   │  │
+│  └────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────┐  ┌──────────────────────────┐  │
+│  │ 延迟分布 (热力图)     │  │ 状态码分布 (饼图)         │  │
+│  │ P50 / P90 / P99      │  │ 2xx / 4xx / 5xx          │  │
+│  └──────────────────────┘  └──────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="c-3-2-ai">
+<h3>C.3.2 AI 应用面板<a class="headerlink" href="#c-3-2-ai" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────┐
+│              AI 应用监控面板                               │
+├──────────┬──────────┬──────────┬────────────────────────┤
+│ 查询总量  │ 成功率    │ E2E P99  │ 今日 LLM 成本          │
+├──────────┴──────────┴──────────┴────────────────────────┤
+│  ┌────────────────────────────────────────────────────┐  │
+│  │  LLM 成本趋势 (面积图，按模型分组)                   │  │
+│  └────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────┐  ┌──────────────────────────┐  │
+│  │ Token 使用趋势        │  │ 延迟分布                  │  │
+│  │ Input vs Output      │  │ 检索 vs 生成              │  │
+│  └──────────────────────┘  └──────────────────────────┘  │
+│  ┌──────────────────────┐  ┌──────────────────────────┐  │
+│  │ 质量评分趋势          │  │ 检索命中率               │  │
+│  │ Faithfulness          │  │ Hit Rate / Precision@5   │  │
+│  │ Relevancy             │  │                          │  │
+│  └──────────────────────┘  └──────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>完整的 Grafana 面板 JSON 文件可从 GitHub 仓库下载：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">grafana/service-overview.json</span></code> — 服务概览面板</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grafana/ai-application.json</span></code> — AI 应用面板</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grafana/rag-monitoring.json</span></code> — RAG 系统面板</p></li>
+</ul>
+<p>导入方式：Grafana → Dashboards → Import → Upload JSON file</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="appendix_b.html" class="btn btn-neutral float-left" title="附录 B 度量指标速查表" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="glossary.html" class="btn btn-neutral float-right" title="术语表" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2020-2026, Walter Fan, Jian Fu。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

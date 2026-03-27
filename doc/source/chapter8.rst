@@ -1,14 +1,35 @@
 .. _chapter8:
 
 ======================================
-第 8 章 AI 时代的全程度量驱动
+第 8 章 全程度量与可观测性
 ======================================
 
-   *"AI 能让你写代码快 10 倍，但如果配套方法跟不上，*
-   *你可能在以 10 倍速度制造技术债。"*
+.. admonition:: 本章你将学到
 
-本章是全书的最后一章。我们不仅讨论全链路度量和可观测性三支柱，
-更要回答一个关键问题: **在 AI 辅助编程时代，MDD 为什么比以往任何时候都更重要？**
+   - AI 辅助编程时代 MDD 为什么比以往更重要
+   - 三大护法（TDD + MDD + 活文档）的协同实践
+   - 可观测性三支柱：Metrics、Traces、Logs
+   - 全链路追踪的实现方法
+   - AIOps：AI 驱动的智能运维
+
+
+开篇故事
+========
+
+   *AI 能让你写代码快 10 倍，但如果配套方法跟不上，
+   你可能在以 10 倍速度制造技术债。*
+
+   *设想这样一个场景：一个工程师用 AI 助手在一天内生成了大量代码。
+   代码能跑，测试也通过了。但上线一段时间后，服务开始周期性崩溃。
+   排查发现，AI 生成的代码在循环中创建了 HTTP 客户端但没有关闭连接，
+   导致连接池耗尽。*
+
+   *如果有连接池使用率的度量和告警，这个问题在上线第一天就能发现。
+   这就是 MDD 在 AI 时代的价值——AI 写的代码不一定比人写的更可靠，
+   但度量能帮你尽早发现问题。*
+
+本章讨论全链路度量和可观测性三支柱，
+回答一个关键问题：**在 AI 辅助编程时代，MDD 为什么比以往任何时候都更重要？**
 
 
 8.1 AI 辅助编程的悖论
@@ -415,6 +436,84 @@ AIOps 的核心能力:
 - **Velocity (高速)**: 实时产生和处理
 - **Value (低密度)**: 大量数据中蕴含少量有价值信息
 
+8.6.3 AI Agent 自主运维
+-------------------------
+
+随着 AI Agent 技术的成熟，运维正在从"AI 辅助人"走向"Agent 自主执行":
+
+.. code-block:: text
+
+   传统运维:  告警 → 人工排查 → 人工操作 → 人工验证
+   AI 辅助:   告警 → AI 建议 → 人工操作 → 人工验证
+   Agent 运维: 告警 → Agent 分析 → Agent 执行 → Agent 验证 → 人工审批
+
+**Agent 运维的度量框架:**
+
+.. list-table:: AI Agent 运维度量
+   :header-rows: 1
+   :widths: 25 35 40
+
+   * - 度量维度
+     - 指标
+     - 说明
+   * - 自主处理率
+     - ``agent_auto_resolved_total / incidents_total``
+     - Agent 无需人工介入即可解决的故障比例
+   * - 决策准确率
+     - ``agent_correct_actions / agent_total_actions``
+     - Agent 采取的操作中正确的比例
+   * - 响应时间
+     - ``agent_response_seconds``
+     - 从告警触发到 Agent 开始处理的时间
+   * - 恢复时间
+     - ``agent_mttr_seconds``
+     - Agent 处理故障的平均恢复时间
+   * - 误操作率
+     - ``agent_wrong_actions / agent_total_actions``
+     - Agent 执行了错误操作的比例（安全红线）
+   * - 人工升级率
+     - ``agent_escalated_total / incidents_total``
+     - Agent 无法处理需要升级给人工的比例
+   * - 成本节省
+     - ``manual_hours_saved``
+     - Agent 替代人工节省的工时
+
+**Agent 运维的安全护栏:**
+
+.. code-block:: python
+
+   # Agent 运维的安全度量
+   from prometheus_client import Counter, Histogram, Gauge
+
+   # 操作审计
+   agent_actions_total = Counter(
+       "agent_actions_total",
+       "Total actions taken by ops agent",
+       ["action_type", "result"]  # restart/scale/rollback, success/failed/blocked
+   )
+
+   # 安全护栏触发
+   agent_guardrail_triggered = Counter(
+       "agent_guardrail_triggered_total",
+       "Times agent action was blocked by guardrail",
+       ["guardrail_type"]  # blast_radius/approval_required/rate_limit
+   )
+
+   # 爆炸半径控制
+   agent_blast_radius = Gauge(
+       "agent_blast_radius_percentage",
+       "Percentage of infrastructure affected by agent action"
+   )
+
+.. warning::
+
+   AI Agent 运维的核心原则: **宁可漏处理，不可误操作。**
+
+   - 所有破坏性操作（重启、回滚、缩容）必须有人工审批
+   - 爆炸半径超过 10% 的操作自动阻断
+   - 所有 Agent 操作必须有完整的审计日志
+   - 误操作率超过 1% 时自动降级为"建议模式"
+
 
 8.7 度量驱动开发的回顾与展望
 ==============================
@@ -459,10 +558,13 @@ AIOps 的核心能力:
 --------------
 
 1. **eBPF**: 内核级别的无侵入式度量采集
-2. **OpenTelemetry**: 统一的可观测性标准
-3. **AI 辅助度量**: AI 自动生成度量方案和告警规则
-4. **Chaos Engineering**: 基于度量验证系统韧性
-5. **Platform Engineering**: 平台团队提供"度量即服务"
+2. **OpenTelemetry GenAI**: OTel 的 GenAI 语义约定，标准化 LLM/Agent 度量
+3. **评估驱动开发 (EDD)**: 像 TDD 一样，先写评估集再优化 AI 系统
+4. **AI Agent 自主运维**: Agent 不仅辅助运维，而是自主执行修复操作
+5. **LLM 可观测性平台**: LangSmith/LangFuse 等专用工具成为标配
+6. **Chaos Engineering**: 基于度量验证系统韧性
+7. **Platform Engineering**: 平台团队提供"度量即服务"
+8. **成本工程 (FinOps for AI)**: LLM 成本优化成为专门的工程实践
 
 8.7.3 一句话总结
 -----------------
@@ -498,11 +600,22 @@ AIOps 的核心能力:
 - [ ] 有系统架构图（Mermaid）
 - [ ] 有运维手册 RUNBOOK.md
 
+**AI 应用额外检查项 (如果涉及 LLM/RAG/Agent):**
+
+- [ ] Token 使用量有监控（input/output 分开）
+- [ ] 成本有追踪和预算告警
+- [ ] LLM 延迟有 Histogram（TTFT + E2E）
+- [ ] 有质量评估机制（采样 + LLM-as-Judge）
+- [ ] RAG 检索质量有评估（Precision@K、Hit Rate）
+- [ ] Agent 工具调用有度量（次数、准确率、延迟）
+- [ ] 有评估数据集和回归测试
+- [ ] Prompt 版本有管理和灰度机制
+
 
 8.9 本章小结
 ============
 
-本章是全书的最后一章，也是面向未来的一章:
+本章讨论了 AI 时代的全程度量驱动:
 
 - AI 辅助编程时代，MDD 作为"可观测性护法"比以往更重要
 - 三大护法 (TDD + MDD + 活文档) 是质量保障的黄金三角
@@ -522,3 +635,26 @@ AIOps 的核心能力:
    4. 再开始写实现
 
    **花 15 分钟前期准备，能省下 3 小时后期调试和维护时间。**
+
+
+.. admonition:: 🔬 动手实验：为 AI 生成的代码添加可观测性
+   :class: tip
+
+   **目标**：让 AI 生成一个带完整可观测性的 HTTP 服务，验证三大护法的协同效果。
+
+   **步骤**：
+
+   1. 用 AI 生成一个简单的 TODO API (CRUD)
+   2. 要求 AI 同时生成：单元测试 (TDD)、度量代码 (MDD)、API 文档 (活文档)
+   3. 运行测试，确认通过
+   4. 启动服务，访问 ``/metrics``，确认度量正常
+   5. 用 k6 做一次简单的负载测试，观察度量变化
+
+   **完整代码**：见 GitHub 仓库 ``examples/ch8-three-guardians/``
+
+
+.. admonition:: 📝 思考题
+
+   1. 在你的团队中，TDD、MDD、活文档三大护法的实践程度如何？哪个最弱？
+   2. 如果你的系统要接入 OpenTelemetry，迁移成本有多大？最大的障碍是什么？
+   3. AIOps 能否完全替代人工告警分析？它的局限性在哪里？

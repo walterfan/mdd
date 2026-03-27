@@ -4,6 +4,30 @@
 第 4 章 度量驱动的多语言实现
 ==============================
 
+.. admonition:: 本章你将学到
+
+   - 代码质量度量的核心指标和工具
+   - OpenTelemetry 作为多语言度量统一标准的优势
+   - Go、Python、Java、C++ 四种语言的度量实现方法
+   - AI 辅助编程时代的度量实践
+
+
+开篇故事
+========
+
+   *我们的系统用 Go 写后端 API、Python 写 AI 服务、Java 写数据管道。
+   三个团队各自选了不同的度量库——Go 用 Prometheus client，
+   Python 用 StatsD，Java 用 Micrometer。*
+
+   *结果是：三套指标命名规范不同、数据格式不同、存储后端不同。
+   想做一个跨服务的延迟分析？几乎不可能。*
+
+   *后来我们统一迁移到 OpenTelemetry，问题迎刃而解。*
+
+多语言环境下的度量统一是一个真实的工程挑战。
+本章介绍如何在不同语言中实现度量，以及如何用 OpenTelemetry 统一标准。
+
+
 现代微服务系统通常涉及多种编程语言。本章介绍如何在 Go、Python、Java、C++ 中
 实现度量驱动开发，并探讨 AI 辅助编程时代的度量实践。
 
@@ -632,6 +656,69 @@ OpenTelemetry 是 CNCF 的统一可观测性框架，支持所有主流语言:
    - [ ] 提供了 Grafana 面板配置或 PromQL 查询示例
 
 
+4.6.4 AI 应用的度量代码模式
+----------------------------
+
+当你开发 LLM/RAG/Agent 应用时，度量代码有一些通用模式：
+
+**LLM 调用包装器（Python 示例）：**
+
+.. code-block:: python
+
+   import time
+   from prometheus_client import Counter, Histogram, Gauge
+
+   llm_requests_total = Counter(
+       "llm_requests_total", "Total LLM API calls",
+       ["model", "status"]
+   )
+   llm_token_usage = Counter(
+       "llm_token_usage_total", "Token usage",
+       ["model", "type"]  # type: input/output
+   )
+   llm_duration = Histogram(
+       "llm_request_duration_seconds", "LLM call duration",
+       ["model"],
+       buckets=[0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 30.0, 60.0]
+   )
+   llm_cost_dollars = Counter(
+       "llm_cost_dollars_total", "LLM API cost in USD",
+       ["model"]
+   )
+
+   async def call_llm_with_metrics(client, model, messages, **kwargs):
+       """带度量的 LLM 调用包装器"""
+       start = time.monotonic()
+       try:
+           response = await client.chat.completions.create(
+               model=model, messages=messages, **kwargs
+           )
+           duration = time.monotonic() - start
+
+           # 记录度量
+           llm_requests_total.labels(model=model, status="success").inc()
+           llm_duration.labels(model=model).observe(duration)
+           if response.usage:
+               llm_token_usage.labels(model=model, type="input").inc(
+                   response.usage.prompt_tokens
+               )
+               llm_token_usage.labels(model=model, type="output").inc(
+                   response.usage.completion_tokens
+               )
+               # 成本估算（以 GPT-4o 为例）
+               cost = (response.usage.prompt_tokens * 2.5
+                       + response.usage.completion_tokens * 10) / 1_000_000
+               llm_cost_dollars.labels(model=model).inc(cost)
+
+           return response
+       except Exception as e:
+           llm_requests_total.labels(model=model, status="error").inc()
+           raise
+
+这个模式可以复用到任何 LLM 应用中。在第 9 章中，我们将展示更完整的
+RAG 和 Agent 度量实现。
+
+
 4.7 本章小结
 ============
 
@@ -641,6 +728,7 @@ OpenTelemetry 是 CNCF 的统一可观测性框架，支持所有主流语言:
 - OpenTelemetry 正在统一各语言的度量标准
 - DORA 指标是度量团队交付效能的黄金标准
 - **AI 时代，度量需求应该在 Prompt 中前置，而非事后补充**
+- LLM/RAG/Agent 应用有专门的度量代码模式
 
 .. note::
 
@@ -648,5 +736,47 @@ OpenTelemetry 是 CNCF 的统一可观测性框架，支持所有主流语言:
 
    - 每种语言都有 Prometheus 客户端，API 风格一致
    - OpenTelemetry 是未来统一的方向
+   - AI 应用的度量包装器是可复用的基础设施代码
    - 让 AI 生成带度量的代码，比生成后再补度量更高效
    - 度量设计先于代码实现（先定义指标，再写实现）
+
+
+.. admonition:: 💡 避坑指南：多语言度量的 3 个常见问题
+   :class: warning
+
+   **问题 1：指标命名不统一**
+
+   Go 团队用 ``http_request_duration_seconds``，Python 团队用 ``api_latency_ms``。
+   解决方案：制定统一的命名规范，推荐使用 OpenTelemetry 语义约定。
+
+   **问题 2：标签基数爆炸**
+
+   把 user_id 作为标签？如果有 100 万用户，就会产生 100 万个时间序列。
+   解决方案：标签值的基数应控制在 100 以内，高基数维度用日志而非度量。
+
+   **问题 3：度量端点未保护**
+
+   ``/metrics`` 端点暴露了系统内部信息，不应对外公开。
+   解决方案：将度量端点绑定到内部端口，或添加认证。
+
+
+.. admonition:: 🔬 动手实验：用 OpenTelemetry 统一多语言度量
+   :class: tip
+
+   **目标**：用 OTel SDK 为一个 Go 或 Python 服务添加度量，通过 OTel Collector 导出到 Prometheus。
+
+   **步骤**：
+
+   1. 启动 OTel Collector (Docker)：``docker run otel/opentelemetry-collector``
+   2. 在服务中集成 OTel SDK，创建 Counter 和 Histogram
+   3. 配置 OTLP Exporter 指向 Collector
+   4. 在 Prometheus 中查看导出的指标
+
+   **完整代码**：见 GitHub 仓库 ``examples/ch4-otel-demo/``
+
+
+.. admonition:: 📝 思考题
+
+   1. 你的团队使用了几种编程语言？度量标准是否统一？如果不统一，迁移到 OTel 的成本有多大？
+   2. 当你让 AI 生成代码时，你会在 Prompt 中要求"自带度量"吗？试试看效果如何。
+   3. 标签基数爆炸是一个常见问题。你的系统中是否存在高基数标签？如何优化？

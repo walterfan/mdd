@@ -4,6 +4,26 @@
 第 5 章 度量数据的聚合与展示
 ==============================
 
+.. admonition:: 本章你将学到
+
+   - 度量数据的聚合方式：时间聚合、空间聚合、层次聚合
+   - 时序数据库的选型：InfluxDB、Prometheus、TimescaleDB
+   - 数据清洗与降采样策略
+   - Grafana 仪表盘设计的最佳实践
+   - 常用技术栈：TIG、ELKK、Prometheus、OpenTelemetry
+
+
+开篇故事
+========
+
+   *老板问："上周我们的系统可用性是多少？"
+   我打开 Grafana，面对 50 个面板，不知道该看哪个。
+   有 CPU 使用率、有内存趋势、有网络流量……
+   但就是没有一个面板直接回答"可用性是多少"这个问题。*
+
+   *那天我学到了一个教训：仪表盘不是越多越好，
+   而是要能回答业务关心的问题。*
+
 本章讲述如何聚合和存储度量数据，如何进行清洗和处理，
 然后重点讲解度量的可视化技术和常用的技术栈。
 
@@ -457,6 +477,46 @@ OpenTelemetry 是 CNCF 的统一可观测性框架，
          - influxdb
 
 
+5.5.1 AI 应用的度量聚合特殊考量
+---------------------------------
+
+AI 应用的度量数据与传统微服务有几个显著差异，需要特殊处理：
+
+**1. 高基数标签问题**
+
+LLM 应用中，Prompt 内容、模型版本、用户 ID 等维度组合可能产生极高的基数，
+导致时序数据库存储爆炸。
+
+.. code-block:: text
+
+   ❌ 错误: llm_request{prompt="帮我写一篇关于..."} — 每个 Prompt 一个时间序列
+   ✅ 正确: llm_request{model="gpt-4o", task_type="writing"} — 按任务类型聚合
+
+**2. 评估数据的异步采集**
+
+LLM 输出质量评估（Faithfulness、Relevancy 等）通常需要异步计算，
+不能在请求路径上同步完成：
+
+.. code-block:: text
+
+   请求路径 (同步):  延迟、Token 数、错误码 → Prometheus
+   评估路径 (异步):  采样请求 → 评估队列 → LLM-as-Judge → 评估结果 → Prometheus
+
+**3. 成本度量的多维聚合**
+
+LLM 成本需要按模型、用户、功能、时间等多个维度聚合：
+
+.. code-block:: yaml
+
+   # Grafana 面板: LLM 成本分析
+   # 按模型的日成本
+   sum by (model) (increase(llm_cost_dollars_total[24h]))
+   # 按功能的月成本
+   sum by (task_type) (increase(llm_cost_dollars_total[30d]))
+   # 单次请求平均成本
+   rate(llm_cost_dollars_total[1h]) / rate(llm_requests_total[1h])
+
+
 5.6 本章小结
 ============
 
@@ -475,3 +535,44 @@ OpenTelemetry 是 CNCF 的统一可观测性框架，
    - 使用百分位数而非均值来展示延迟
    - 仪表盘应该层次清晰、一目了然
    - OpenTelemetry 正在成为可观测性的统一标准
+
+
+.. admonition:: 💡 避坑指南：仪表盘设计的 3 个原则
+   :class: warning
+
+   **原则 1：每个面板回答一个问题**
+
+   不要把所有指标堆在一个图上。每个面板应该能回答一个明确的问题，
+   比如"当前错误率是多少？"或"过去 24 小时的延迟趋势如何？"
+
+   **原则 2：从上到下，从概览到细节**
+
+   面板顶部放 Stat 面板（关键数字），中间放趋势图，底部放详细表格。
+   让人一眼就能看到系统的整体状态。
+
+   **原则 3：颜色有含义**
+
+   绿色 = 正常，黄色 = 警告，红色 = 严重。不要随意使用颜色。
+   设置阈值让面板自动变色，比手动检查数值更高效。
+
+
+.. admonition:: 🔬 动手实验：搭建 Prometheus + Grafana 监控栈
+   :class: tip
+
+   **目标**：用 Docker Compose 在 10 分钟内搭建一个完整的监控栈。
+
+   **步骤**：
+
+   1. 创建 ``docker-compose.yml``，包含 Prometheus + Grafana + Node Exporter
+   2. 配置 Prometheus 抓取 Node Exporter 指标
+   3. 在 Grafana 中导入 Node Exporter 面板 (Dashboard ID: 1860)
+   4. 观察 CPU、内存、磁盘、网络的实时数据
+
+   **完整配置**：见 GitHub 仓库 ``examples/ch5-monitoring-stack/``
+
+
+.. admonition:: 📝 思考题
+
+   1. 你的团队目前使用什么监控技术栈？它的优缺点是什么？
+   2. 如果让你设计一个"一屏看全局"的仪表盘，你会放哪 5 个面板？
+   3. 度量数据应该保留多久？保留策略如何平衡存储成本和分析需求？
