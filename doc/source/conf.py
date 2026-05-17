@@ -27,18 +27,17 @@ exclude_patterns = []
 language = 'zh_CN'
 
 # -- Options for HTML output -------------------------------------------------
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_theme = 'sphinx_book_theme'
+html_static_path = []
 
 html_theme_options = {
-    'navigation_depth': 3,
-    'collapse_navigation': False,
-    'sticky_navigation': True,
-    'includehidden': True,
-    'titles_only': False,
-    'logo_only': False,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': True,
+    'repository_url': 'https://github.com/walterfan/mdd',
+    'path_to_docs': 'doc/source',
+    'use_repository_button': True,
+    'use_edit_page_button': True,
+    'use_issues_button': True,
+    'show_navbar_depth': 2,
+    'show_toc_level': 2,
 }
 
 html_title = '度量驱动开发 - Metrics Driven Development'

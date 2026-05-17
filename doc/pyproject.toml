@@ -1,0 +1,21 @@
+[project]
+name = "mdd-doc"
+version = "2.0.0"
+description = "Sphinx documentation for Metrics Driven Development"
+authors = [
+    { name = "Walter Fan" },
+    { name = "Jian Fu" },
+]
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "sphinx>=7.0",
+    "sphinx-book-theme>=1.1",
+    "sphinx-autobuild>=2024.0",
+]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"
