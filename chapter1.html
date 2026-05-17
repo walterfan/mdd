@@ -1,0 +1,1065 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 1 章 度量驱动开发概论 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter1';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 2 章 度量的基本概念与方法论" href="chapter2.html" />
+    <link rel="prev" title="前言" href="preface.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter1.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter1.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 1 章 度量驱动开发概论</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 从单体到微服务：可观测性的挑战</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.1 微服务的优势与代价</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.2 为什么微服务让问题诊断变得困难</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.2 什么是度量驱动开发</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mdd">1.2.1 MDD 的定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mdd-vs">1.2.2 MDD vs 传统监控</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pdca-mdd">1.2.3 PDCA 循环在 MDD 中的应用</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">1.3 AI 时代的服务架构演进</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.4 度量驱动开发的全景图</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.4.1 MDD 方法论概览</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.4.2 度量的三个层次</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#used">1.4.3 USED 框架</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tdd-mdd">1.4.4 三大护法：TDD + MDD + 活文档</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.5 土豆微服务案例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.6 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="chapter1">
+<span id="id1"></span><h1>第 1 章 度量驱动开发概论<a class="headerlink" href="#chapter1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>微服务架构为什么需要度量</p></li>
+<li><p>什么是度量驱动开发（MDD），它与传统监控有何不同</p></li>
+<li><p>AI 时代服务架构的演进与度量的新挑战</p></li>
+<li><p>MDD 方法论的全景图和核心框架</p></li>
+<li><p>度量驱动开发与 TDD、活文档的协同关系</p></li>
+</ul>
+</div>
+<section id="id2">
+<h2>开篇故事<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>线上出了问题，日志里没有明显错误，CPU 和内存看起来都正常。
+你在十几个微服务之间来回排查，翻日志、加临时打印、重启服务碰运气……
+折腾了很久，才发现问题出在一个不起眼的地方——连接池耗尽、下游超时、
+或者某个配置被悄悄改了。</em></p>
+<p><em>如果有完善的度量体系——连接池使用率、请求排队时间、上下游延迟的关联分析——
+这个问题本可以在几分钟内定位。</em></p>
+</div></blockquote>
+<p>这个场景，几乎每个做过微服务的工程师都经历过。
+系统越复杂，&quot;不知道问题出在哪里&quot;的痛苦就越深。
+度量驱动开发，正是为了解决这个痛苦而生的方法论。</p>
+</section>
+<section id="id3">
+<h2>1.1 从单体到微服务：可观测性的挑战<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>1.1.1 微服务的优势与代价<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>微服务架构将一个大型应用拆分为多个小型、独立的服务，
+每个服务围绕特定的业务能力构建，可以独立开发、部署和扩展。
+这种架构带来了显著的优势，但也引入了新的复杂性：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id12">
+<caption><span class="caption-text">单体架构 vs 微服务架构</span><a class="headerlink" href="#id12" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>单体架构</p></th>
+<th class="head"><p>微服务架构</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>开发效率</p></td>
+<td><p>初期高，后期低</p></td>
+<td><p>初期低，后期高</p></td>
+</tr>
+<tr class="row-odd"><td><p>部署</p></td>
+<td><p>整体部署，风险集中</p></td>
+<td><p>独立部署，风险分散</p></td>
+</tr>
+<tr class="row-even"><td><p>技术栈</p></td>
+<td><p>统一，受限</p></td>
+<td><p>多样，灵活</p></td>
+</tr>
+<tr class="row-odd"><td><p>故障影响</p></td>
+<td><p>一个模块崩溃，全局受影响</p></td>
+<td><p>故障隔离，影响范围可控</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>问题诊断</strong></p></td>
+<td><p><strong>相对简单，一个进程内排查</strong></p></td>
+<td><p><strong>极其困难，跨多个服务和网络</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>可观测性需求</strong></p></td>
+<td><p><strong>低：日志 + 简单监控即可</strong></p></td>
+<td><p><strong>高：需要分布式追踪、度量、日志三位一体</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>最后两行是关键——微服务让问题诊断的难度呈指数级增长。
+一个请求可能经过 5-10 个服务，任何一个环节出问题都可能导致用户感知到异常。
+而传统的&quot;看日志&quot;方式在分布式环境下几乎失效。</p>
+</section>
+<section id="id5">
+<h3>1.1.2 为什么微服务让问题诊断变得困难<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>微服务环境下的问题诊断面临三大挑战：</p>
+<p><strong>1. 信息屏障</strong></p>
+<p>每个服务是一个独立的进程，有自己的日志、自己的状态。
+当问题发生时，你需要在多个服务的日志中拼凑出完整的故事。</p>
+<p><strong>2. 网络不确定性</strong></p>
+<p>服务之间通过网络通信，网络延迟、抖动、丢包都可能导致问题。
+而这些问题往往是间歇性的，难以复现。</p>
+<p><strong>3. 级联故障</strong></p>
+<p>一个服务的延迟升高，可能导致调用它的服务超时，
+进而引发连锁反应，最终整个系统雪崩。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>用户请求 → API 网关 → 服务 A → 服务 B → 服务 C → 数据库
+                                   ↓
+                                服务 D → 缓存
+                                   ↓
+                                服务 E → 消息队列
+
+问题：用户感知到延迟升高。
+原因可能在上述任何一个环节。
+没有度量，你只能逐个排查。
+</pre></div>
+</div>
+<p>这就是为什么微服务架构 <strong>必须</strong> 有完善的度量体系。
+度量不是锦上添花，而是微服务能否在生产环境中可靠运行的 <strong>必要条件</strong>。</p>
+</section>
+</section>
+<section id="id6">
+<h2>1.2 什么是度量驱动开发<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="mdd">
+<h3>1.2.1 MDD 的定义<a class="headerlink" href="#mdd" title="Link to this heading">#</a></h3>
+<p>度量驱动开发（Metrics Driven Development, MDD）是一种软件工程方法论，
+其核心理念是：</p>
+<blockquote>
+<div><p><strong>在软件开发的全生命周期中，将度量作为一等公民。
+度量代码与业务代码同等重要，同步设计、同步开发、同步上线。</strong></p>
+</div></blockquote>
+<p>MDD 不是简单的&quot;加个监控&quot;，而是一种思维方式的转变：</p>
+<ul class="simple">
+<li><p><strong>传统方式</strong>：先写业务代码 → 上线 → 出问题 → 补监控</p></li>
+<li><p><strong>MDD 方式</strong>：设计度量方案 → 业务代码 + 度量代码同步开发 → 上线即可观测</p></li>
+</ul>
+</section>
+<section id="mdd-vs">
+<h3>1.2.2 MDD vs 传统监控<a class="headerlink" href="#mdd-vs" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id13">
+<caption><span class="caption-text">MDD vs 传统监控</span><a class="headerlink" href="#id13" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>传统监控</p></th>
+<th class="head"><p>度量驱动开发</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>时机</p></td>
+<td><p>事后补救</p></td>
+<td><p>事前设计</p></td>
+</tr>
+<tr class="row-odd"><td><p>范围</p></td>
+<td><p>基础设施为主</p></td>
+<td><p>基础设施 + 应用 + 业务全覆盖</p></td>
+</tr>
+<tr class="row-even"><td><p>目的</p></td>
+<td><p>发现问题</p></td>
+<td><p>发现问题 + 指导决策 + 持续改进</p></td>
+</tr>
+<tr class="row-odd"><td><p>责任人</p></td>
+<td><p>运维团队</p></td>
+<td><p>开发团队（Own your code on production）</p></td>
+</tr>
+<tr class="row-even"><td><p>与开发流程的关系</p></td>
+<td><p>独立于开发流程</p></td>
+<td><p>嵌入开发流程（PDCA 循环）</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pdca-mdd">
+<h3>1.2.3 PDCA 循环在 MDD 中的应用<a class="headerlink" href="#pdca-mdd" title="Link to this heading">#</a></h3>
+<p>MDD 遵循经典的 PDCA（Plan-Do-Check-Act）循环：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────┐
+│              MDD 的 PDCA 循环                 │
+│                                               │
+│   Plan（计划）          Do（执行）             │
+│   ┌──────────┐         ┌──────────┐          │
+│   │ 确定度量  │ ──────&gt; │ 实现度量  │          │
+│   │ 目标和    │         │ 代码，    │          │
+│   │ 关键指标  │         │ 采集数据  │          │
+│   └──────────┘         └──────────┘          │
+│        ▲                     │                │
+│        │                     ▼                │
+│   ┌──────────┐         ┌──────────┐          │
+│   │ 基于数据  │ &lt;────── │ 分析度量  │          │
+│   │ 采取行动  │         │ 数据，    │          │
+│   │ 持续改进  │         │ 发现问题  │          │
+│   └──────────┘         └──────────┘          │
+│   Act（行动）          Check（检查）           │
+└─────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>每一次迭代都让系统的可观测性更加完善，
+让团队对系统的理解更加深入。</p>
+</section>
+</section>
+<section id="ai">
+<h2>1.3 AI 时代的服务架构演进<a class="headerlink" href="#ai" title="Link to this heading">#</a></h2>
+<p>2023 年以来，AI 应用的兴起为服务架构带来了新的变化。
+传统微服务主要处理确定性的业务逻辑，而 AI 应用引入了大量不确定性：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id14">
+<caption><span class="caption-text">传统微服务 vs AI 应用服务</span><a class="headerlink" href="#id14" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>传统微服务</p></th>
+<th class="head"><p>AI 应用服务</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>响应时间</p></td>
+<td><p>毫秒级，可预测</p></td>
+<td><p>秒级，随输入长度波动</p></td>
+</tr>
+<tr class="row-odd"><td><p>成本模型</p></td>
+<td><p>按计算资源计费</p></td>
+<td><p>按 Token 计费，与输入输出长度相关</p></td>
+</tr>
+<tr class="row-even"><td><p>正确性</p></td>
+<td><p>确定性，可用单元测试验证</p></td>
+<td><p>概率性，需要统计评估</p></td>
+</tr>
+<tr class="row-odd"><td><p>依赖</p></td>
+<td><p>内部服务 + 数据库</p></td>
+<td><p>LLM API + 向量数据库 + 外部工具</p></td>
+</tr>
+<tr class="row-even"><td><p>扩展性</p></td>
+<td><p>水平扩展相对简单</p></td>
+<td><p>受限于 LLM API 速率限制和成本</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>AI 应用的典型架构：</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────────┐
+│                    AI 应用架构                        │
+│                                                       │
+│  ┌─────────┐   ┌──────────┐   ┌──────────────────┐  │
+│  │ Web/API │──&gt;│ AI 网关   │──&gt;│ LLM Provider     │  │
+│  │ Gateway │   │ (路由/    │   │ (OpenAI/Claude/  │  │
+│  │         │   │  限流/    │   │  本地模型)        │  │
+│  │         │   │  缓存)    │   │                  │  │
+│  └─────────┘   └──────────┘   └──────────────────┘  │
+│       │              │                                │
+│       │         ┌────┴────┐                           │
+│       │         │ RAG     │                           │
+│       │         │ Engine  │                           │
+│       │         └────┬────┘                           │
+│       │              │                                │
+│       │         ┌────┴────┐                           │
+│       │         │ Vector  │                           │
+│       │         │ DB      │                           │
+│       │         └─────────┘                           │
+│       │                                               │
+│  ┌────┴────────────────────────────────────────────┐  │
+│  │           传统微服务层                            │  │
+│  │  用户服务 │ 订单服务 │ 通知服务 │ ...            │  │
+│  └─────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>这种架构下，度量的重要性更加突出：</p>
+<ul class="simple">
+<li><p><strong>LLM 调用成本不可控</strong> —— 必须度量 Token 使用量和费用</p></li>
+<li><p><strong>响应质量不确定</strong> —— 必须度量生成质量（幻觉率、相关性）</p></li>
+<li><p><strong>延迟波动大</strong> —— 必须度量 TTFT、TPS 等 LLM 特有指标</p></li>
+<li><p><strong>Agent 行为不可预测</strong> —— 必须度量工具调用准确率、循环检测</p></li>
+</ul>
+<p>传统的度量体系（HTTP 状态码 + 响应时间）已经远远不够。
+我们需要一套覆盖 <strong>性能、成本、质量</strong> 三个维度的全新度量体系。
+本书第 9-11 章将详细介绍 AI 应用的度量方法。</p>
+</section>
+<section id="id7">
+<h2>1.4 度量驱动开发的全景图<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>1.4.1 MDD 方法论概览<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>度量驱动开发贯穿软件开发的全生命周期：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────┐
+│                MDD 全生命周期                             │
+│                                                          │
+│  需求分析        开发实现        测试验证        运维监控  │
+│  ┌──────┐       ┌──────┐       ┌──────┐       ┌──────┐  │
+│  │定义   │──────&gt;│实现   │──────&gt;│验证   │──────&gt;│监控   │  │
+│  │SLI/SLO│       │度量   │       │度量   │       │分析   │  │
+│  │确定   │       │代码   │       │覆盖   │       │告警   │  │
+│  │关键   │       │埋点   │       │度     │       │优化   │  │
+│  │指标   │       │采集   │       │       │       │       │  │
+│  └──────┘       └──────┘       └──────┘       └──────┘  │
+│      │                                            │       │
+│      └────────────── 反馈循环 ─────────────────────┘       │
+└─────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>1.4.2 度量的三个层次<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>度量体系分为三个层次，从下到上依次是：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id15">
+<caption><span class="caption-text">度量的三个层次</span><a class="headerlink" href="#id15" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>层次</p></th>
+<th class="head"><p>关注点</p></th>
+<th class="head"><p>典型指标</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>基础设施层</p></td>
+<td><p>硬件和操作系统</p></td>
+<td><p>CPU、内存、磁盘、网络、GPU</p></td>
+</tr>
+<tr class="row-odd"><td><p>应用层</p></td>
+<td><p>服务性能和健康</p></td>
+<td><p>TPS、响应时间、错误率、连接池</p></td>
+</tr>
+<tr class="row-even"><td><p>业务层</p></td>
+<td><p>业务目标和用户体验</p></td>
+<td><p>DAU、转化率、APDEX、任务完成率</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于 AI 应用，还需要增加两个特有层次：</p>
+<ul class="simple">
+<li><p><strong>质量层</strong>：LLM 输出的忠实度、相关性、幻觉率</p></li>
+<li><p><strong>成本层</strong>：Token 使用量、API 调用费用、每查询成本</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>度量的一个核心原则：<strong>越往上越重要，越往下越容易量化。</strong>
+基础设施层的 CPU 利用率很容易测量，但业务层的&quot;用户是否满意&quot;很难量化。
+好的度量体系需要从上到下全覆盖。</p>
+</div>
+</section>
+<section id="used">
+<h3>1.4.3 USED 框架<a class="headerlink" href="#used" title="Link to this heading">#</a></h3>
+<p>本书提出 <strong>USED 框架</strong> 作为度量的核心维度：</p>
+<ul class="simple">
+<li><p><strong>U — Usage（使用量）</strong>：系统被使用了多少？QPS、并发数、Token 消耗</p></li>
+<li><p><strong>S — Saturation（饱和度）</strong>：系统还有多少余量？CPU 使用率、连接池占用率、队列深度</p></li>
+<li><p><strong>E — Error（错误）</strong>：系统出了多少错？错误率、超时率、幻觉率</p></li>
+<li><p><strong>D — Delay（延迟）</strong>：系统有多快？P50、P99 延迟、TTFT</p></li>
+</ul>
+<p>USED 框架可以应用于任何层次的度量：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id16">
+<caption><span class="caption-text">USED 框架应用示例</span><a class="headerlink" href="#id16" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 14.6%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>层次</p></th>
+<th class="head"><p>Usage</p></th>
+<th class="head"><p>Saturation</p></th>
+<th class="head"><p>Error</p></th>
+<th class="head"><p>Delay</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>基础设施</p></td>
+<td><p>网络带宽</p></td>
+<td><p>CPU 使用率</p></td>
+<td><p>磁盘错误</p></td>
+<td><p>磁盘 IO 延迟</p></td>
+</tr>
+<tr class="row-odd"><td><p>应用</p></td>
+<td><p>QPS</p></td>
+<td><p>连接池占用率</p></td>
+<td><p>HTTP 5xx 率</p></td>
+<td><p>P99 延迟</p></td>
+</tr>
+<tr class="row-even"><td><p>LLM</p></td>
+<td><p>Token 消耗量</p></td>
+<td><p>API 速率限制</p></td>
+<td><p>幻觉率</p></td>
+<td><p>TTFT</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="tdd-mdd">
+<h3>1.4.4 三大护法：TDD + MDD + 活文档<a class="headerlink" href="#tdd-mdd" title="Link to this heading">#</a></h3>
+<p>度量驱动开发不是孤立的，它与测试驱动开发（TDD）和活文档（Living Documentation）
+共同构成 AI 时代软件质量的&quot;三大护法&quot;：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>护法</p></th>
+<th class="head"><p>核心问题</p></th>
+<th class="head"><p>实现方法</p></th>
+<th class="head"><p>AI 时代的价值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>可验证性</strong></p></td>
+<td><p>代码写对了吗？</p></td>
+<td><p>TDD</p></td>
+<td><p>让 AI 先写测试，再写实现</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>可观测性</strong></p></td>
+<td><p>代码跑得好吗？</p></td>
+<td><p>MDD</p></td>
+<td><p>上线即可观测，问题秒级定位</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>可理解性</strong></p></td>
+<td><p>人能看懂吗？</p></td>
+<td><p>活文档</p></td>
+<td><p>架构图、注释、运维手册自动生成</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>三者相互支撑：TDD 确保代码正确，MDD 确保运行健康，活文档确保团队理解。
+缺少任何一个，系统都会在某个维度上失控。</p>
+</section>
+</section>
+<section id="id10">
+<h2>1.5 土豆微服务案例<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<p>本书以一个名为&quot;土豆（Potato）&quot;的微服务示例贯穿全书。
+它是一个待办事项管理应用，被拆分为以下微服务：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id17">
+<caption><span class="caption-text">土豆微服务</span><a class="headerlink" href="#id17" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>微服务名称</p></th>
+<th class="head"><p>职责</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>potato-server</p></td>
+<td><p>提供待办事项的 CRUD API</p></td>
+</tr>
+<tr class="row-odd"><td><p>potato-scheduler</p></td>
+<td><p>定时检查并发送提醒通知</p></td>
+</tr>
+<tr class="row-even"><td><p>potato-web</p></td>
+<td><p>提供 Web 前端界面</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│ potato-web  │───&gt;│  potato-server   │&lt;───│potato-scheduler  │
+│  (Web UI)   │    │   (REST API)     │    │  (定时任务)       │
+└─────────────┘    └──────────────────┘    └──────────────────┘
+                           │
+                           ▼
+                     ┌──────────┐
+                     │  MySQL   │
+                     └──────────┘
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 快速启动</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/walterfan/mdd.git
+<span class="nb">cd</span><span class="w"> </span>mdd/potato
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+</pre></div>
+</div>
+<p>在后续章节中，我们将以这个案例为基础，逐步添加度量代码，
+展示如何从零构建一个完整的度量体系。</p>
+<div class="warning admonition">
+<p class="admonition-title">💡 避坑指南：度量系统建设的 3 个常见误区</p>
+<p><strong>误区 1：度量越多越好</strong></p>
+<p>有些团队一上来就定义了上百个指标，结果没人看、没人维护。
+正确做法：从 USED 框架的 4 个维度出发，每个服务先定义 5-10 个核心指标。</p>
+<p><strong>误区 2：只度量基础设施</strong></p>
+<p>CPU、内存、磁盘这些指标当然重要，但它们无法告诉你&quot;用户体验好不好&quot;。
+正确做法：从业务层往下设计度量，确保每个层次都有覆盖。</p>
+<p><strong>误区 3：度量代码是事后补的</strong></p>
+<p>&quot;先上线，后面再加监控&quot;——这是最常见的技术债。
+正确做法：度量代码和业务代码同步设计、同步开发、同步上线。</p>
+</div>
+</section>
+<section id="id11">
+<h2>1.6 本章小结<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点：</strong></p>
+<ul class="simple">
+<li><p>微服务架构让问题诊断的难度呈指数级增长，度量是必要条件而非锦上添花</p></li>
+<li><p>MDD 的核心理念：度量代码与业务代码同等重要，遵循 PDCA 循环</p></li>
+<li><p>AI 时代的服务架构引入了新的不确定性，需要覆盖性能、成本、质量三个维度</p></li>
+<li><p>USED 框架（Usage/Saturation/Error/Delay）是度量的核心维度</p></li>
+<li><p>TDD + MDD + 活文档构成 AI 时代软件质量的&quot;三大护法&quot;</p></li>
+</ul>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>回顾你当前负责的系统，它的度量覆盖了 USED 框架的哪些维度？哪些维度是缺失的？</p></li>
+<li><p>如果你的系统引入了 LLM 调用，你会增加哪些度量指标？</p></li>
+<li><p>你的团队是&quot;先上线后加监控&quot;还是&quot;度量代码同步开发&quot;？如果是前者，你会如何推动改变？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="preface.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">前言</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 2 章 度量的基本概念与方法论</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 从单体到微服务：可观测性的挑战</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.1 微服务的优势与代价</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.2 为什么微服务让问题诊断变得困难</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.2 什么是度量驱动开发</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mdd">1.2.1 MDD 的定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mdd-vs">1.2.2 MDD vs 传统监控</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pdca-mdd">1.2.3 PDCA 循环在 MDD 中的应用</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">1.3 AI 时代的服务架构演进</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.4 度量驱动开发的全景图</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.4.1 MDD 方法论概览</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.4.2 度量的三个层次</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#used">1.4.3 USED 框架</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tdd-mdd">1.4.4 三大护法：TDD + MDD + 活文档</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.5 土豆微服务案例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.6 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

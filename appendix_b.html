@@ -1,0 +1,864 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>附录 B 度量指标速查表 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'appendix_b';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="附录 C 告警规则与 Grafana 面板模板" href="appendix_c.html" />
+    <link rel="prev" title="附录 常用度量工具与软件库" href="appendix.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/appendix_b.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fappendix_b.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/appendix_b.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>附录 B 度量指标速查表</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-web-api">B.1 Web API 度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-2">B.2 数据库度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-3">B.3 缓存度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-4">B.4 消息队列度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-5-llm">B.5 LLM 度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-6-rag">B.6 RAG 度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-7-ai-agent">B.7 AI Agent 度量</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="b">
+<span id="appendix-b"></span><h1>附录 B 度量指标速查表<a class="headerlink" href="#b" title="Link to this heading">#</a></h1>
+<p>本附录按场景分类列出常用的度量指标，包含指标名称、类型、PromQL 查询和参考阈值。
+可作为日常开发和运维的快速参考。</p>
+<section id="b-1-web-api">
+<h2>B.1 Web API 度量<a class="headerlink" href="#b-1-web-api" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 12.0%" />
+<col style="width: 38.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>PromQL 查询</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>请求速率 (QPS)</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(http_requests_total[5m])</span></code></p></td>
+<td><p>根据容量规划</p></td>
+</tr>
+<tr class="row-odd"><td><p>错误率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(http_requests_total{status=~&quot;5..&quot;}[5m])</span> <span class="pre">/</span> <span class="pre">rate(http_requests_total[5m])</span></code></p></td>
+<td><p>&lt; 1%</p></td>
+</tr>
+<tr class="row-even"><td><p>P50 延迟</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.50,</span> <span class="pre">rate(http_request_duration_seconds_bucket[5m]))</span></code></p></td>
+<td><p>&lt; 100ms</p></td>
+</tr>
+<tr class="row-odd"><td><p>P99 延迟</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.99,</span> <span class="pre">rate(http_request_duration_seconds_bucket[5m]))</span></code></p></td>
+<td><p>&lt; 1s</p></td>
+</tr>
+<tr class="row-even"><td><p>请求大小</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.50,</span> <span class="pre">rate(http_request_size_bytes_bucket[5m]))</span></code></p></td>
+<td><p>监控趋势</p></td>
+</tr>
+<tr class="row-odd"><td><p>并发连接数</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http_connections_active</span></code></p></td>
+<td><p>&lt; 连接池上限 80%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="b-2">
+<h2>B.2 数据库度量<a class="headerlink" href="#b-2" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 12.0%" />
+<col style="width: 38.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>PromQL 查询</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>连接池使用率</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">db_pool_active</span> <span class="pre">/</span> <span class="pre">db_pool_max</span></code></p></td>
+<td><p>&lt; 80%</p></td>
+</tr>
+<tr class="row-odd"><td><p>查询延迟</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.99,</span> <span class="pre">rate(db_query_duration_seconds_bucket[5m]))</span></code></p></td>
+<td><p>&lt; 100ms</p></td>
+</tr>
+<tr class="row-even"><td><p>慢查询数</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(db_slow_queries_total[5m])</span></code></p></td>
+<td><p>趋近于 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>事务失败率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(db_transactions_total{status=&quot;failed&quot;}[5m])</span></code></p></td>
+<td><p>&lt; 0.1%</p></td>
+</tr>
+<tr class="row-even"><td><p>复制延迟</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">db_replication_lag_seconds</span></code></p></td>
+<td><p>&lt; 1s</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="b-3">
+<h2>B.3 缓存度量<a class="headerlink" href="#b-3" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 12.0%" />
+<col style="width: 38.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>PromQL 查询</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>命中率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(cache_hits_total[5m])</span> <span class="pre">/</span> <span class="pre">(rate(cache_hits_total[5m])</span> <span class="pre">+</span> <span class="pre">rate(cache_misses_total[5m]))</span></code></p></td>
+<td><p>&gt; 90%</p></td>
+</tr>
+<tr class="row-odd"><td><p>延迟</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.99,</span> <span class="pre">rate(cache_operation_duration_seconds_bucket[5m]))</span></code></p></td>
+<td><p>&lt; 5ms</p></td>
+</tr>
+<tr class="row-even"><td><p>内存使用</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cache_memory_used_bytes</span> <span class="pre">/</span> <span class="pre">cache_memory_max_bytes</span></code></p></td>
+<td><p>&lt; 80%</p></td>
+</tr>
+<tr class="row-odd"><td><p>驱逐率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(cache_evictions_total[5m])</span></code></p></td>
+<td><p>监控趋势</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="b-4">
+<h2>B.4 消息队列度量<a class="headerlink" href="#b-4" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 12.0%" />
+<col style="width: 38.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>PromQL 查询</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>消息积压</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mq_messages_pending</span></code></p></td>
+<td><p>&lt; 1000（视业务而定）</p></td>
+</tr>
+<tr class="row-odd"><td><p>消费延迟</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mq_consumer_lag_seconds</span></code></p></td>
+<td><p>&lt; 30s</p></td>
+</tr>
+<tr class="row-even"><td><p>生产速率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(mq_messages_produced_total[5m])</span></code></p></td>
+<td><p>监控趋势</p></td>
+</tr>
+<tr class="row-odd"><td><p>消费速率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(mq_messages_consumed_total[5m])</span></code></p></td>
+<td><p>≥ 生产速率</p></td>
+</tr>
+<tr class="row-even"><td><p>消费失败率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(mq_messages_failed_total[5m])</span></code></p></td>
+<td><p>&lt; 0.1%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="b-5-llm">
+<h2>B.5 LLM 度量<a class="headerlink" href="#b-5-llm" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 12.0%" />
+<col style="width: 38.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>PromQL 查询</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TTFT</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.50,</span> <span class="pre">rate(llm_ttft_seconds_bucket[5m]))</span></code></p></td>
+<td><p>&lt; 500ms</p></td>
+</tr>
+<tr class="row-odd"><td><p>TPS</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.50,</span> <span class="pre">rate(llm_tokens_per_second_bucket[5m]))</span></code></p></td>
+<td><p>&gt; 30 TPS</p></td>
+</tr>
+<tr class="row-even"><td><p>Token 使用速率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sum(rate(llm_tokens_total[5m]))</span> <span class="pre">by</span> <span class="pre">(model,</span> <span class="pre">direction)</span></code></p></td>
+<td><p>监控趋势</p></td>
+</tr>
+<tr class="row-odd"><td><p>每小时成本</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">increase(llm_cost_dollars_total[1h])</span></code></p></td>
+<td><p>&lt; 预算上限</p></td>
+</tr>
+<tr class="row-even"><td><p>错误率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(llm_requests_total{status=&quot;error&quot;}[5m])</span></code></p></td>
+<td><p>&lt; 1%</p></td>
+</tr>
+<tr class="row-odd"><td><p>质量评分</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">llm_quality_score</span></code></p></td>
+<td><p>&gt; 3.5 (1-5 分)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="b-6-rag">
+<h2>B.6 RAG 度量<a class="headerlink" href="#b-6-rag" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 12.0%" />
+<col style="width: 38.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>PromQL 查询</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>检索延迟</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.99,</span> <span class="pre">rate(rag_retrieval_latency_seconds_bucket[5m]))</span></code></p></td>
+<td><p>&lt; 200ms</p></td>
+</tr>
+<tr class="row-odd"><td><p>E2E 延迟</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.99,</span> <span class="pre">rate(rag_e2e_latency_seconds_bucket[5m]))</span></code></p></td>
+<td><p>&lt; 10s</p></td>
+</tr>
+<tr class="row-even"><td><p>检索命中率</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rag_retrieval_hit_rate</span></code></p></td>
+<td><p>&gt; 85%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Faithfulness</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rag_faithfulness_score</span></code></p></td>
+<td><p>&gt; 0.80</p></td>
+</tr>
+<tr class="row-even"><td><p>Answer Relevancy</p></td>
+<td><p>Gauge</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rag_answer_relevancy_score</span></code></p></td>
+<td><p>&gt; 0.85</p></td>
+</tr>
+<tr class="row-odd"><td><p>查询成功率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(rag_queries_total{status=&quot;success&quot;}[5m])</span> <span class="pre">/</span> <span class="pre">rate(rag_queries_total[5m])</span></code></p></td>
+<td><p>&gt; 98%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="b-7-ai-agent">
+<h2>B.7 AI Agent 度量<a class="headerlink" href="#b-7-ai-agent" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 12.0%" />
+<col style="width: 38.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>PromQL 查询</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>任务完成率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(agent_tasks_total{status=&quot;success&quot;}[1h])</span> <span class="pre">/</span> <span class="pre">rate(agent_tasks_total[1h])</span></code></p></td>
+<td><p>&gt; 80%</p></td>
+</tr>
+<tr class="row-odd"><td><p>平均步骤数</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.50,</span> <span class="pre">rate(agent_task_steps_bucket[1h]))</span></code></p></td>
+<td><p>越少越好</p></td>
+</tr>
+<tr class="row-even"><td><p>工具调用准确率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(agent_tool_calls_total{status=&quot;correct&quot;}[1h])</span> <span class="pre">/</span> <span class="pre">rate(agent_tool_calls_total[1h])</span></code></p></td>
+<td><p>&gt; 90%</p></td>
+</tr>
+<tr class="row-odd"><td><p>每任务成本</p></td>
+<td><p>Histogram</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">histogram_quantile(0.50,</span> <span class="pre">rate(agent_task_cost_dollars_bucket[1h]))</span></code></p></td>
+<td><p>&lt; 业务价值</p></td>
+</tr>
+<tr class="row-even"><td><p>循环检测率</p></td>
+<td><p>Counter</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rate(agent_loops_detected_total[1h])</span></code></p></td>
+<td><p>趋近于 0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="appendix.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">附录 常用度量工具与软件库</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="appendix_c.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">附录 C 告警规则与 Grafana 面板模板</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-web-api">B.1 Web API 度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-2">B.2 数据库度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-3">B.3 缓存度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-4">B.4 消息队列度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-5-llm">B.5 LLM 度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-6-rag">B.6 RAG 度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-7-ai-agent">B.7 AI Agent 度量</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

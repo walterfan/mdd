@@ -1,0 +1,1146 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 7 章 度量驱动的运维 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter7';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 8 章 全程度量与可观测性" href="chapter8.html" />
+    <link rel="prev" title="第 6 章 度量数据的分析与报警" href="chapter6.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter7.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter7.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter7.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 7 章 度量驱动的运维</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.1 部署升级</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">7.1.1 部署策略</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">7.1.2 金丝雀发布的度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd">7.1.3 CI/CD 流水线度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">7.2 数据运维</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">7.2.1 数据库运维度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">7.2.2 缓存运维度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">7.3 配置调整</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jvm">7.3.1 JVM 调优</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">7.3.2 线程池调优</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">7.3.3 连接池调优</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">7.4 开源组件的度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kafka">7.4.1 Kafka 度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nginx">7.4.2 Nginx 度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes">7.5 Kubernetes 环境下的运维度量 (新增)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pod">7.5.1 Pod 级别度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">7.5.2 集群级别度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hpa">7.5.3 HPA 自动伸缩</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ebpf">7.6 eBPF: 无侵入式度量采集 (新增)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gitops">7.7 GitOps 与度量驱动部署 (新增)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">7.8 AI 应用的运维度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">7.8.1 模型版本管理与灰度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">7.8.2 向量数据库运维</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">7.8.3 Prompt 版本管理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">7.9 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="chapter7">
+<span id="id1"></span><h1>第 7 章 度量驱动的运维<a class="headerlink" href="#chapter7" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>部署策略（滚动、蓝绿、金丝雀）与度量的结合</p></li>
+<li><p>Kubernetes 环境下的度量实践</p></li>
+<li><p>数据库、缓存、消息队列的运维度量</p></li>
+<li><p>GitOps 与度量驱动的自动化运维</p></li>
+<li><p>eBPF 无侵入式度量技术</p></li>
+</ul>
+</div>
+<section id="id2">
+<h2>开篇故事<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>金丝雀发布上线 5 分钟，新版本的错误率是旧版本的 3 倍。
+幸好我们的度量系统配置了自动回滚规则——
+当金丝雀实例的错误率超过基线的 2 倍时，自动回滚到旧版本。</em></p>
+<p><em>整个过程只影响了 5% 的流量，持续了不到 10 分钟。
+如果没有度量驱动的自动回滚，这个 bug 可能会影响所有用户。</em></p>
+</div></blockquote>
+<p>本章讲解如何通过度量来驱动高质量的运维工作，
+涵盖部署升级、数据运维、配置调整和开源组件的度量。</p>
+</section>
+<section id="id3">
+<h2>7.1 部署升级<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>7.1.1 部署策略<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id17">
+<caption><span class="caption-text">部署策略对比</span><a class="headerlink" href="#id17" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 32.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>策略</p></th>
+<th class="head"><p>优点</p></th>
+<th class="head"><p>缺点</p></th>
+<th class="head"><p>度量要点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>滚动部署</p></td>
+<td><p>零停机、逐步替换</p></td>
+<td><p>新旧版本共存</p></td>
+<td><p>各版本的错误率、延迟</p></td>
+</tr>
+<tr class="row-odd"><td><p>蓝绿部署</p></td>
+<td><p>快速回滚</p></td>
+<td><p>需要双倍资源</p></td>
+<td><p>两套环境的健康度</p></td>
+</tr>
+<tr class="row-even"><td><p>金丝雀发布</p></td>
+<td><p>风险可控、渐进式</p></td>
+<td><p>流量分配复杂</p></td>
+<td><p>金丝雀 vs 基线对比</p></td>
+</tr>
+<tr class="row-odd"><td><p>A/B 测试</p></td>
+<td><p>数据驱动决策</p></td>
+<td><p>需要足够流量</p></td>
+<td><p>转化率、用户行为差异</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id5">
+<h3>7.1.2 金丝雀发布的度量<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌───────────────────────────────────────────┐
+│           金丝雀发布流程                     │
+│                                            │
+│  阶段1: 5% 流量 → 金丝雀版本               │
+│         ├── 监控错误率 (&lt; 基线 × 1.1)      │
+│         ├── 监控延迟 (P99 &lt; 基线 × 1.2)    │
+│         └── 持续 15 分钟                    │
+│                                            │
+│  阶段2: 25% 流量 → 金丝雀版本              │
+│         ├── 监控同上指标                     │
+│         └── 持续 30 分钟                    │
+│                                            │
+│  阶段3: 50% 流量 → 金丝雀版本              │
+│         ├── 监控同上指标                     │
+│         └── 持续 1 小时                     │
+│                                            │
+│  阶段4: 100% 流量 → 新版本                  │
+│                                            │
+│  任何阶段指标异常 → 自动回滚                 │
+└───────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="ci-cd">
+<h3>7.1.3 CI/CD 流水线度量<a class="headerlink" href="#ci-cd" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>代码提交 → 构建 → 单元测试 → 集成测试 → 部署 → 验证
+   │         │        │          │         │       │
+   ▼         ▼        ▼          ▼         ▼       ▼
+提交频率  构建时间  通过率     通过率   部署频率  MTTR
+          构建成功率                    部署时间
+</pre></div>
+</div>
+<p>关键度量指标:</p>
+<ul class="simple">
+<li><p><strong>构建时间</strong>: 从代码提交到构建完成的时间</p></li>
+<li><p><strong>构建成功率</strong>: 构建成功的比例</p></li>
+<li><p><strong>测试通过率</strong>: 自动化测试的通过率</p></li>
+<li><p><strong>部署频率</strong>: 单位时间内的部署次数</p></li>
+<li><p><strong>部署成功率</strong>: 部署成功的比例</p></li>
+<li><p><strong>回滚率</strong>: 需要回滚的部署比例</p></li>
+</ul>
+</section>
+</section>
+<section id="id6">
+<h2>7.2 数据运维<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3>7.2.1 数据库运维度量<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p><strong>MySQL 关键度量:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 慢查询数量</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;Slow_queries&#39;</span><span class="p">;</span>
+
+<span class="c1">-- 连接数</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;Threads_connected&#39;</span><span class="p">;</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;Max_used_connections&#39;</span><span class="p">;</span>
+
+<span class="c1">-- QPS</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;Questions&#39;</span><span class="p">;</span>
+
+<span class="c1">-- InnoDB 缓冲池命中率</span>
+<span class="k">SELECT</span>
+<span class="w">  </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">VARIABLE_VALUE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">global_status</span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">VARIABLE_NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Innodb_buffer_pool_reads&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="o">/</span>
+<span class="w">    </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">VARIABLE_VALUE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">global_status</span>
+<span class="w">     </span><span class="k">WHERE</span><span class="w"> </span><span class="n">VARIABLE_NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Innodb_buffer_pool_read_requests&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">buffer_pool_hit_rate</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>7.2.2 缓存运维度量<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>Redis 关键度量:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Redis 信息</span>
+redis-cli<span class="w"> </span>INFO
+
+<span class="c1"># 关键指标</span>
+<span class="c1"># - used_memory: 内存使用量</span>
+<span class="c1"># - connected_clients: 连接客户端数</span>
+<span class="c1"># - keyspace_hits / keyspace_misses: 命中率</span>
+<span class="c1"># - evicted_keys: 驱逐的 key 数</span>
+<span class="c1"># - instantaneous_ops_per_sec: 每秒操作数</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">redis</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">check_redis_health</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+
+    <span class="c1"># 计算缓存命中率</span>
+    <span class="n">hits</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;keyspace_hits&#39;</span><span class="p">]</span>
+    <span class="n">misses</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;keyspace_misses&#39;</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">hits</span> <span class="o">+</span> <span class="n">misses</span>
+    <span class="n">hit_rate</span> <span class="o">=</span> <span class="n">hits</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;memory_used_mb&#39;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;used_memory&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">/</span> <span class="mi">1024</span><span class="p">,</span>
+        <span class="s1">&#39;connected_clients&#39;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;connected_clients&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;hit_rate&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">hit_rate</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ops_per_sec&#39;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;instantaneous_ops_per_sec&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;evicted_keys&#39;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;evicted_keys&#39;</span><span class="p">],</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id9">
+<h2>7.3 配置调整<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<section id="jvm">
+<h3>7.3.1 JVM 调优<a class="headerlink" href="#jvm" title="Link to this heading">#</a></h3>
+<p>JVM 参数调优需要基于度量数据:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># JVM 度量相关参数</span>
+java<span class="w"> </span>-server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-Xms2g<span class="w"> </span>-Xmx2g<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-XX:+UseG1GC<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-XX:MaxGCPauseMillis<span class="o">=</span><span class="m">200</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-XX:+PrintGCDetails<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-XX:+PrintGCDateStamps<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-Xloggc:/var/log/gc.log<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-XX:+UseGCLogFileRotation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-XX:NumberOfGCLogFiles<span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-XX:GCLogFileSize<span class="o">=</span>10M<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-jar<span class="w"> </span>potato-server.jar
+</pre></div>
+</div>
+<p>JVM 度量重点关注:</p>
+<ul class="simple">
+<li><p><strong>GC 频率和耗时</strong>: Full GC 频率应尽量低</p></li>
+<li><p><strong>堆内存使用</strong>: 各代空间的使用率</p></li>
+<li><p><strong>线程数</strong>: 活跃线程和峰值线程数</p></li>
+<li><p><strong>类加载</strong>: 已加载类的数量</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>7.3.2 线程池调优<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>线程池参数的配置需要基于度量:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// 可监控的线程池</span>
+<span class="nd">@Bean</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">ThreadPoolExecutor</span><span class="w"> </span><span class="nf">monitoredThreadPool</span><span class="p">(</span>
+<span class="w">        </span><span class="n">MeterRegistry</span><span class="w"> </span><span class="n">registry</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ThreadPoolExecutor</span><span class="w"> </span><span class="n">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ThreadPoolExecutor</span><span class="p">(</span>
+<span class="w">        </span><span class="mi">10</span><span class="p">,</span><span class="w">   </span><span class="c1">// corePoolSize</span>
+<span class="w">        </span><span class="mi">50</span><span class="p">,</span><span class="w">   </span><span class="c1">// maximumPoolSize</span>
+<span class="w">        </span><span class="mi">60L</span><span class="p">,</span><span class="w">  </span><span class="c1">// keepAliveTime</span>
+<span class="w">        </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">,</span>
+<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">LinkedBlockingQueue</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 注册度量</span>
+<span class="w">    </span><span class="n">Gauge</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="s">&quot;threadpool.active&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">executor</span><span class="p">,</span><span class="w"> </span><span class="n">ThreadPoolExecutor</span><span class="p">::</span><span class="n">getActiveCount</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">register</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Gauge</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="s">&quot;threadpool.queue.size&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">executor</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getQueue</span><span class="p">().</span><span class="na">size</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="na">register</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Gauge</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="s">&quot;threadpool.pool.size&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">executor</span><span class="p">,</span><span class="w"> </span><span class="n">ThreadPoolExecutor</span><span class="p">::</span><span class="n">getPoolSize</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">register</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">executor</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>度量指标:</p>
+<ul class="simple">
+<li><p><strong>活跃线程数 / 最大线程数</strong>: 反映线程池利用率</p></li>
+<li><p><strong>队列深度</strong>: 反映等待处理的任务数</p></li>
+<li><p><strong>拒绝任务数</strong>: 反映是否需要扩容</p></li>
+<li><p><strong>任务执行时间</strong>: 反映任务处理效率</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>7.3.3 连接池调优<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>数据库连接池 (如 HikariCP) 的度量:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># HikariCP 配置</span>
+<span class="nt">spring</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">datasource</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">hikari</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">minimum-idle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">      </span><span class="nt">maximum-pool-size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+<span class="w">      </span><span class="nt">idle-timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span>
+<span class="w">      </span><span class="nt">max-lifetime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1800000</span>
+<span class="w">      </span><span class="nt">connection-timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span>
+<span class="w">      </span><span class="c1"># 启用度量</span>
+<span class="w">      </span><span class="nt">register-mbeans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id12">
+<h2>7.4 开源组件的度量<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<section id="kafka">
+<h3>7.4.1 Kafka 度量<a class="headerlink" href="#kafka" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id18">
+<caption><span class="caption-text">Kafka 关键度量</span><a class="headerlink" href="#id18" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>预警阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Consumer Lag</p></td>
+<td><p>消费者落后的消息数</p></td>
+<td><p>&gt; 10000 告警</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bytes In/Out</p></td>
+<td><p>吞吐量</p></td>
+<td><p>接近带宽上限告警</p></td>
+</tr>
+<tr class="row-even"><td><p>Under Replicated Partitions</p></td>
+<td><p>副本不足的分区数</p></td>
+<td><p>&gt; 0 告警</p></td>
+</tr>
+<tr class="row-odd"><td><p>Request Latency</p></td>
+<td><p>请求延迟</p></td>
+<td><p>P99 &gt; 100ms 告警</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="nginx">
+<h3>7.4.2 Nginx 度量<a class="headerlink" href="#nginx" title="Link to this heading">#</a></h3>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="c1"># Nginx 状态模块</span>
+<span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/nginx_status</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">stub_status</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">access_log</span><span class="w"> </span><span class="no">off</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">allow</span><span class="w"> </span><span class="mi">127</span><span class="s">.0.0.1</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">deny</span><span class="w"> </span><span class="s">all</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>关键指标:</p>
+<ul class="simple">
+<li><p><strong>Active Connections</strong>: 当前活跃连接数</p></li>
+<li><p><strong>Requests Per Second</strong>: 每秒请求数</p></li>
+<li><p><strong>Request Duration</strong>: 请求处理时间</p></li>
+<li><p><strong>HTTP Status Codes</strong>: 状态码分布</p></li>
+</ul>
+</section>
+</section>
+<section id="kubernetes">
+<h2>7.5 Kubernetes 环境下的运维度量 (新增)<a class="headerlink" href="#kubernetes" title="Link to this heading">#</a></h2>
+<p>在 Kubernetes 环境中，运维度量有了新的维度:</p>
+<section id="pod">
+<h3>7.5.1 Pod 级别度量<a class="headerlink" href="#pod" title="Link to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prometheus 自动发现 K8s Pod</span>
+<span class="nt">scrape_configs</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;kubernetes-pods&#39;</span>
+<span class="w">    </span><span class="nt">kubernetes_sd_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pod</span>
+<span class="w">    </span><span class="nt">relabel_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source_labels</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">[</span><span class="nv">__meta_kubernetes_pod_annotation_prometheus_io_scrape</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keep</span>
+<span class="w">        </span><span class="nt">regex</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3>7.5.2 集群级别度量<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>节点资源使用</strong>: CPU、内存、磁盘使用率</p></li>
+<li><p><strong>Pod 调度</strong>: 调度延迟、Pending Pod 数</p></li>
+<li><p><strong>服务发现</strong>: Endpoint 变更频率</p></li>
+<li><p><strong>网络</strong>: Pod 间通信延迟、DNS 解析延迟</p></li>
+</ul>
+</section>
+<section id="hpa">
+<h3>7.5.3 HPA 自动伸缩<a class="headerlink" href="#hpa" title="Link to this heading">#</a></h3>
+<p>基于度量的自动伸缩:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">autoscaling/v2</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HorizontalPodAutoscaler</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">potato-server-hpa</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scaleTargetRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">potato-server</span>
+<span class="w">  </span><span class="nt">minReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">maxReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">  </span><span class="nt">metrics</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Resource</span>
+<span class="w">      </span><span class="nt">resource</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cpu</span>
+<span class="w">        </span><span class="nt">target</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Utilization</span>
+<span class="w">          </span><span class="nt">averageUtilization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">70</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pods</span>
+<span class="w">      </span><span class="nt">pods</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">metric</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http_requests_per_second</span>
+<span class="w">        </span><span class="nt">target</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AverageValue</span>
+<span class="w">          </span><span class="nt">averageValue</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1000&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ebpf">
+<h2>7.6 eBPF: 无侵入式度量采集 (新增)<a class="headerlink" href="#ebpf" title="Link to this heading">#</a></h2>
+<p>eBPF (Extended Berkeley Packet Filter) 允许在 Linux 内核中运行沙盒程序，
+实现 <strong>零代码修改</strong> 的度量采集:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────┐
+│        用户空间               │
+│  ┌──────────────────────┐   │
+│  │ 应用程序 (无需修改)    │   │
+│  └──────────────────────┘   │
+├─────────────────────────────┤
+│        内核空间               │
+│  ┌──────────────────────┐   │
+│  │   eBPF 程序           │   │
+│  │ - 网络流量度量         │   │
+│  │ - 系统调用追踪         │   │
+│  │ - 函数延迟测量         │   │
+│  └──────────────────────┘   │
+└─────────────────────────────┘
+</pre></div>
+</div>
+<p>常用的 eBPF 可观测性工具:</p>
+<ul class="simple">
+<li><p><strong>Cilium Hubble</strong>: Kubernetes 网络可观测性</p></li>
+<li><p><strong>Pixie</strong>: 自动化应用性能监控</p></li>
+<li><p><strong>bpftrace</strong>: 高级追踪工具</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>eBPF 的优势在于 <strong>无需修改应用代码</strong> 即可采集度量数据，
+这对于 AI 生成的代码特别有价值 —— 即使 AI 忘了加埋点，
+eBPF 仍然能从内核层面捕获关键性能指标。</p>
+</div>
+</section>
+<section id="gitops">
+<h2>7.7 GitOps 与度量驱动部署 (新增)<a class="headerlink" href="#gitops" title="Link to this heading">#</a></h2>
+<p>GitOps 将 Git 作为基础设施和应用配置的唯一真实来源:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────┐    ┌──────────┐    ┌──────────────┐
+│  Git     │───&gt;│ Argo CD  │───&gt;│ Kubernetes   │
+│  Repo    │    │ / Flux   │    │  Cluster     │
+└──────────┘    └────┬─────┘    └──────┬───────┘
+                     │                  │
+                     │      度量反馈     │
+                     │  ◄───────────── │
+                     │                  │
+               ┌─────▼─────┐           │
+               │ 自动回滚   │◄──────────┘
+               │ (指标异常) │  Prometheus
+               └───────────┘  告警触发
+</pre></div>
+</div>
+<p>GitOps + 度量 = 自动化、可审计、可回滚的部署流程。</p>
+</section>
+<section id="ai">
+<h2>7.8 AI 应用的运维度量<a class="headerlink" href="#ai" title="Link to this heading">#</a></h2>
+<p>AI 应用的运维与传统微服务有几个独特的挑战：</p>
+<section id="id14">
+<h3>7.8.1 模型版本管理与灰度<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>LLM 应用的&quot;版本&quot;不仅是代码版本，还包括模型版本和 Prompt 版本：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>传统服务灰度:  代码 v1.2.3 → v1.2.4
+AI 应用灰度:   代码 v1.2.3 + 模型 gpt-4o-2024-08-06 + Prompt v7
+               → 代码 v1.2.3 + 模型 gpt-4o-2025-01-06 + Prompt v8
+</pre></div>
+</div>
+<p><strong>模型切换的度量对比：</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型 A/B 测试度量</span>
+<span class="c1"># 对比两个模型版本的质量和成本</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">延迟对比</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">model_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">histogram_quantile(0.99, rate(llm_duration{model=&quot;gpt-4o-2024&quot;}[1h]))</span>
+<span class="w">    </span><span class="nt">model_b</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">histogram_quantile(0.99, rate(llm_duration{model=&quot;gpt-4o-2025&quot;}[1h]))</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">成本对比</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">model_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rate(llm_cost_dollars{model=&quot;gpt-4o-2024&quot;}[1h])</span>
+<span class="w">    </span><span class="nt">model_b</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rate(llm_cost_dollars{model=&quot;gpt-4o-2025&quot;}[1h])</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">质量对比</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">model_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg(llm_quality_score{model=&quot;gpt-4o-2024&quot;})</span>
+<span class="w">    </span><span class="nt">model_b</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg(llm_quality_score{model=&quot;gpt-4o-2025&quot;})</span>
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h3>7.8.2 向量数据库运维<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>RAG 应用依赖向量数据库，其运维度量包括：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id19">
+<caption><span class="caption-text">向量数据库运维度量</span><a class="headerlink" href="#id19" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>度量</p></th>
+<th class="head"><p>指标</p></th>
+<th class="head"><p>告警条件</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>索引大小</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vectordb_index_size_bytes</span></code></p></td>
+<td><p>增长率异常（数据泄漏/重复写入）</p></td>
+</tr>
+<tr class="row-odd"><td><p>查询延迟</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vectordb_query_duration_seconds</span></code></p></td>
+<td><p>P99 &gt; 500ms</p></td>
+</tr>
+<tr class="row-even"><td><p>索引构建</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vectordb_index_build_duration</span></code></p></td>
+<td><p>构建时间超过 SLA</p></td>
+</tr>
+<tr class="row-odd"><td><p>召回率</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vectordb_recall_at_k</span></code></p></td>
+<td><p>低于基线（索引质量退化）</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="prompt">
+<h3>7.8.3 Prompt 版本管理<a class="headerlink" href="#prompt" title="Link to this heading">#</a></h3>
+<p>Prompt 是 AI 应用的核心&quot;配置&quot;，需要像代码一样管理：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt 变更流程（度量驱动）:
+
+1. 修改 Prompt → 提交到版本控制
+2. 运行评估数据集 → 对比基线分数
+3. 分数提升 → 灰度发布（10% 流量）
+4. 监控灰度度量 → 质量/延迟/成本对比
+5. 确认无退化 → 全量发布
+6. 持续监控 → 检测长期退化
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id16">
+<h2>7.9 本章小结<a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+<p>本章介绍了度量驱动运维的方方面面:</p>
+<ul class="simple">
+<li><p>部署策略 (滚动、蓝绿、金丝雀) 及其度量要点</p></li>
+<li><p>CI/CD 流水线的度量</p></li>
+<li><p>数据库、缓存的运维度量</p></li>
+<li><p>配置调优 (JVM、线程池、连接池) 的度量依据</p></li>
+<li><p>开源组件 (Kafka、Nginx) 的度量</p></li>
+<li><p>Kubernetes 环境下的运维度量和 HPA</p></li>
+<li><p>eBPF 无侵入式度量采集</p></li>
+<li><p>GitOps 与度量驱动的自动化部署</p></li>
+<li><p>AI 应用的模型灰度、向量数据库运维、Prompt 版本管理</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点:</strong></p>
+<ul class="simple">
+<li><p>金丝雀发布是度量驱动部署的最佳实践</p></li>
+<li><p>配置调优必须基于度量数据，而非经验猜测</p></li>
+<li><p>Kubernetes HPA 实现了基于度量的自动伸缩</p></li>
+<li><p>AI 应用的&quot;版本&quot;包括代码 + 模型 + Prompt 三个维度</p></li>
+<li><p>eBPF 提供了零侵入的度量采集能力</p></li>
+<li><p>GitOps + 度量 = 自动化可回滚的部署</p></li>
+</ul>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">💡 避坑指南：金丝雀发布的 3 个关键点</p>
+<p><strong>关键点 1：选对比较指标</strong></p>
+<p>不要只比较错误率。延迟 P99、内存使用趋势、业务指标 (如转化率) 都应该纳入比较。
+一个版本可能错误率不变，但内存泄漏导致 12 小时后 OOM。</p>
+<p><strong>关键点 2：流量比例要够</strong></p>
+<p>金丝雀流量太少 (如 1%)，统计上不显著，可能漏掉问题。
+建议至少 5-10% 的流量，持续观察 15-30 分钟。</p>
+<p><strong>关键点 3：自动回滚要快</strong></p>
+<p>检测到异常后，回滚应该在 1 分钟内完成。
+手动回滚太慢——等你打开电脑、登录系统、确认问题，用户已经受影响了。</p>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>你的团队使用什么部署策略？是否有基于度量的自动回滚机制？</p></li>
+<li><p>如果你的 AI 应用需要更换 LLM 模型 (如从 GPT-4o 迁移到 Claude Sonnet)，你会如何做灰度发布？</p></li>
+<li><p>eBPF 度量和应用内埋点各有什么优缺点？在什么场景下应该选择哪种？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter6.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 6 章 度量数据的分析与报警</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter8.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 8 章 全程度量与可观测性</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.1 部署升级</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">7.1.1 部署策略</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">7.1.2 金丝雀发布的度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd">7.1.3 CI/CD 流水线度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">7.2 数据运维</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">7.2.1 数据库运维度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">7.2.2 缓存运维度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">7.3 配置调整</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jvm">7.3.1 JVM 调优</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">7.3.2 线程池调优</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">7.3.3 连接池调优</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">7.4 开源组件的度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kafka">7.4.1 Kafka 度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nginx">7.4.2 Nginx 度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes">7.5 Kubernetes 环境下的运维度量 (新增)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pod">7.5.1 Pod 级别度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">7.5.2 集群级别度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hpa">7.5.3 HPA 自动伸缩</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ebpf">7.6 eBPF: 无侵入式度量采集 (新增)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gitops">7.7 GitOps 与度量驱动部署 (新增)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">7.8 AI 应用的运维度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">7.8.1 模型版本管理与灰度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">7.8.2 向量数据库运维</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt">7.8.3 Prompt 版本管理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">7.9 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

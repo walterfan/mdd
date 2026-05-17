@@ -1,0 +1,1112 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 9 章 LLM 应用的度量体系 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter9';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 10 章 RAG 与 Agent 的度量体系" href="chapter10.html" />
+    <link rel="prev" title="第 8 章 全程度量与可观测性" href="chapter8.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter9.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter9.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter9.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 9 章 LLM 应用的度量体系</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1 为什么 LLM 需要专门的度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2 LLM 性能度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.2.1 延迟指标详解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">9.2.2 流式 vs 非流式的度量差异</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.2.3 性能度量代码实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">9.3 LLM 成本度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token">9.3.1 Token 成本模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">9.3.2 成本追踪实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">9.3.3 成本归因与预算控制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finops-for-ai">9.3.4 FinOps for AI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">9.4 LLM 质量度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">9.4.1 自动评估指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-as-judge">9.4.2 LLM-as-Judge 实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">9.4.3 幻觉检测</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">9.4.4 人工评估 vs 自动评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">9.5 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="llm">
+<span id="chapter9"></span><h1>第 9 章 LLM 应用的度量体系<a class="headerlink" href="#llm" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>LLM 应用与传统 API 在度量上的本质区别</p></li>
+<li><p>LLM 性能度量：TTFT、TPS、E2E Latency 的含义和实现</p></li>
+<li><p>LLM 成本度量：Token 成本模型、成本归因与预算控制</p></li>
+<li><p>LLM 质量度量：幻觉检测、LLM-as-Judge、自动评估方法</p></li>
+<li><p>如何用 Prometheus 为 LLM 调用添加完整的度量</p></li>
+</ul>
+</div>
+<section id="id1">
+<h2>开篇故事<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>这是一个很多团队都会遇到的场景：LLM 服务上线后，
+某天财务部门发来邮件——API 费用突然翻了好几倍。</em></p>
+<p><em>打开监控面板一看，API 调用量没有异常增长，错误率也正常。
+但问题是——根本没有 Token 用量和成本的监控面板。
+深入排查后发现，某个功能在每次调用时把大量上下文塞进了 Prompt，
+导致每次请求的 Token 消耗远超预期。一个简单的 Prompt 优化就能把成本降大半。</em></p>
+<p><em>但如果没有度量，你可能要到月底账单出来才会发现这个问题。</em></p>
+</div></blockquote>
+<p>这个场景揭示了 LLM 应用度量的核心挑战：传统的 HTTP 状态码和响应时间
+已经无法反映 LLM 服务的真实状态。你需要一套全新的度量体系。</p>
+</section>
+<section id="id2">
+<h2>9.1 为什么 LLM 需要专门的度量<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>传统 API 调用是确定性的：同样的输入，同样的输出。
+LLM 调用是概率性的：同样的 Prompt，每次输出可能不同。</p>
+<p>这意味着：</p>
+<ul class="simple">
+<li><p><strong>正确性无法用单元测试完全覆盖</strong> —— 需要统计性的质量评估</p></li>
+<li><p><strong>成本与输入长度直接相关</strong> —— 一个 Prompt 可能花 $0.001，也可能花 $0.1</p></li>
+<li><p><strong>延迟波动大</strong> —— 取决于输出长度、模型负载、是否 Streaming</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table" id="id14">
+<caption><span class="caption-text">传统 API vs LLM API 度量对比</span><a class="headerlink" href="#id14" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>传统 API</p></th>
+<th class="head"><p>LLM API</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>正确性</p></td>
+<td><p>状态码 200 = 成功</p></td>
+<td><p>200 但答案可能是错的（幻觉）</p></td>
+</tr>
+<tr class="row-odd"><td><p>延迟</p></td>
+<td><p>相对稳定（毫秒级）</p></td>
+<td><p>与输出 Token 数成正比（秒级）</p></td>
+</tr>
+<tr class="row-even"><td><p>成本</p></td>
+<td><p>固定（按请求或资源计费）</p></td>
+<td><p>按 Token 计费，差异可达 100 倍</p></td>
+</tr>
+<tr class="row-odd"><td><p>可重复性</p></td>
+<td><p>确定性</p></td>
+<td><p>概率性（temperature &gt; 0）</p></td>
+</tr>
+<tr class="row-even"><td><p>质量评估</p></td>
+<td><p>功能测试即可</p></td>
+<td><p>需要人工评估 + 自动评估</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>因此，LLM 应用的度量需要覆盖三个传统 API 不需要关心的维度：
+<strong>成本</strong>、<strong>质量</strong> 和 <strong>Token 效率</strong>。</p>
+</section>
+<section id="id3">
+<h2>9.2 LLM 性能度量<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>9.2.1 延迟指标详解<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>LLM 的延迟与传统 API 有本质区别。传统 API 的延迟主要取决于服务端处理时间，
+而 LLM 的延迟取决于 <strong>输出 Token 的数量</strong>——输出越长，延迟越高。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────┐
+│              LLM 延迟分解                          │
+│                                                    │
+│  ┌─────────┐  ┌──────────────────┐  ┌──────────┐ │
+│  │ 排队等待 │→│ 首 Token 生成     │→│ 后续生成  │ │
+│  │ Queue    │  │ TTFT             │  │ 逐Token  │ │
+│  │ Time     │  │ Time to First    │  │ TPS      │ │
+│  │          │  │ Token            │  │ Tokens   │ │
+│  │          │  │                  │  │ Per Sec  │ │
+│  └─────────┘  └──────────────────┘  └──────────┘ │
+│                                                    │
+│  E2E Latency = Queue + TTFT + (Output Tokens / TPS)│
+└──────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>关键延迟指标：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id15">
+<caption><span class="caption-text">LLM 延迟指标</span><a class="headerlink" href="#id15" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>参考值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TTFT</p></td>
+<td><p>Time to First Token，首 Token 延迟</p></td>
+<td><p>&lt; 500ms（交互场景）</p></td>
+</tr>
+<tr class="row-odd"><td><p>TPS</p></td>
+<td><p>Tokens Per Second，生成速率</p></td>
+<td><p>30-100 TPS（取决于模型）</p></td>
+</tr>
+<tr class="row-even"><td><p>E2E Latency</p></td>
+<td><p>端到端延迟（从请求到完整响应）</p></td>
+<td><p>取决于输出长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>Queue Time</p></td>
+<td><p>排队等待时间</p></td>
+<td><p>&lt; 100ms（正常负载）</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="vs">
+<h3>9.2.2 流式 vs 非流式的度量差异<a class="headerlink" href="#vs" title="Link to this heading">#</a></h3>
+<p>LLM 调用通常有两种模式，度量方式不同：</p>
+<ul class="simple">
+<li><p><strong>非流式（Non-streaming）</strong>：等待完整响应后返回。度量简单，直接记录 E2E 延迟。</p></li>
+<li><p><strong>流式（Streaming）</strong>：逐 Token 返回。需要分别度量 TTFT 和 TPS。</p></li>
+</ul>
+<p>流式模式下，用户感知到的延迟是 TTFT（首 Token 出现的时间），
+而非 E2E 延迟。因此 <strong>TTFT 是流式场景下最重要的延迟指标</strong>。</p>
+</section>
+<section id="id5">
+<h3>9.2.3 性能度量代码实现<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">Histogram</span><span class="p">,</span> <span class="n">Gauge</span>
+
+<span class="c1"># Token 使用量</span>
+<span class="n">llm_tokens_total</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;llm_tokens_total&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Total tokens consumed&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;direction&quot;</span><span class="p">]</span>  <span class="c1"># direction: input/output</span>
+<span class="p">)</span>
+
+<span class="c1"># 请求延迟</span>
+<span class="n">llm_request_duration</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;llm_request_duration_seconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LLM request duration&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;endpoint&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># TTFT</span>
+<span class="n">llm_ttft_seconds</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;llm_ttft_seconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Time to first token&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># 生成速率</span>
+<span class="n">llm_tps</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;llm_tokens_per_second&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Token generation rate&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>下面是一个带完整度量的 LLM 调用包装器：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MetricsLLMClient</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;带度量的 LLM 客户端包装器&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;claude-sonnet-4-20250514&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+                <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+            <span class="c1"># 记录 Token 使用</span>
+            <span class="n">input_tk</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">input_tokens</span>
+            <span class="n">output_tk</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">output_tokens</span>
+            <span class="n">llm_tokens_total</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;input&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="n">input_tk</span><span class="p">)</span>
+            <span class="n">llm_tokens_total</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;output&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="n">output_tk</span><span class="p">)</span>
+
+            <span class="c1"># 记录延迟和生成速率</span>
+            <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+            <span class="n">llm_request_duration</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="s2">&quot;messages&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">output_tk</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">tps</span> <span class="o">=</span> <span class="n">output_tk</span> <span class="o">/</span> <span class="n">duration</span>
+                <span class="n">llm_tps</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">tps</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+                <span class="s2">&quot;input_tokens&quot;</span><span class="p">:</span> <span class="n">input_tk</span><span class="p">,</span>
+                <span class="s2">&quot;output_tokens&quot;</span><span class="p">:</span> <span class="n">output_tk</span><span class="p">,</span>
+                <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">llm_request_duration</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="s2">&quot;messages&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+            <span class="k">raise</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2>9.3 LLM 成本度量<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="token">
+<h3>9.3.1 Token 成本模型<a class="headerlink" href="#token" title="Link to this heading">#</a></h3>
+<p>LLM 的成本与 Token 使用量直接挂钩。不同模型的定价差异巨大：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id16">
+<caption><span class="caption-text">主流 LLM 定价（2026 年参考价，$/百万 Token）</span><a class="headerlink" href="#id16" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>模型</p></th>
+<th class="head"><p>输入价格</p></th>
+<th class="head"><p>输出价格</p></th>
+<th class="head"><p>性价比</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Claude Sonnet 4</p></td>
+<td><p>$3.00</p></td>
+<td><p>$15.00</p></td>
+<td><p>高质量</p></td>
+</tr>
+<tr class="row-odd"><td><p>Claude Haiku 4</p></td>
+<td><p>$0.80</p></td>
+<td><p>$4.00</p></td>
+<td><p>高性价比</p></td>
+</tr>
+<tr class="row-even"><td><p>GPT-4o</p></td>
+<td><p>$2.50</p></td>
+<td><p>$10.00</p></td>
+<td><p>通用</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT-4o-mini</p></td>
+<td><p>$0.15</p></td>
+<td><p>$0.60</p></td>
+<td><p>极低成本</p></td>
+</tr>
+<tr class="row-even"><td><p>DeepSeek V3</p></td>
+<td><p>$0.27</p></td>
+<td><p>$1.10</p></td>
+<td><p>开源替代</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id7">
+<h3>9.3.2 成本追踪实现<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MODEL_PRICING</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># $/百万 Token</span>
+    <span class="s2">&quot;claude-sonnet-4-20250514&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="mf">15.0</span><span class="p">},</span>
+    <span class="s2">&quot;claude-haiku-4-20250514&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="mf">0.80</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">},</span>
+    <span class="s2">&quot;gpt-4o&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">},</span>
+    <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="mf">0.60</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">llm_cost_dollars</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;llm_cost_dollars_total&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Total LLM cost in USD&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;use_case&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">track_cost</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_tokens</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="n">output_tokens</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">use_case</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;追踪 LLM 调用成本&quot;&quot;&quot;</span>
+    <span class="n">pricing</span> <span class="o">=</span> <span class="n">MODEL_PRICING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">input_tokens</span> <span class="o">*</span> <span class="n">pricing</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">output_tokens</span> <span class="o">*</span> <span class="n">pricing</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="mi">1_000_000</span>
+    <span class="n">llm_cost_dollars</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">use_case</span><span class="o">=</span><span class="n">use_case</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>9.3.3 成本归因与预算控制<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>在实际系统中，LLM 成本需要按 <strong>用途</strong> 归因，才能知道钱花在了哪里：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>总成本 $5,000/月
+├── 客服聊天机器人    $2,000 (40%)  ← 高频低成本
+├── 文档 RAG 问答     $1,500 (30%)  ← 中频中成本
+├── 代码审查助手      $1,000 (20%)  ← 低频高成本（长上下文）
+└── 内部工具          $500  (10%)
+</pre></div>
+</div>
+<p><strong>成本告警规则：</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">groups</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llm-cost-alerts</span>
+<span class="w">    </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LLMCostSpike</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">increase(llm_cost_dollars_total[1h]) &gt; 10</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LLM</span><span class="nv"> </span><span class="s">成本激增:</span><span class="nv"> </span><span class="s">过去</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">小时</span><span class="nv"> </span><span class="s">${{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}&quot;</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LLMDailyCostExceeded</span>
+<span class="w">        </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">increase(llm_cost_dollars_total[24h]) &gt; 100</span>
+<span class="w">        </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10m</span>
+<span class="w">        </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+<span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LLM</span><span class="nv"> </span><span class="s">日成本超限:</span><span class="nv"> </span><span class="s">${{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">}}/天&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="finops-for-ai">
+<h3>9.3.4 FinOps for AI<a class="headerlink" href="#finops-for-ai" title="Link to this heading">#</a></h3>
+<p>AI 应用的成本管理（FinOps for AI）是一个新兴领域。核心实践包括：</p>
+<ol class="arabic simple">
+<li><p><strong>成本可见性</strong>：每个 API 调用都追踪 Token 和成本</p></li>
+<li><p><strong>成本归因</strong>：按功能/团队/用户归因成本</p></li>
+<li><p><strong>预算告警</strong>：设置日/周/月预算上限</p></li>
+<li><p><strong>优化策略</strong>：Prompt 压缩、模型降级、缓存、批处理</p></li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>一个简单但有效的优化：<strong>Prompt 缓存</strong>。
+如果多个请求使用相同的 System Prompt，可以利用 Anthropic 的 Prompt Caching
+功能，将重复的 Prompt 前缀缓存起来，输入成本降低 90%。</p>
+</div>
+</section>
+</section>
+<section id="id9">
+<h2>9.4 LLM 质量度量<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<p>LLM 输出的质量评估是最具挑战性的部分。
+HTTP 200 不代表答案正确——这是 LLM 度量与传统 API 度量的根本区别。</p>
+<section id="id10">
+<h3>9.4.1 自动评估指标<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id17">
+<caption><span class="caption-text">LLM 质量自动评估方法</span><a class="headerlink" href="#id17" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>方法</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>适用场景</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BLEU / ROUGE</p></td>
+<td><p>与参考答案的文本相似度</p></td>
+<td><p>翻译、摘要</p></td>
+</tr>
+<tr class="row-odd"><td><p>BERTScore</p></td>
+<td><p>基于 BERT 嵌入的语义相似度</p></td>
+<td><p>通用文本生成</p></td>
+</tr>
+<tr class="row-even"><td><p>LLM-as-Judge</p></td>
+<td><p>用另一个 LLM 评分</p></td>
+<td><p>开放式问答、创意写作</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exact Match</p></td>
+<td><p>精确匹配率</p></td>
+<td><p>分类、实体提取</p></td>
+</tr>
+<tr class="row-even"><td><p>Hallucination Rate</p></td>
+<td><p>幻觉率</p></td>
+<td><p>RAG、知识问答</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="llm-as-judge">
+<h3>9.4.2 LLM-as-Judge 实现<a class="headerlink" href="#llm-as-judge" title="Link to this heading">#</a></h3>
+<p>LLM-as-Judge 是目前最通用的自动评估方法——用一个 LLM 来评估另一个 LLM 的输出：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">JUDGE_PROMPT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;请评估以下 AI 回答的质量。</span>
+
+<span class="s2">用户问题: </span><span class="si">{question}</span>
+<span class="s2">AI 回答: </span><span class="si">{answer}</span>
+<span class="s2">参考答案: </span><span class="si">{reference}</span>
+
+<span class="s2">请从以下维度评分（1-5 分）:</span>
+<span class="s2">1. 准确性: 答案是否正确</span>
+<span class="s2">2. 完整性: 是否回答了所有要点</span>
+<span class="s2">3. 相关性: 是否切题</span>
+<span class="s2">4. 清晰度: 表达是否清晰</span>
+
+<span class="s2">请以 JSON 格式返回:</span>
+<span class="s2">{{&quot;accuracy&quot;: X, &quot;completeness&quot;: X,</span>
+<span class="s2">  &quot;relevancy&quot;: X, &quot;clarity&quot;: X, &quot;overall&quot;: X}}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">llm_quality_score</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;llm_quality_score&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LLM output quality score (1-5)&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;dimension&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_output</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">answer</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;用 LLM-as-Judge 评估输出质量&quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-haiku-4-20250514&quot;</span><span class="p">,</span>  <span class="c1"># 用低成本模型做评估</span>
+        <span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">JUDGE_PROMPT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+                <span class="n">answer</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span>
+                <span class="n">reference</span><span class="o">=</span><span class="n">reference</span>
+            <span class="p">)</span>
+        <span class="p">}]</span>
+    <span class="p">)</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">llm_quality_score</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">dim</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scores</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>9.4.3 幻觉检测<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>幻觉（Hallucination）是 LLM 最危险的问题之一——模型生成了看起来合理但实际上错误的信息。</p>
+<p>常见的幻觉检测方法：</p>
+<ol class="arabic simple">
+<li><p><strong>NLI（自然语言推理）模型</strong>：判断答案是否被上下文&quot;蕴含&quot;</p></li>
+<li><p><strong>LLM 交叉验证</strong>：用另一个 LLM 判断答案是否被上下文支持</p></li>
+<li><p><strong>实体提取 + 事实核查</strong>：提取答案中的实体和事实，与知识库对比</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm_hallucination_total</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;llm_hallucination_total&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Detected hallucinations&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;severity&quot;</span><span class="p">]</span>  <span class="c1"># minor/major/critical</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>在生产环境中，建议对 LLM 输出进行 <strong>采样评估</strong>：
+不需要评估每一个响应，而是按一定比例（如 5-10%）抽样进行质量评估，
+将结果写入 Prometheus，在 Grafana 上监控质量趋势。</p>
+</section>
+<section id="id12">
+<h3>9.4.4 人工评估 vs 自动评估<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id18">
+<caption><span class="caption-text">人工评估 vs 自动评估</span><a class="headerlink" href="#id18" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>人工评估</p></th>
+<th class="head"><p>自动评估</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>准确性</p></td>
+<td><p>高（黄金标准）</p></td>
+<td><p>中等（与人工评估相关性 ~0.7-0.8）</p></td>
+</tr>
+<tr class="row-odd"><td><p>成本</p></td>
+<td><p>高（需要人力）</p></td>
+<td><p>低（API 调用费用）</p></td>
+</tr>
+<tr class="row-even"><td><p>速度</p></td>
+<td><p>慢（小时/天级）</p></td>
+<td><p>快（秒/分钟级）</p></td>
+</tr>
+<tr class="row-odd"><td><p>可扩展性</p></td>
+<td><p>差</p></td>
+<td><p>好</p></td>
+</tr>
+<tr class="row-even"><td><p>适用场景</p></td>
+<td><p>基线建立、定期校准</p></td>
+<td><p>日常监控、CI/CD 集成</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>推荐实践</strong>：用人工评估建立基线和校准自动评估，
+用自动评估（LLM-as-Judge）做日常监控和 CI/CD 集成。</p>
+<div class="tip admonition">
+<p class="admonition-title">🔬 动手实验：为 LLM 调用添加完整度量</p>
+<p><strong>目标</strong>：在 15 分钟内为一个 OpenAI/Anthropic API 调用添加延迟、Token、成本度量。</p>
+<p><strong>步骤</strong>：</p>
+<ol class="arabic simple">
+<li><p>安装依赖：<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">prometheus-client</span> <span class="pre">anthropic</span></code></p></li>
+<li><p>复制本章的 <code class="docutils literal notranslate"><span class="pre">MetricsLLMClient</span></code> 和 <code class="docutils literal notranslate"><span class="pre">track_cost</span></code> 代码</p></li>
+<li><p>添加一个 <code class="docutils literal notranslate"><span class="pre">/metrics</span></code> 端点暴露 Prometheus 指标</p></li>
+<li><p>调用几次 LLM API，观察指标变化</p></li>
+<li><p>（可选）用 Docker 启动 Prometheus + Grafana，导入面板</p></li>
+</ol>
+<p><strong>完整代码</strong>：见 GitHub 仓库 <code class="docutils literal notranslate"><span class="pre">examples/ch9-llm-metrics/</span></code></p>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>9.5 本章小结<a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点：</strong></p>
+<ul class="simple">
+<li><p>LLM 应用的度量 = 传统度量（延迟/错误率）+ AI 特有度量（成本/质量/幻觉）</p></li>
+<li><p>TTFT 是流式场景下最重要的延迟指标</p></li>
+<li><p>Token 成本需要按用途归因，设置预算告警</p></li>
+<li><p>LLM-as-Judge 是目前最通用的自动质量评估方法</p></li>
+<li><p>生产环境建议采样评估（5-10%），而非全量评估</p></li>
+</ul>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>你的 LLM 应用目前追踪了哪些度量指标？是否覆盖了性能、成本、质量三个维度？</p></li>
+<li><p>如果你的 LLM 成本突然翻倍，你能在多长时间内发现并定位原因？</p></li>
+<li><p>LLM-as-Judge 方法有什么局限性？在什么场景下它可能不可靠？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter8.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 8 章 全程度量与可观测性</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter10.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 10 章 RAG 与 Agent 的度量体系</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1 为什么 LLM 需要专门的度量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.2 LLM 性能度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.2.1 延迟指标详解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">9.2.2 流式 vs 非流式的度量差异</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.2.3 性能度量代码实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">9.3 LLM 成本度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#token">9.3.1 Token 成本模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">9.3.2 成本追踪实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">9.3.3 成本归因与预算控制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finops-for-ai">9.3.4 FinOps for AI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">9.4 LLM 质量度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">9.4.1 自动评估指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-as-judge">9.4.2 LLM-as-Judge 实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">9.4.3 幻觉检测</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">9.4.4 人工评估 vs 自动评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">9.5 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1128 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 5 章 度量数据的聚合与展示 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter5';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 6 章 度量数据的分析与报警" href="chapter6.html" />
+    <link rel="prev" title="第 4 章 度量驱动的多语言实现" href="chapter4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter5.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter5.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter5.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 5 章 度量数据的聚合与展示</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1 度量数据的聚合和存储</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.1 聚合方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.1.2 时序数据库</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.1.3 数据保留策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2 度量数据的清洗和处理</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.2.1 数据清洗</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.2.2 数据处理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.3 度量数据的可视化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.3.1 常用图表类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.3.2 仪表盘设计原则</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.4 常用度量聚合与展示方案</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tig">5.4.1 TIG 技术栈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elkk">5.4.2 ELKK 技术栈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prometheus">5.4.3 Prometheus 技术栈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry">5.4.4 OpenTelemetry (新增)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.5 土豆微服务的度量聚合与展示</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">5.5.1 AI 应用的度量聚合特殊考量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.6 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="chapter5">
+<span id="id1"></span><h1>第 5 章 度量数据的聚合与展示<a class="headerlink" href="#chapter5" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>度量数据的聚合方式：时间聚合、空间聚合、层次聚合</p></li>
+<li><p>时序数据库的选型：InfluxDB、Prometheus、TimescaleDB</p></li>
+<li><p>数据清洗与降采样策略</p></li>
+<li><p>Grafana 仪表盘设计的最佳实践</p></li>
+<li><p>常用技术栈：TIG、ELKK、Prometheus、OpenTelemetry</p></li>
+</ul>
+</div>
+<section id="id2">
+<h2>开篇故事<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>老板问：&quot;上周我们的系统可用性是多少？&quot;
+我打开 Grafana，面对 50 个面板，不知道该看哪个。
+有 CPU 使用率、有内存趋势、有网络流量……
+但就是没有一个面板直接回答&quot;可用性是多少&quot;这个问题。</em></p>
+<p><em>那天我学到了一个教训：仪表盘不是越多越好，
+而是要能回答业务关心的问题。</em></p>
+</div></blockquote>
+<p>本章讲述如何聚合和存储度量数据，如何进行清洗和处理，
+然后重点讲解度量的可视化技术和常用的技术栈。</p>
+</section>
+<section id="id3">
+<h2>5.1 度量数据的聚合和存储<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>5.1.1 聚合方式<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>度量数据的聚合方式:</p>
+<ul class="simple">
+<li><p><strong>时间聚合</strong>: 按时间窗口聚合 (1 分钟、5 分钟、1 小时)</p></li>
+<li><p><strong>空间聚合</strong>: 按维度聚合 (按服务、按实例、按区域)</p></li>
+<li><p><strong>层次聚合</strong>: 从底层到高层逐步汇总</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>原始数据 (每秒)
+    │
+    ▼ 时间聚合
+1 分钟粒度
+    │
+    ▼ 时间聚合
+5 分钟粒度
+    │
+    ▼ 降采样
+1 小时粒度
+    │
+    ▼ 降采样
+1 天粒度
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>5.1.2 时序数据库<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>度量数据本质上是 <strong>时间序列数据 (Time Series Data)</strong>，
+推荐使用专门的时序数据库:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id16">
+<caption><span class="caption-text">时序数据库对比</span><a class="headerlink" href="#id16" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>数据库</p></th>
+<th class="head"><p>语言</p></th>
+<th class="head"><p>特点</p></th>
+<th class="head"><p>适用场景</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>InfluxDB</p></td>
+<td><p>Go</p></td>
+<td><p>类 SQL 查询、易用</p></td>
+<td><p>中小规模度量</p></td>
+</tr>
+<tr class="row-odd"><td><p>Prometheus</p></td>
+<td><p>Go</p></td>
+<td><p>Pull 模型、告警集成</p></td>
+<td><p>Kubernetes 生态</p></td>
+</tr>
+<tr class="row-even"><td><p>TimescaleDB</p></td>
+<td><p>C (PostgreSQL 扩展)</p></td>
+<td><p>SQL 兼容、成熟</p></td>
+<td><p>需要关系查询的场景</p></td>
+</tr>
+<tr class="row-odd"><td><p>VictoriaMetrics</p></td>
+<td><p>Go</p></td>
+<td><p>高压缩、高性能</p></td>
+<td><p>大规模度量存储</p></td>
+</tr>
+<tr class="row-even"><td><p>ClickHouse</p></td>
+<td><p>C++</p></td>
+<td><p>列式存储、极高吞吐</p></td>
+<td><p>分析型查询</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id6">
+<h3>5.1.3 数据保留策略<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>保留策略示例:
+
+高精度数据 (1s 粒度)  → 保留 7 天
+中精度数据 (1min 粒度) → 保留 30 天
+低精度数据 (1h 粒度)  → 保留 1 年
+汇总数据 (1d 粒度)    → 永久保留
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2>5.2 度量数据的清洗和处理<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>5.2.1 数据清洗<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>原始度量数据可能包含噪声和异常，需要清洗:</p>
+<ul class="simple">
+<li><p><strong>去重</strong>: 去除重复的度量数据点</p></li>
+<li><p><strong>补值</strong>: 填充缺失的数据点 (线性插值、前值填充)</p></li>
+<li><p><strong>去噪</strong>: 使用移动平均或中位数滤波去除噪声</p></li>
+<li><p><strong>异常检测</strong>: 识别并标记异常数据点</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>5.2.2 数据处理<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>常用的数据处理方法:</p>
+<ul class="simple">
+<li><p><strong>移动平均 (Moving Average)</strong>: 平滑数据波动</p></li>
+<li><p><strong>指数加权移动平均 (EWMA)</strong>: 近期数据权重更高</p></li>
+<li><p><strong>差分 (Derivative)</strong>: 计算变化率</p></li>
+<li><p><strong>积分 (Integral)</strong>: 计算累积量</p></li>
+<li><p><strong>百分位计算</strong>: 计算 P50, P90, P95, P99</p></li>
+</ul>
+<p><strong>Python (Pandas)</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 移动平均</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency_ma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># 指数加权移动平均</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency_ewma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># 百分位计算</span>
+<span class="n">p50</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.50</span><span class="p">)</span>
+<span class="n">p90</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.90</span><span class="p">)</span>
+<span class="n">p99</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Go (实时流处理)</strong></p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="c1">// Go 中使用滑动窗口计算 P99</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">LatencyTracker</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">mu</span><span class="w">      </span><span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+<span class="w">    </span><span class="nx">window</span><span class="w">  </span><span class="p">[]</span><span class="kt">float64</span>
+<span class="w">    </span><span class="nx">maxSize</span><span class="w"> </span><span class="kt">int</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">t</span><span class="w"> </span><span class="o">*</span><span class="nx">LatencyTracker</span><span class="p">)</span><span class="w"> </span><span class="nx">Record</span><span class="p">(</span><span class="nx">latency</span><span class="w"> </span><span class="kt">float64</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Lock</span><span class="p">()</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Unlock</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">,</span><span class="w"> </span><span class="nx">latency</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">)</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">maxSize</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">t</span><span class="w"> </span><span class="o">*</span><span class="nx">LatencyTracker</span><span class="p">)</span><span class="w"> </span><span class="nx">Percentile</span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="kt">float64</span><span class="p">)</span><span class="w"> </span><span class="kt">float64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Lock</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">sorted</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">float64</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">))</span>
+<span class="w">    </span><span class="nb">copy</span><span class="p">(</span><span class="nx">sorted</span><span class="p">,</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">window</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">t</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nx">Unlock</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">sort</span><span class="p">.</span><span class="nx">Float64s</span><span class="p">(</span><span class="nx">sorted</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="nb">float64</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">sorted</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">p</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">sorted</span><span class="p">[</span><span class="nx">idx</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>PromQL 查询示例</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># 计算 P99 延迟
+histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+
+# 计算错误率
+sum(rate(http_requests_total{status=~&quot;5..&quot;}[5m]))
+/ sum(rate(http_requests_total[5m]))
+
+# 计算 QPS
+sum(rate(http_requests_total[1m]))
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2>5.3 度量数据的可视化<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>5.3.1 常用图表类型<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id17">
+<caption><span class="caption-text">度量可视化图表</span><a class="headerlink" href="#id17" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 35.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>图表类型</p></th>
+<th class="head"><p>适用场景</p></th>
+<th class="head"><p>示例</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>折线图 (Line Chart)</p></td>
+<td><p>趋势变化</p></td>
+<td><p>CPU 使用率随时间的变化</p></td>
+</tr>
+<tr class="row-odd"><td><p>柱状图 (Bar Chart)</p></td>
+<td><p>分类比较</p></td>
+<td><p>各服务的错误数比较</p></td>
+</tr>
+<tr class="row-even"><td><p>面积图 (Area Chart)</p></td>
+<td><p>累积量变化</p></td>
+<td><p>各状态码请求的堆叠分布</p></td>
+</tr>
+<tr class="row-odd"><td><p>饼图 (Pie Chart)</p></td>
+<td><p>占比分布</p></td>
+<td><p>错误类型分布</p></td>
+</tr>
+<tr class="row-even"><td><p>热力图 (Heatmap)</p></td>
+<td><p>二维分布</p></td>
+<td><p>请求延迟的时间-频率分布</p></td>
+</tr>
+<tr class="row-odd"><td><p>仪表盘 (Gauge)</p></td>
+<td><p>单一指标</p></td>
+<td><p>当前 CPU 使用率</p></td>
+</tr>
+<tr class="row-even"><td><p>表格 (Table)</p></td>
+<td><p>精确数值</p></td>
+<td><p>Top N 慢查询</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id12">
+<h3>5.3.2 仪表盘设计原则<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>一个好的度量仪表盘应该:</p>
+<ol class="arabic simple">
+<li><p><strong>一目了然</strong>: 关键指标一眼可见</p></li>
+<li><p><strong>层次清晰</strong>: 从总览到详情逐层钻取</p></li>
+<li><p><strong>实时更新</strong>: 数据自动刷新</p></li>
+<li><p><strong>可交互</strong>: 支持时间范围选择、维度筛选</p></li>
+<li><p><strong>告警集成</strong>: 异常指标高亮显示</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────┐
+│                 系统总览 Dashboard                    │
+├─────────────┬─────────────┬─────────────────────────┤
+│  可用性      │  错误率      │  平均响应时间            │
+│  99.95%     │   0.3%      │  125ms                  │
+│  ●(绿)      │  ●(绿)      │  ●(绿)                  │
+├─────────────┴─────────────┴─────────────────────────┤
+│                                                      │
+│  ┌──────────────────────────────────────────────┐   │
+│  │  请求量趋势 (折线图)                           │   │
+│  │  ~~~~~~~~~~~~~~~~~~~~~~~~                     │   │
+│  └──────────────────────────────────────────────┘   │
+│                                                      │
+│  ┌──────────────────┐  ┌────────────────────────┐   │
+│  │ 延迟分布 (热力图) │  │ 错误类型分布 (饼图)     │   │
+│  │                   │  │                         │   │
+│  └──────────────────┘  └────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>5.4 常用度量聚合与展示方案<a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<section id="tig">
+<h3>5.4.1 TIG 技术栈<a class="headerlink" href="#tig" title="Link to this heading">#</a></h3>
+<p><strong>Telegraf + InfluxDB + Grafana</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────┐    ┌───────────┐    ┌──────────┐
+│ Telegraf  │───&gt;│ InfluxDB  │───&gt;│ Grafana  │
+│ (采集)    │    │ (存储)     │    │ (展示)   │
+└──────────┘    └───────────┘    └──────────┘
+</pre></div>
+</div>
+<p><strong>Telegraf 配置示例:</strong></p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># telegraf.conf</span>
+<span class="k">[agent]</span>
+<span class="w">  </span><span class="n">interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10s&quot;</span>
+<span class="w">  </span><span class="n">round_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="c1"># 输入: 系统指标</span>
+<span class="k">[[inputs.cpu]]</span>
+<span class="w">  </span><span class="n">percpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="n">totalcpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[[inputs.mem]]</span>
+
+<span class="k">[[inputs.disk]]</span>
+<span class="w">  </span><span class="n">ignore_fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tmpfs&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;devtmpfs&quot;</span><span class="p">]</span>
+
+<span class="c1"># 输入: Docker 容器指标</span>
+<span class="k">[[inputs.docker]]</span>
+<span class="w">  </span><span class="n">endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unix:///var/run/docker.sock&quot;</span>
+
+<span class="c1"># 输出: InfluxDB</span>
+<span class="k">[[outputs.influxdb]]</span>
+<span class="w">  </span><span class="n">urls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;http://influxdb:8086&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="n">database</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;telegraf&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="elkk">
+<h3>5.4.2 ELKK 技术栈<a class="headerlink" href="#elkk" title="Link to this heading">#</a></h3>
+<p><strong>Elasticsearch + Logstash + Kibana + Kafka</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────┐    ┌──────────┐    ┌───────────────┐    ┌──────────┐
+│ Filebeat  │───&gt;│  Kafka   │───&gt;│  Logstash     │───&gt;│  Elastic │
+│ (采集)    │    │ (缓冲)   │    │ (处理/转换)    │    │  search  │
+└──────────┘    └──────────┘    └───────────────┘    └────┬─────┘
+                                                           │
+                                                           ▼
+                                                     ┌──────────┐
+                                                     │  Kibana  │
+                                                     │  (展示)   │
+                                                     └──────────┘
+</pre></div>
+</div>
+<p><strong>Logstash 配置示例:</strong></p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="c1"># logstash.conf</span>
+<span class="n">input</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">kafka</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">bootstrap_servers</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;kafka:9092&quot;</span>
+<span class="w">    </span><span class="n">topics</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;app-logs&quot;</span><span class="o">]</span>
+<span class="w">    </span><span class="n">codec</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">json</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">filter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="n">type</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;access_log&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">grok</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">match</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;message&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;%{COMBINEDAPACHELOG}&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">date</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">match</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dd/MMM/yyyy:HH:mm:ss Z&quot;</span><span class="w"> </span><span class="o">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">mutate</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">convert</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;response&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="n">convert</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;bytes&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">output</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">elasticsearch</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hosts</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;elasticsearch:9200&quot;</span><span class="o">]</span>
+<span class="w">    </span><span class="n">index</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;app-logs-%{+YYYY.MM.dd}&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="prometheus">
+<h3>5.4.3 Prometheus 技术栈<a class="headerlink" href="#prometheus" title="Link to this heading">#</a></h3>
+<p><strong>Prometheus + Grafana + Alertmanager</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────┐
+│        微服务集群             │
+│  ┌─────┐ ┌─────┐ ┌─────┐   │
+│  │svc-1│ │svc-2│ │svc-3│   │
+│  │/met │ │/met │ │/met │   │
+│  └──┬──┘ └──┬──┘ └──┬──┘   │
+└─────┼───────┼───────┼──────┘
+      │       │       │  Pull
+      ▼       ▼       ▼
+┌──────────────────────────┐
+│      Prometheus          │
+│   (抓取、存储、查询)       │
+└──────┬──────────┬────────┘
+       │          │
+       ▼          ▼
+┌──────────┐  ┌──────────────┐
+│ Grafana  │  │ Alertmanager │
+│ (展示)    │  │ (告警)        │
+└──────────┘  └──────────────┘
+</pre></div>
+</div>
+<p><strong>Prometheus 配置示例:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># prometheus.yml</span>
+<span class="nt">global</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scrape_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+<span class="w">  </span><span class="nt">evaluation_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+
+<span class="nt">rule_files</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;rules/*.yml&quot;</span>
+
+<span class="nt">alerting</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">alertmanagers</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;alertmanager:9093&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="nt">scrape_configs</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;potato-server&#39;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/actuator/prometheus&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;potato-server:9003&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;potato-scheduler&#39;</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/actuator/prometheus&#39;</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;potato-scheduler:9002&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+<section id="opentelemetry">
+<h3>5.4.4 OpenTelemetry (新增)<a class="headerlink" href="#opentelemetry" title="Link to this heading">#</a></h3>
+<p>OpenTelemetry 是 CNCF 的统一可观测性框架，
+将 Metrics、Traces、Logs 三大信号统一收集:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────┐
+│           应用程序                     │
+│  ┌──────────────────────────────┐    │
+│  │   OpenTelemetry SDK          │    │
+│  │  ┌────────┬───────┬────────┐ │    │
+│  │  │Metrics │Traces │ Logs   │ │    │
+│  │  └────────┴───────┴────────┘ │    │
+│  └──────────────┬───────────────┘    │
+└─────────────────┼────────────────────┘
+                  │ OTLP
+                  ▼
+┌──────────────────────────────────────┐
+│      OTel Collector                   │
+│  ┌─────────┬──────────┬───────────┐  │
+│  │Receivers│Processors│ Exporters │  │
+│  └─────────┴──────────┴───────────┘  │
+└──────┬──────────┬──────────┬─────────┘
+       │          │          │
+       ▼          ▼          ▼
+┌──────────┐ ┌────────┐ ┌────────┐
+│Prometheus│ │ Jaeger │ │  Loki  │
+│(Metrics) │ │(Traces)│ │ (Logs) │
+└──────────┘ └────────┘ └────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id14">
+<h2>5.5 土豆微服务的度量聚合与展示<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<p>在土豆微服务中，我们使用以下方案:</p>
+<ul class="simple">
+<li><p><strong>系统指标</strong>: Telegraf 采集 → InfluxDB 存储 → Grafana 展示</p></li>
+<li><p><strong>应用日志</strong>: Filebeat 采集 → Kafka 缓冲 → Logstash 处理 → Elasticsearch 存储 → Kibana 展示</p></li>
+<li><p><strong>业务度量</strong>: Micrometer → InfluxDB → Grafana</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># docker-compose.yml (度量相关组件)</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">influxdb</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb:2.7</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8086:8086&quot;</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb-data:/var/lib/influxdb2</span>
+
+<span class="w">  </span><span class="nt">grafana</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grafana/grafana:10.0</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb</span>
+
+<span class="w">  </span><span class="nt">telegraf</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">telegraf:1.27</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./telegraf.conf:/etc/telegraf/telegraf.conf</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">influxdb</span>
+</pre></div>
+</div>
+<section id="ai">
+<h3>5.5.1 AI 应用的度量聚合特殊考量<a class="headerlink" href="#ai" title="Link to this heading">#</a></h3>
+<p>AI 应用的度量数据与传统微服务有几个显著差异，需要特殊处理：</p>
+<p><strong>1. 高基数标签问题</strong></p>
+<p>LLM 应用中，Prompt 内容、模型版本、用户 ID 等维度组合可能产生极高的基数，
+导致时序数据库存储爆炸。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>❌ 错误: llm_request{prompt=&quot;帮我写一篇关于...&quot;} — 每个 Prompt 一个时间序列
+✅ 正确: llm_request{model=&quot;gpt-4o&quot;, task_type=&quot;writing&quot;} — 按任务类型聚合
+</pre></div>
+</div>
+<p><strong>2. 评估数据的异步采集</strong></p>
+<p>LLM 输出质量评估（Faithfulness、Relevancy 等）通常需要异步计算，
+不能在请求路径上同步完成：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>请求路径 (同步):  延迟、Token 数、错误码 → Prometheus
+评估路径 (异步):  采样请求 → 评估队列 → LLM-as-Judge → 评估结果 → Prometheus
+</pre></div>
+</div>
+<p><strong>3. 成本度量的多维聚合</strong></p>
+<p>LLM 成本需要按模型、用户、功能、时间等多个维度聚合：</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafana 面板: LLM 成本分析</span>
+<span class="c1"># 按模型的日成本</span>
+<span class="l l-Scalar l-Scalar-Plain">sum by (model) (increase(llm_cost_dollars_total[24h]))</span>
+<span class="l l-Scalar l-Scalar-Plain"># 按功能的月成本</span>
+<span class="l l-Scalar l-Scalar-Plain">sum by (task_type) (increase(llm_cost_dollars_total[30d]))</span>
+<span class="l l-Scalar l-Scalar-Plain"># 单次请求平均成本</span>
+<span class="l l-Scalar l-Scalar-Plain">rate(llm_cost_dollars_total[1h]) / rate(llm_requests_total[1h])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id15">
+<h2>5.6 本章小结<a class="headerlink" href="#id15" title="Link to this heading">#</a></h2>
+<p>本章介绍了度量数据从采集到展示的完整流程:</p>
+<ul class="simple">
+<li><p>度量数据的聚合方式和时序数据库选型</p></li>
+<li><p>数据清洗和处理的常用方法</p></li>
+<li><p>度量可视化的图表类型和仪表盘设计原则</p></li>
+<li><p>四种主流的度量技术栈: TIG、ELKK、Prometheus、OpenTelemetry</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点:</strong></p>
+<ul class="simple">
+<li><p>时序数据库是度量数据存储的首选</p></li>
+<li><p>使用百分位数而非均值来展示延迟</p></li>
+<li><p>仪表盘应该层次清晰、一目了然</p></li>
+<li><p>OpenTelemetry 正在成为可观测性的统一标准</p></li>
+</ul>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">💡 避坑指南：仪表盘设计的 3 个原则</p>
+<p><strong>原则 1：每个面板回答一个问题</strong></p>
+<p>不要把所有指标堆在一个图上。每个面板应该能回答一个明确的问题，
+比如&quot;当前错误率是多少？&quot;或&quot;过去 24 小时的延迟趋势如何？&quot;</p>
+<p><strong>原则 2：从上到下，从概览到细节</strong></p>
+<p>面板顶部放 Stat 面板（关键数字），中间放趋势图，底部放详细表格。
+让人一眼就能看到系统的整体状态。</p>
+<p><strong>原则 3：颜色有含义</strong></p>
+<p>绿色 = 正常，黄色 = 警告，红色 = 严重。不要随意使用颜色。
+设置阈值让面板自动变色，比手动检查数值更高效。</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">🔬 动手实验：搭建 Prometheus + Grafana 监控栈</p>
+<p><strong>目标</strong>：用 Docker Compose 在 10 分钟内搭建一个完整的监控栈。</p>
+<p><strong>步骤</strong>：</p>
+<ol class="arabic simple">
+<li><p>创建 <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>，包含 Prometheus + Grafana + Node Exporter</p></li>
+<li><p>配置 Prometheus 抓取 Node Exporter 指标</p></li>
+<li><p>在 Grafana 中导入 Node Exporter 面板 (Dashboard ID: 1860)</p></li>
+<li><p>观察 CPU、内存、磁盘、网络的实时数据</p></li>
+</ol>
+<p><strong>完整配置</strong>：见 GitHub 仓库 <code class="docutils literal notranslate"><span class="pre">examples/ch5-monitoring-stack/</span></code></p>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>你的团队目前使用什么监控技术栈？它的优缺点是什么？</p></li>
+<li><p>如果让你设计一个&quot;一屏看全局&quot;的仪表盘，你会放哪 5 个面板？</p></li>
+<li><p>度量数据应该保留多久？保留策略如何平衡存储成本和分析需求？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 4 章 度量驱动的多语言实现</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter6.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 6 章 度量数据的分析与报警</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1 度量数据的聚合和存储</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.1 聚合方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.1.2 时序数据库</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.1.3 数据保留策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2 度量数据的清洗和处理</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.2.1 数据清洗</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.2.2 数据处理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.3 度量数据的可视化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.3.1 常用图表类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.3.2 仪表盘设计原则</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.4 常用度量聚合与展示方案</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tig">5.4.1 TIG 技术栈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elkk">5.4.2 ELKK 技术栈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prometheus">5.4.3 Prometheus 技术栈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry">5.4.4 OpenTelemetry (新增)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.5 土豆微服务的度量聚合与展示</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">5.5.1 AI 应用的度量聚合特殊考量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.6 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

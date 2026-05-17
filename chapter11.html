@@ -1,0 +1,1012 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 11 章 评估驱动开发（EDD） &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter11';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 12 章 度量驱动开发的最佳实践" href="chapter12.html" />
+    <link rel="prev" title="第 10 章 RAG 与 Agent 的度量体系" href="chapter10.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter11.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter11.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter11.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 11 章 评估驱动开发（EDD）</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">11.1 什么是评估驱动开发</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tdd-edd">11.1.1 从 TDD 到 EDD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">11.1.2 EDD 的核心循环</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">11.2 评估数据集的构建</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">11.2.1 黄金数据集的设计</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">11.2.2 自动生成评估数据</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">11.2.3 评估数据的版本管理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">11.3 评估框架实战</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">11.3.1 框架对比</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval">11.3.2 DeepEval 实战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd">11.3.3 集成到 CI/CD</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mdd-edd">11.4 度量金字塔：从 MDD 到 EDD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">11.5 EDD 实践检查清单</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">11.6 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="edd">
+<span id="chapter11"></span><h1>第 11 章 评估驱动开发（EDD）<a class="headerlink" href="#edd" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>什么是评估驱动开发（EDD），它与 TDD 的关系</p></li>
+<li><p>EDD 的核心循环：定义评估集 → 建立基线 → 迭代优化 → 回归验证</p></li>
+<li><p>如何构建高质量的评估数据集</p></li>
+<li><p>评估框架实战：Ragas、DeepEval、promptfoo 的对比与使用</p></li>
+<li><p>度量金字塔：从 MDD 到 EDD 的方法论升华</p></li>
+</ul>
+</div>
+<section id="id1">
+<h2>开篇故事<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>设想这样一个场景：为了降低成本，你精简了 System Prompt——
+从 500 Token 缩减到 200 Token。上线后，LLM 成本确实降了不少。</em></p>
+<p><em>但过了一段时间，用户投诉明显增加。排查发现，精简 Prompt 的过程中，
+不小心删掉了一条关键的约束指令，导致 LLM 在某些场景下开始&quot;编造&quot;答案。</em></p>
+<p><em>如果在上线前跑过一轮评估——用几十个标准问答对测试一下——
+就能在几分钟内发现这个问题。</em></p>
+</div></blockquote>
+<p>这个场景揭示了 AI 应用开发中的一个核心挑战：
+<strong>你无法用传统的单元测试来验证 LLM 的输出质量。</strong>
+你需要一种新的方法论——评估驱动开发（Eval-Driven Development, EDD）。</p>
+</section>
+<section id="id2">
+<h2>11.1 什么是评估驱动开发<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="tdd-edd">
+<h3>11.1.1 从 TDD 到 EDD<a class="headerlink" href="#tdd-edd" title="Link to this heading">#</a></h3>
+<p>传统软件有 TDD（测试驱动开发），AI 应用需要 EDD（评估驱动开发）：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>TDD 循环:  写测试 → 写代码 → 跑测试 → 重构
+EDD 循环:  写评估集 → 写 Prompt/RAG → 跑评估 → 优化
+</pre></div>
+</div>
+<p>两者的核心思想是一样的：<strong>先定义&quot;什么是正确的&quot;，再去实现它。</strong>
+区别在于：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id12">
+<caption><span class="caption-text">TDD vs EDD</span><a class="headerlink" href="#id12" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>TDD</p></th>
+<th class="head"><p>EDD</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>验证对象</p></td>
+<td><p>代码逻辑</p></td>
+<td><p>AI 输出质量</p></td>
+</tr>
+<tr class="row-odd"><td><p>测试用例</p></td>
+<td><p>确定性断言（assertEqual）</p></td>
+<td><p>统计性评估（分数 &gt; 阈值）</p></td>
+</tr>
+<tr class="row-even"><td><p>通过标准</p></td>
+<td><p>100% 通过</p></td>
+<td><p>平均分 &gt; 阈值（如 0.8）</p></td>
+</tr>
+<tr class="row-odd"><td><p>运行成本</p></td>
+<td><p>几乎为零</p></td>
+<td><p>需要 LLM API 调用（有成本）</p></td>
+</tr>
+<tr class="row-even"><td><p>运行时间</p></td>
+<td><p>秒级</p></td>
+<td><p>分钟级（取决于评估集大小）</p></td>
+</tr>
+<tr class="row-odd"><td><p>适用场景</p></td>
+<td><p>确定性逻辑</p></td>
+<td><p>概率性 AI 输出</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id3">
+<h3>11.1.2 EDD 的核心循环<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────┐
+│              EDD 核心循环                         │
+│                                                   │
+│   ① 定义评估集          ② 建立基线               │
+│   ┌──────────┐         ┌──────────┐              │
+│   │ 收集真实  │ ──────&gt; │ 运行评估  │              │
+│   │ 问题 +    │         │ 记录当前  │              │
+│   │ 标准答案  │         │ 系统分数  │              │
+│   └──────────┘         └──────────┘              │
+│        ▲                     │                    │
+│        │                     ▼                    │
+│   ┌──────────┐         ┌──────────┐              │
+│   │ 确认改进  │ &lt;────── │ 修改系统  │              │
+│   │ 无退化    │         │ (Prompt/  │              │
+│   │ 合并上线  │         │  检索/    │              │
+│   │          │         │  模型)    │              │
+│   └──────────┘         └──────────┘              │
+│   ④ 回归验证           ③ 迭代优化               │
+└─────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>每一步的具体操作：</p>
+<ol class="arabic simple">
+<li><p><strong>定义评估集</strong>：收集 50-200 个真实问题 + 标准答案（黄金数据集）</p></li>
+<li><p><strong>建立基线</strong>：用当前系统跑一轮评估，记录各维度的分数</p></li>
+<li><p><strong>迭代优化</strong>：修改 Prompt、检索策略、模型等</p></li>
+<li><p><strong>回归验证</strong>：重新跑评估，确认改进没有引入退化</p></li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>EDD 的关键原则：<strong>每次修改都要跑评估。</strong>
+就像 TDD 中每次改代码都要跑测试一样。
+没有评估的 Prompt 修改，就像没有测试的代码重构——你不知道改坏了什么。</p>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2>11.2 评估数据集的构建<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>评估数据集（Evaluation Dataset）是 EDD 的基础。
+它的质量直接决定了评估结果的可信度。</p>
+<section id="id5">
+<h3>11.2.1 黄金数据集的设计<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>一个好的评估数据集应该满足：</p>
+<ul class="simple">
+<li><p><strong>覆盖性</strong>：覆盖系统的主要使用场景</p></li>
+<li><p><strong>多样性</strong>：包含简单和复杂的问题</p></li>
+<li><p><strong>边界情况</strong>：包含容易出错的边界场景</p></li>
+<li><p><strong>可维护性</strong>：有版本管理，定期更新</p></li>
+</ul>
+<p><strong>评估样本的结构：</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EvalCase</span><span class="p">:</span>
+    <span class="n">question</span><span class="p">:</span> <span class="nb">str</span>           <span class="c1"># 用户问题</span>
+    <span class="n">expected_answer</span><span class="p">:</span> <span class="nb">str</span>    <span class="c1"># 标准答案</span>
+    <span class="n">expected_sources</span><span class="p">:</span> <span class="nb">list</span>  <span class="c1"># 期望检索到的文档</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span>           <span class="c1"># 分类（简单/复杂/边界）</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span>              <span class="c1"># 标签（用于筛选）</span>
+</pre></div>
+</div>
+<p><strong>评估集规模建议：</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>阶段</p></th>
+<th class="head"><p>评估集大小</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>原型验证</p></td>
+<td><p>20-50 个</p></td>
+<td><p>快速验证基本功能</p></td>
+</tr>
+<tr class="row-odd"><td><p>开发迭代</p></td>
+<td><p>50-100 个</p></td>
+<td><p>覆盖主要场景</p></td>
+</tr>
+<tr class="row-even"><td><p>上线前</p></td>
+<td><p>100-200 个</p></td>
+<td><p>全面覆盖 + 边界情况</p></td>
+</tr>
+<tr class="row-odd"><td><p>持续监控</p></td>
+<td><p>200+ 个</p></td>
+<td><p>定期采样 + 新增场景</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id6">
+<h3>11.2.2 自动生成评估数据<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>手动构建评估数据集耗时耗力。可以用 LLM 辅助生成：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">GENERATE_EVAL_PROMPT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;基于以下文档内容，生成 5 个问答对。</span>
+
+<span class="s2">文档内容:</span>
+<span class="si">{document}</span>
+
+<span class="s2">要求:</span>
+<span class="s2">1. 问题应该是用户可能真实提出的</span>
+<span class="s2">2. 答案必须完全基于文档内容</span>
+<span class="s2">3. 包含不同难度级别</span>
+<span class="s2">4. 以 JSON 格式返回</span>
+
+<span class="s2">格式:</span>
+<span class="s2">[</span>
+<span class="s2">  {{&quot;question&quot;: &quot;...&quot;, &quot;answer&quot;: &quot;...&quot;,</span>
+<span class="s2">    &quot;difficulty&quot;: &quot;easy|medium|hard&quot;}}</span>
+<span class="s2">]</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_eval_cases</span><span class="p">(</span><span class="n">documents</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;用 LLM 从文档中自动生成评估数据&quot;&quot;&quot;</span>
+    <span class="n">cases</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="n">GENERATE_EVAL_PROMPT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">cases</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">cases</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>自动生成的评估数据 <strong>必须经过人工审核</strong>。
+LLM 生成的&quot;标准答案&quot;本身可能有错误。
+建议流程：LLM 生成 → 人工审核 → 纳入评估集。</p>
+</div>
+</section>
+<section id="id7">
+<h3>11.2.3 评估数据的版本管理<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>评估数据集应该像代码一样进行版本管理：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>eval_data/
+├── v1.0/
+│   ├── general.json      # 通用问答 (50 个)
+│   ├── edge_cases.json   # 边界情况 (20 个)
+│   └── metadata.json     # 版本信息
+├── v1.1/
+│   ├── general.json      # 新增 10 个
+│   ├── edge_cases.json   # 新增 5 个
+│   ├── regression.json   # 回归测试集
+│   └── metadata.json
+└── latest -&gt; v1.1/
+</pre></div>
+</div>
+<p>每次发现新的失败案例，都应该加入评估集，
+确保同样的问题不会再次出现（类似于 TDD 中的&quot;bug-driven testing&quot;）。</p>
+</section>
+</section>
+<section id="id8">
+<h2>11.3 评估框架实战<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>11.3.1 框架对比<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id13">
+<caption><span class="caption-text">评估框架对比</span><a class="headerlink" href="#id13" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>框架</p></th>
+<th class="head"><p>特点</p></th>
+<th class="head"><p>适用场景</p></th>
+<th class="head"><p>集成方式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Ragas</p></td>
+<td><p>RAG 专用，指标全面</p></td>
+<td><p>RAG 系统评估</p></td>
+<td><p>Python SDK</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepEval</p></td>
+<td><p>类 pytest 语法，CI/CD 友好</p></td>
+<td><p>LLM 单元测试</p></td>
+<td><p>pytest 插件</p></td>
+</tr>
+<tr class="row-even"><td><p>promptfoo</p></td>
+<td><p>多模型对比，CLI 工具</p></td>
+<td><p>Prompt 优化</p></td>
+<td><p>CLI + YAML 配置</p></td>
+</tr>
+<tr class="row-odd"><td><p>LangSmith</p></td>
+<td><p>全链路追踪 + 评估</p></td>
+<td><p>LangChain 生态</p></td>
+<td><p>SDK + Web UI</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="deepeval">
+<h3>11.3.2 DeepEval 实战<a class="headerlink" href="#deepeval" title="Link to this heading">#</a></h3>
+<p>DeepEval 的语法类似 pytest，对开发者非常友好：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_rag.py — 用 DeepEval 做 RAG 评估</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepeval</span><span class="w"> </span><span class="kn">import</span> <span class="n">assert_test</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepeval.test_case</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMTestCase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepeval.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FaithfulnessMetric</span><span class="p">,</span>
+    <span class="n">AnswerRelevancyMetric</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rag_faithfulness</span><span class="p">():</span>
+    <span class="n">test_case</span> <span class="o">=</span> <span class="n">LLMTestCase</span><span class="p">(</span>
+        <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;什么是度量驱动开发？&quot;</span><span class="p">,</span>
+        <span class="n">actual_output</span><span class="o">=</span><span class="s2">&quot;度量驱动开发是一种以度量为核心...&quot;</span><span class="p">,</span>
+        <span class="n">retrieval_context</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;MDD 是指在软件开发过程中...&quot;</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">metric</span> <span class="o">=</span> <span class="n">FaithfulnessMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">assert_test</span><span class="p">(</span><span class="n">test_case</span><span class="p">,</span> <span class="p">[</span><span class="n">metric</span><span class="p">])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rag_relevancy</span><span class="p">():</span>
+    <span class="n">test_case</span> <span class="o">=</span> <span class="n">LLMTestCase</span><span class="p">(</span>
+        <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;如何用 Prometheus 监控微服务？&quot;</span><span class="p">,</span>
+        <span class="n">actual_output</span><span class="o">=</span><span class="s2">&quot;可以使用 Prometheus 客户端库...&quot;</span><span class="p">,</span>
+        <span class="n">retrieval_context</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;Prometheus 是一个开源的监控系统...&quot;</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">metric</span> <span class="o">=</span> <span class="n">AnswerRelevancyMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">assert_test</span><span class="p">(</span><span class="n">test_case</span><span class="p">,</span> <span class="p">[</span><span class="n">metric</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>运行方式：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 像运行 pytest 一样运行评估</span>
+deepeval<span class="w"> </span><span class="nb">test</span><span class="w"> </span>run<span class="w"> </span>test_rag.py
+
+<span class="c1"># 输出:</span>
+<span class="c1"># test_rag_faithfulness PASSED (score: 0.92)</span>
+<span class="c1"># test_rag_relevancy PASSED (score: 0.88)</span>
+<span class="c1"># 2 passed in 15.3s</span>
+</pre></div>
+</div>
+</section>
+<section id="ci-cd">
+<h3>11.3.3 集成到 CI/CD<a class="headerlink" href="#ci-cd" title="Link to this heading">#</a></h3>
+<p>将评估集成到 CI/CD 流水线，确保每次 Prompt 或检索策略的修改都经过评估：</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># .github/workflows/rag-eval.yml</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RAG Evaluation</span>
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;prompts/**&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;rag/**&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;knowledge_base/**&#39;</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">evaluate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run evaluation</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">OPENAI_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.OPENAI_API_KEY }}</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">pip install deepeval</span>
+<span class="w">          </span><span class="no">deepeval test run tests/test_rag.py</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check thresholds</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">python -c &quot;</span>
+<span class="w">          </span><span class="no">import json</span>
+<span class="w">          </span><span class="no">r = json.load(open(&#39;eval_results.json&#39;))</span>
+<span class="w">          </span><span class="no">assert r[&#39;avg_faithfulness&#39;] &gt;= 0.80</span>
+<span class="w">          </span><span class="no">assert r[&#39;avg_relevancy&#39;] &gt;= 0.85</span>
+<span class="w">          </span><span class="no">print(&#39;✅ All thresholds passed&#39;)</span>
+<span class="w">          </span><span class="no">&quot;</span>
+</pre></div>
+</div>
+<p>这样，任何可能影响 RAG 质量的代码变更都会自动触发评估，
+防止质量退化悄悄上线。</p>
+</section>
+</section>
+<section id="mdd-edd">
+<h2>11.4 度量金字塔：从 MDD 到 EDD<a class="headerlink" href="#mdd-edd" title="Link to this heading">#</a></h2>
+<p>将 MDD 和 EDD 结合起来，我们可以构建一个完整的 <strong>度量金字塔</strong>：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────┐
+│     AI 质量评估（EDD）           │  Faithfulness、Relevancy
+│     &quot;AI 做得对不对&quot;              │  幻觉率、准确率
+│     Ragas / DeepEval            │  评估数据集 + CI/CD
+├─────────────────────────────────┤
+│     应用度量（MDD）              │  延迟、吞吐量、错误率
+│     &quot;系统跑得好不好&quot;             │  TTFT、TPS、Token 成本
+│     Prometheus / OTel           │  实时监控 + 告警
+├─────────────────────────────────┤
+│     基础设施度量                  │  CPU、内存、GPU 利用率
+│     &quot;机器还活着吗&quot;               │  磁盘、网络、向量数据库
+│     Node Exporter / cAdvisor    │  基础监控
+└─────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>三层的关系：</strong></p>
+<ul class="simple">
+<li><p><strong>基础设施层</strong> （底层）：确保系统活着。这是最基本的，没有它一切免谈。</p></li>
+<li><p><strong>应用度量层</strong> （中层）：确保系统跑得好。延迟、错误率、成本都在可接受范围内。</p></li>
+<li><p><strong>AI 质量层</strong> （顶层）：确保系统做得对。这是 AI 应用特有的，也是最难但最重要的。</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>很多团队只做了底层和中层，忽略了顶层。
+结果就是：系统一切正常（绿色仪表盘），但用户不满意（投诉增加）。
+<strong>AI 应用的度量体系，必须包含质量评估层。</strong></p>
+</div>
+</section>
+<section id="id10">
+<h2>11.5 EDD 实践检查清单<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<p><strong>LLM 应用上线前：</strong></p>
+<ul class="simple">
+<li><p>[ ] 有评估数据集（至少 50 个样本）</p></li>
+<li><p>[ ] 有基线评估分数</p></li>
+<li><p>[ ] Token 使用量有监控（input/output 分开）</p></li>
+<li><p>[ ] 成本有追踪和告警（日/周/月预算）</p></li>
+<li><p>[ ] 有质量评估机制（定期采样 + LLM-as-Judge）</p></li>
+</ul>
+<p><strong>RAG 系统上线前：</strong></p>
+<ul class="simple">
+<li><p>[ ] 检索质量有评估（Precision&#64;K、Hit Rate）</p></li>
+<li><p>[ ] 生成质量有评估（Faithfulness、Relevancy）</p></li>
+<li><p>[ ] 评估集成到 CI/CD</p></li>
+<li><p>[ ] 向量数据库有监控</p></li>
+<li><p>[ ] 有评估数据集和回归测试</p></li>
+</ul>
+<p><strong>AI Agent 上线前：</strong></p>
+<ul class="simple">
+<li><p>[ ] 任务完成率有追踪</p></li>
+<li><p>[ ] 工具调用有度量</p></li>
+<li><p>[ ] 循环检测机制已就位</p></li>
+<li><p>[ ] 成本有上限控制（per-task budget）</p></li>
+<li><p>[ ] 安全护栏有监控</p></li>
+</ul>
+<div class="warning admonition">
+<p class="admonition-title">💡 避坑指南：EDD 实践中的 3 个常见陷阱</p>
+<p><strong>陷阱 1：评估集太小或不具代表性</strong></p>
+<p>20 个精心挑选的样本可能全部通过，但上线后用户的真实问题千奇百怪。
+解决方案：持续从生产环境中收集失败案例，加入评估集。</p>
+<p><strong>陷阱 2：只看平均分，忽略分布</strong></p>
+<p>平均 Faithfulness 0.85 看起来不错，但如果有 10% 的查询分数低于 0.5，
+那就意味着每 10 个用户中有 1 个会得到严重不准确的回答。
+解决方案：关注分数分布，设置最低分阈值。</p>
+<p><strong>陷阱 3：评估成本失控</strong></p>
+<p>每次评估都要调用 LLM API，200 个样本 × 4 个指标 = 800 次 LLM 调用。
+解决方案：用低成本模型（如 GPT-4o-mini）做日常评估，
+用高质量模型（如 Claude Sonnet）做关键节点评估。</p>
+</div>
+</section>
+<section id="id11">
+<h2>11.6 本章小结<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点：</strong></p>
+<ul class="simple">
+<li><p>EDD 是 AI 应用的 TDD：先定义&quot;什么是正确的&quot;，再去实现它</p></li>
+<li><p>评估数据集是 EDD 的基础，需要版本管理和持续更新</p></li>
+<li><p>DeepEval 提供了类 pytest 的评估体验，易于集成到 CI/CD</p></li>
+<li><p>度量金字塔：基础设施度量 → 应用度量 → AI 质量评估，三层缺一不可</p></li>
+<li><p><strong>没有评估的 Prompt 修改，就像没有测试的代码重构</strong></p></li>
+</ul>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>你的 AI 应用目前有评估数据集吗？如果没有，你会如何开始构建？</p></li>
+<li><p>如果你的评估分数在一次 Prompt 修改后下降了 5%，你会如何决策——上线还是回滚？</p></li>
+<li><p>EDD 和 TDD 能否结合使用？在什么场景下两者可以互补？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter10.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 10 章 RAG 与 Agent 的度量体系</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter12.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 12 章 度量驱动开发的最佳实践</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">11.1 什么是评估驱动开发</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tdd-edd">11.1.1 从 TDD 到 EDD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">11.1.2 EDD 的核心循环</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">11.2 评估数据集的构建</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">11.2.1 黄金数据集的设计</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">11.2.2 自动生成评估数据</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">11.2.3 评估数据的版本管理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">11.3 评估框架实战</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">11.3.1 框架对比</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval">11.3.2 DeepEval 实战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci-cd">11.3.3 集成到 CI/CD</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mdd-edd">11.4 度量金字塔：从 MDD 到 EDD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">11.5 EDD 实践检查清单</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">11.6 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

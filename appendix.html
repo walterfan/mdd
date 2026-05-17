@@ -1,0 +1,996 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>附录 常用度量工具与软件库 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'appendix';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="附录 B 度量指标速查表" href="appendix_b.html" />
+    <link rel="prev" title="第 12 章 度量驱动开发的最佳实践" href="chapter12.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/appendix.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fappendix.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/appendix.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>附录 常用度量工具与软件库</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1">A.1 开源软件</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-1">A.1.1 数据采集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-2">A.1.2 数据存储</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-3">A.1.3 数据处理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-4">A.1.4 数据展示</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-5">A.1.5 监控告警</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-6">A.1.6 分布式追踪</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-7">A.1.7 其他工具</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2">A.2 商业软件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-ai">A.3 AI 应用度量工具</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-1-llm">A.3.1 LLM 可观测性平台</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-2-rag-llm">A.3.2 RAG/LLM 评估框架</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-3-ai-agent">A.3.3 AI Agent 度量工具</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-4">A.3.4 向量数据库监控</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-4">A.4 度量类库</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="appendix">
+<span id="id1"></span><h1>附录 常用度量工具与软件库<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h1>
+<p>市场上的度量方案&quot;百花齐放&quot;，度量相关的开源和商业软件汗牛充栋。
+本附录对常用工具做简要介绍。</p>
+<section id="a-1">
+<h2>A.1 开源软件<a class="headerlink" href="#a-1" title="Link to this heading">#</a></h2>
+<section id="a-1-1">
+<h3>A.1.1 数据采集<a class="headerlink" href="#a-1-1" title="Link to this heading">#</a></h3>
+<p><strong>Telegraf</strong></p>
+<p>Telegraf 是 InfluxData 开发的服务器代理，用于采集、处理和写入度量数据。
+支持数百种输入输出插件。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://www.influxdata.com/time-series-platform/telegraf/">https://www.influxdata.com/time-series-platform/telegraf/</a></p></li>
+</ul>
+<p><strong>Filebeat</strong></p>
+<p>Elastic 的轻量级日志采集器，用于将日志数据转发到 Logstash 或 Elasticsearch。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://www.elastic.co/beats/filebeat">https://www.elastic.co/beats/filebeat</a></p></li>
+</ul>
+<p><strong>OpenTelemetry Collector</strong></p>
+<p>CNCF 的统一可观测性数据采集器，支持 Metrics、Traces 和 Logs。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://opentelemetry.io/docs/collector/">https://opentelemetry.io/docs/collector/</a></p></li>
+</ul>
+<p><strong>Prometheus Node Exporter</strong></p>
+<p>用于暴露 Unix/Linux 系统级别的度量数据。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="github reference external" href="https://github.com/prometheus/node_exporter">prometheus/node_exporter</a></p></li>
+</ul>
+</section>
+<section id="a-1-2">
+<h3>A.1.2 数据存储<a class="headerlink" href="#a-1-2" title="Link to this heading">#</a></h3>
+<p><strong>Elasticsearch</strong></p>
+<p>基于 Apache Lucene 的高度可扩展的开源全文搜索和分析引擎。
+可以快速、近实时地存储、搜索和分析大量数据。</p>
+<ul class="simple">
+<li><p>语言: Java</p></li>
+<li><p>官网: <a class="reference external" href="https://www.elastic.co/elasticsearch/">https://www.elastic.co/elasticsearch/</a></p></li>
+</ul>
+<p><strong>InfluxDB</strong></p>
+<p>开源的时间序列数据库，为快速并且高可靠性的时间序列数据存取做了优化。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://www.influxdata.com">https://www.influxdata.com</a></p></li>
+</ul>
+<p><strong>Prometheus</strong></p>
+<p>开源的系统监控和报警工具包，采用 Pull 模型采集度量数据，
+内置强大的查询语言 PromQL。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://prometheus.io">https://prometheus.io</a></p></li>
+</ul>
+<p><strong>VictoriaMetrics</strong></p>
+<p>高性能、低成本的时序数据库，兼容 Prometheus 协议。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://victoriametrics.com">https://victoriametrics.com</a></p></li>
+</ul>
+<p><strong>ClickHouse</strong></p>
+<p>列式存储数据库管理系统，适用于在线分析处理 (OLAP)。</p>
+<ul class="simple">
+<li><p>语言: C++</p></li>
+<li><p>官网: <a class="reference external" href="https://clickhouse.com">https://clickhouse.com</a></p></li>
+</ul>
+</section>
+<section id="a-1-3">
+<h3>A.1.3 数据处理<a class="headerlink" href="#a-1-3" title="Link to this heading">#</a></h3>
+<p><strong>Logstash</strong></p>
+<p>开源的服务器端数据处理管道工具，可以同时从多个源中提取数据，
+对其进行转换，然后发送到目的地。</p>
+<ul class="simple">
+<li><p>语言: Java (JRuby)</p></li>
+<li><p>官网: <a class="reference external" href="https://www.elastic.co/logstash/">https://www.elastic.co/logstash/</a></p></li>
+</ul>
+<p><strong>Apache Kafka</strong></p>
+<p>分布式流处理平台，用于构建实时数据管道和流式应用。</p>
+<ul class="simple">
+<li><p>语言: Java/Scala</p></li>
+<li><p>官网: <a class="reference external" href="https://kafka.apache.org">https://kafka.apache.org</a></p></li>
+</ul>
+<p><strong>Apache Flink</strong></p>
+<p>分布式流处理框架，支持有状态的实时计算。</p>
+<ul class="simple">
+<li><p>语言: Java/Scala</p></li>
+<li><p>官网: <a class="reference external" href="https://flink.apache.org">https://flink.apache.org</a></p></li>
+</ul>
+</section>
+<section id="a-1-4">
+<h3>A.1.4 数据展示<a class="headerlink" href="#a-1-4" title="Link to this heading">#</a></h3>
+<p><strong>Grafana</strong></p>
+<p>开源的度量分析与可视化平台，支持多种数据源。</p>
+<ul class="simple">
+<li><p>语言: Go + TypeScript</p></li>
+<li><p>官网: <a class="reference external" href="https://grafana.com">https://grafana.com</a></p></li>
+</ul>
+<p><strong>Kibana</strong></p>
+<p>Elastic 的数据可视化套件，为 Elasticsearch 提供图表和仪表盘。</p>
+<ul class="simple">
+<li><p>语言: TypeScript</p></li>
+<li><p>官网: <a class="reference external" href="https://www.elastic.co/kibana/">https://www.elastic.co/kibana/</a></p></li>
+</ul>
+</section>
+<section id="a-1-5">
+<h3>A.1.5 监控告警<a class="headerlink" href="#a-1-5" title="Link to this heading">#</a></h3>
+<p><strong>Alertmanager</strong></p>
+<p>Prometheus 配套的告警管理工具，负责去重、分组、路由和抑制告警。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://prometheus.io/docs/alerting/alertmanager/">https://prometheus.io/docs/alerting/alertmanager/</a></p></li>
+</ul>
+<p><strong>Grafana Alerting</strong></p>
+<p>Grafana 内置的告警功能，支持多种通知渠道。</p>
+</section>
+<section id="a-1-6">
+<h3>A.1.6 分布式追踪<a class="headerlink" href="#a-1-6" title="Link to this heading">#</a></h3>
+<p><strong>Jaeger</strong></p>
+<p>Uber 开源的端到端分布式追踪系统，源于 Dapper 和 OpenZipkin。</p>
+<ul class="simple">
+<li><p>语言: Go</p></li>
+<li><p>官网: <a class="reference external" href="https://www.jaegertracing.io">https://www.jaegertracing.io</a></p></li>
+</ul>
+<p><strong>Zipkin</strong></p>
+<p>Twitter 开源的分布式追踪系统。</p>
+<ul class="simple">
+<li><p>语言: Java</p></li>
+<li><p>官网: <a class="reference external" href="https://zipkin.io">https://zipkin.io</a></p></li>
+</ul>
+<p><strong>SkyWalking</strong></p>
+<p>Apache 开源的 APM 系统，支持分布式追踪、度量分析和日志关联。</p>
+<ul class="simple">
+<li><p>语言: Java</p></li>
+<li><p>官网: <a class="reference external" href="https://skywalking.apache.org">https://skywalking.apache.org</a></p></li>
+</ul>
+</section>
+<section id="a-1-7">
+<h3>A.1.7 其他工具<a class="headerlink" href="#a-1-7" title="Link to this heading">#</a></h3>
+<p><strong>Graphite</strong></p>
+<p>Python 编写的 Web 应用，用于收集和展示时间序列数据。</p>
+<ul class="simple">
+<li><p>语言: Python</p></li>
+<li><p>官网: <a class="reference external" href="https://graphiteapp.org">https://graphiteapp.org</a></p></li>
+</ul>
+<p><strong>Nagios</strong></p>
+<p>经典的系统和网络监控工具。</p>
+<ul class="simple">
+<li><p>语言: C</p></li>
+<li><p>官网: <a class="reference external" href="https://www.nagios.org">https://www.nagios.org</a></p></li>
+</ul>
+<p><strong>Zabbix</strong></p>
+<p>企业级的分布式监控平台。</p>
+<ul class="simple">
+<li><p>语言: C</p></li>
+<li><p>官网: <a class="reference external" href="https://www.zabbix.com">https://www.zabbix.com</a></p></li>
+</ul>
+<p><strong>collectd</strong></p>
+<p>系统统计信息收集守护进程。</p>
+<ul class="simple">
+<li><p>语言: C</p></li>
+<li><p>官网: <a class="reference external" href="https://collectd.org">https://collectd.org</a></p></li>
+</ul>
+</section>
+</section>
+<section id="a-2">
+<h2>A.2 商业软件<a class="headerlink" href="#a-2" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-text">商业度量软件</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>产品</p></th>
+<th class="head"><p>厂商</p></th>
+<th class="head"><p>特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Datadog</p></td>
+<td><p>Datadog</p></td>
+<td><p>全栈可观测性平台，SaaS</p></td>
+</tr>
+<tr class="row-odd"><td><p>New Relic</p></td>
+<td><p>New Relic</p></td>
+<td><p>APM 和基础设施监控</p></td>
+</tr>
+<tr class="row-even"><td><p>Dynatrace</p></td>
+<td><p>Dynatrace</p></td>
+<td><p>AI 驱动的全栈监控</p></td>
+</tr>
+<tr class="row-odd"><td><p>Splunk</p></td>
+<td><p>Cisco (Splunk)</p></td>
+<td><p>日志分析和安全信息</p></td>
+</tr>
+<tr class="row-even"><td><p>AWS CloudWatch</p></td>
+<td><p>Amazon</p></td>
+<td><p>AWS 原生监控服务</p></td>
+</tr>
+<tr class="row-odd"><td><p>Azure Monitor</p></td>
+<td><p>Microsoft</p></td>
+<td><p>Azure 原生监控服务</p></td>
+</tr>
+<tr class="row-even"><td><p>Google Cloud Monitoring</p></td>
+<td><p>Google</p></td>
+<td><p>GCP 原生监控服务</p></td>
+</tr>
+<tr class="row-odd"><td><p>PagerDuty</p></td>
+<td><p>PagerDuty</p></td>
+<td><p>事件管理和告警路由</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="a-3-ai">
+<h2>A.3 AI 应用度量工具<a class="headerlink" href="#a-3-ai" title="Link to this heading">#</a></h2>
+<p>随着 LLM、RAG 和 AI Agent 应用的普及，一批专门针对 AI 应用的度量和可观测性工具应运而生。</p>
+<section id="a-3-1-llm">
+<h3>A.3.1 LLM 可观测性平台<a class="headerlink" href="#a-3-1-llm" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id3">
+<caption><span class="caption-text">LLM 可观测性平台</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 15.0%" />
+<col style="width: 67.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>工具</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LangSmith</p></td>
+<td><p>商业 (免费层)</p></td>
+<td><p>LangChain 官方平台。Trace 可视化、数据集管理、在线评估、Prompt Playground。
+与 LangChain/LangGraph 深度集成。</p></td>
+</tr>
+<tr class="row-odd"><td><p>LangFuse</p></td>
+<td><p>开源 + 商业</p></td>
+<td><p>独立的 LLM 可观测性平台。支持 Trace、Session、评估、Prompt 版本管理。
+可自托管，兼容 OpenAI/Anthropic/LangChain 等多种框架。</p></td>
+</tr>
+<tr class="row-even"><td><p>Phoenix (Arize)</p></td>
+<td><p>开源</p></td>
+<td><p>Arize AI 的开源可观测性工具。支持 LLM Trace、Embedding 可视化、
+检索质量分析。与 LlamaIndex/LangChain 集成。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Helicone</p></td>
+<td><p>开源 + 商业</p></td>
+<td><p>LLM API 代理层，零代码集成。请求日志、成本追踪、缓存、速率限制。
+通过修改 API base URL 即可接入。</p></td>
+</tr>
+<tr class="row-even"><td><p>Weights &amp; Biases</p></td>
+<td><p>商业 (免费层)</p></td>
+<td><p>ML 实验追踪平台，扩展支持 LLM 应用。Prompt 追踪、模型评估、
+数据集版本管理。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Braintrust</p></td>
+<td><p>商业</p></td>
+<td><p>AI 产品评估平台。在线/离线评估、Prompt Playground、数据集管理。
+支持自定义评估函数。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="a-3-2-rag-llm">
+<h3>A.3.2 RAG/LLM 评估框架<a class="headerlink" href="#a-3-2-rag-llm" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id4">
+<caption><span class="caption-text">AI 评估框架</span><a class="headerlink" href="#id4" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 15.0%" />
+<col style="width: 67.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>框架</p></th>
+<th class="head"><p>语言</p></th>
+<th class="head"><p>特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Ragas</p></td>
+<td><p>Python</p></td>
+<td><p>RAG 系统评估的事实标准。提供 Faithfulness、Answer Relevancy、
+Context Precision/Recall 等指标。支持自动化评估流水线。</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeepEval</p></td>
+<td><p>Python</p></td>
+<td><p>通用 LLM 评估框架。14+ 预定义指标，支持 pytest 集成，
+可作为 CI/CD 中的回归测试。支持自定义评估指标。</p></td>
+</tr>
+<tr class="row-even"><td><p>TruLens</p></td>
+<td><p>Python</p></td>
+<td><p>基于反馈函数的 LLM 评估。支持 Groundedness、Relevance、
+Harmfulness 等维度。与 LlamaIndex/LangChain 集成。</p></td>
+</tr>
+<tr class="row-odd"><td><p>promptfoo</p></td>
+<td><p>TypeScript</p></td>
+<td><p>Prompt 测试和评估工具。支持多模型对比、红队测试、
+自定义断言。CLI 驱动，适合 CI/CD 集成。</p></td>
+</tr>
+<tr class="row-even"><td><p>ARES</p></td>
+<td><p>Python</p></td>
+<td><p>自动化 RAG 评估系统。使用少量人工标注 + LLM 判断，
+生成统计置信区间。学术界广泛使用。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="a-3-3-ai-agent">
+<h3>A.3.3 AI Agent 度量工具<a class="headerlink" href="#a-3-3-ai-agent" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id5">
+<caption><span class="caption-text">AI Agent 度量工具</span><a class="headerlink" href="#id5" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 15.0%" />
+<col style="width: 67.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>工具</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AgentOps</p></td>
+<td><p>开源 + 商业</p></td>
+<td><p>专门的 Agent 可观测性平台。Session 回放、工具调用追踪、
+成本追踪、错误分析。支持 LangChain/CrewAI/AutoGen。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Smith (LangSmith)</p></td>
+<td><p>商业</p></td>
+<td><p>LangGraph Agent 的原生追踪。可视化 Agent 决策树、
+工具调用链、状态转换。</p></td>
+</tr>
+<tr class="row-even"><td><p>OpenTelemetry + GenAI</p></td>
+<td><p>开源标准</p></td>
+<td><p>OTel 的 GenAI 语义约定 (Semantic Conventions)。
+标准化 LLM/Agent 的 Span 属性和度量名称。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="a-3-4">
+<h3>A.3.4 向量数据库监控<a class="headerlink" href="#a-3-4" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id6">
+<caption><span class="caption-text">向量数据库及其监控</span><a class="headerlink" href="#id6" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 15.0%" />
+<col style="width: 67.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>数据库</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>监控特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ChromaDB</p></td>
+<td><p>开源 (嵌入式)</p></td>
+<td><p>轻量级，适合开发和小规模部署。通过自定义 Prometheus Exporter 监控。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pinecone</p></td>
+<td><p>商业 (SaaS)</p></td>
+<td><p>内置监控面板：索引大小、查询延迟、QPS、错误率。</p></td>
+</tr>
+<tr class="row-even"><td><p>Milvus</p></td>
+<td><p>开源</p></td>
+<td><p>原生 Prometheus 指标导出。支持查询延迟、内存使用、索引构建进度等。</p></td>
+</tr>
+<tr class="row-odd"><td><p>Weaviate</p></td>
+<td><p>开源 + 商业</p></td>
+<td><p>内置 Prometheus 端点。支持对象数量、查询延迟、向量维度等度量。</p></td>
+</tr>
+<tr class="row-even"><td><p>Qdrant</p></td>
+<td><p>开源 + 商业</p></td>
+<td><p>内置 Prometheus 指标。支持集合大小、搜索延迟、gRPC/REST 请求度量。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="a-4">
+<h2>A.4 度量类库<a class="headerlink" href="#a-4" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="id7">
+<caption><span class="caption-text">度量类库汇总</span><a class="headerlink" href="#id7" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>类库</p></th>
+<th class="head"><p>语言</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Micrometer</p></td>
+<td><p>Java</p></td>
+<td><p>厂商中立的度量门面，Spring Boot 默认集成</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dropwizard Metrics</p></td>
+<td><p>Java</p></td>
+<td><p>成熟的 Java 度量库</p></td>
+</tr>
+<tr class="row-even"><td><p>prometheus_client</p></td>
+<td><p>Python</p></td>
+<td><p>Prometheus 官方 Python 客户端</p></td>
+</tr>
+<tr class="row-odd"><td><p>opentelemetry-python</p></td>
+<td><p>Python</p></td>
+<td><p>OpenTelemetry Python SDK</p></td>
+</tr>
+<tr class="row-even"><td><p>client_golang</p></td>
+<td><p>Go</p></td>
+<td><p>Prometheus 官方 Go 客户端</p></td>
+</tr>
+<tr class="row-odd"><td><p>opentelemetry-go</p></td>
+<td><p>Go</p></td>
+<td><p>OpenTelemetry Go SDK</p></td>
+</tr>
+<tr class="row-even"><td><p>prom-client</p></td>
+<td><p>Node.js</p></td>
+<td><p>Prometheus Node.js 客户端</p></td>
+</tr>
+<tr class="row-odd"><td><p>opentelemetry-js</p></td>
+<td><p>JavaScript</p></td>
+<td><p>OpenTelemetry JavaScript SDK</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter12.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 12 章 度量驱动开发的最佳实践</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="appendix_b.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">附录 B 度量指标速查表</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1">A.1 开源软件</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-1">A.1.1 数据采集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-2">A.1.2 数据存储</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-3">A.1.3 数据处理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-4">A.1.4 数据展示</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-5">A.1.5 监控告警</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-6">A.1.6 分布式追踪</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-7">A.1.7 其他工具</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2">A.2 商业软件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-ai">A.3 AI 应用度量工具</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-1-llm">A.3.1 LLM 可观测性平台</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-2-rag-llm">A.3.2 RAG/LLM 评估框架</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-3-ai-agent">A.3.3 AI Agent 度量工具</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-4">A.3.4 向量数据库监控</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-4">A.4 度量类库</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

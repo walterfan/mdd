@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>前言 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'preface';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 1 章 度量驱动开发概论" href="chapter1.html" />
+    <link rel="prev" title="度量驱动开发 Metrics Driven Development" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/preface.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fpreface.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/preface.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>前言</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">从一次线上排查说起</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">为什么要写这本书</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">AI 时代的三大护法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">谁应该读这本书</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">如何阅读本书</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">本书约定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">致谢</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="preface">
+<span id="id1"></span><h1>前言<a class="headerlink" href="#preface" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>从一次线上排查说起<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>做过后端开发的人，大概都有过类似的经历：线上出了问题，日志里没有明显的错误，
+CPU 和内存看起来都正常，但用户就是在抱怨。你在各个服务之间来回跳转，
+翻日志、加临时打印、重启服务碰运气……折腾半天，才发现问题出在一个不起眼的地方——
+也许是连接池耗尽，也许是某个下游服务的 P99 延迟悄悄翻了倍。</p>
+<p>这种排查过程，本质上是在为缺失的度量买单。</p>
+<p>在 Zoom 的工作中，我们维护着大量的微服务，处理音视频通信中的各种复杂场景。
+这些年的实践让我越来越确信一件事：<strong>代码写得再好，如果没有度量，你就是在盲人摸象。</strong>
+一个完善的度量体系，能让你在问题发生的第一时间看到异常，
+而不是等用户投诉了才开始排查。</p>
+<p>度量驱动开发（Metrics Driven Development, MDD）就是这个理念的系统化实践：
+每一个新服务上线前，度量代码和业务代码同等重要；每一次故障复盘，
+第一个问题永远是&quot;我们的度量为什么没有提前发现这个问题？&quot;</p>
+<p>这本书，就是这些年实践经验的总结。</p>
+</section>
+<section id="id3">
+<h2>为什么要写这本书<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>2020 年，我和付建合著了初版《微服务之道：度量驱动开发》，以 Java（Spring Boot）
+为主要技术栈，聚焦微服务场景。六年过去了，技术格局发生了翻天覆地的变化：</p>
+<ul class="simple">
+<li><p><strong>多语言并行</strong>: Go、Python、C++、Rust 各有其生态中的度量方案</p></li>
+<li><p><strong>云原生崛起</strong>: Kubernetes、Service Mesh、Serverless 改变了部署和运维方式</p></li>
+<li><p><strong>可观测性统一</strong>: OpenTelemetry 成为 CNCF 的统一标准</p></li>
+<li><p><strong>AI 辅助编程</strong>: Claude、Copilot、ChatGPT 让代码生成速度提升了 10 倍</p></li>
+<li><p><strong>AI 应用爆发</strong>: LLM、RAG、AI Agent 带来了全新的度量挑战</p></li>
+</ul>
+<p>尤其是最后两点。AI 能让你写代码快 10 倍，但如果没有度量护法加持，
+你可能在以 10 倍速度制造技术债。而 AI 应用本身——你的 RAG 系统回答了 1000 个问题，
+但你知道其中多少个答案是对的吗？你的 Agent 完成了一个任务，
+但你知道它花了多少 Token、走了多少弯路吗？</p>
+<p>这些问题，传统的 HTTP 状态码和响应时间已经无法回答。
+我们需要一套全新的度量体系。</p>
+<p>这就是本书修订的初衷：在保留 MDD 核心理念的基础上，
+全面拥抱多语言、云原生和 AI 时代的度量实践。</p>
+</section>
+<section id="ai">
+<h2>AI 时代的三大护法<a class="headerlink" href="#ai" title="Link to this heading">#</a></h2>
+<p>在 AI 辅助编程时代，要驯服 AI 这匹烈马，你需要三大护法：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>护法</p></th>
+<th class="head"><p>核心问题</p></th>
+<th class="head"><p>实现方法</p></th>
+<th class="head"><p>AI 时代的价值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>可验证性</strong></p></td>
+<td><p>AI 写对了吗？</p></td>
+<td><p>TDD（测试驱动开发）</p></td>
+<td><p>让 AI 先写测试，再写实现</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>可观测性</strong></p></td>
+<td><p>代码跑得怎样？</p></td>
+<td><p>MDD（度量驱动开发）</p></td>
+<td><p>代码上线即自带监控能力</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>可理解性</strong></p></td>
+<td><p>人能看懂吗？</p></td>
+<td><p>活文档（Living Documentation）</p></td>
+<td><p>架构图、注释、运维手册</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>三者不是孤立的，它们相互支撑：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>          可验证性（TDD）
+         &quot;确保写对了&quot;
+               ▲
+              / \
+             /   \
+            /     \
+           /  质量  \
+          /   保障   \
+         ▼           ▼
+ 可观测性（MDD）    可理解性（活文档）
+&quot;确保跑得好&quot;       &quot;确保看得懂&quot;
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>缺少任何一个护法的后果：</p>
+<ul class="simple">
+<li><p>缺可验证性：不知道对不对，线上出问题才发现</p></li>
+<li><p>缺可观测性：出了问题定位不了，只能瞪眼</p></li>
+<li><p>缺可理解性：改不动，越改越乱，最后只能重写</p></li>
+</ul>
+</div>
+</section>
+<section id="id4">
+<h2>谁应该读这本书<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>本书适合以下读者：</p>
+<ul class="simple">
+<li><p><strong>后端开发工程师</strong> (3-8 年经验)：正在或即将负责系统可观测性建设</p></li>
+<li><p><strong>SRE / DevOps 工程师</strong>：需要构建和维护度量体系</p></li>
+<li><p><strong>AI 应用开发者</strong>：需要监控 LLM、RAG、Agent 的性能和质量</p></li>
+<li><p><strong>技术管理者</strong>：需要通过度量数据做出技术决策</p></li>
+</ul>
+<p><strong>前置知识</strong>：熟悉至少一种编程语言（Go/Python/Java/C++ 均可），
+了解微服务基本概念，有一定的 Linux 和 Docker 使用经验。</p>
+</section>
+<section id="id5">
+<h2>如何阅读本书<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>本书分为五个部分，你可以根据自己的背景选择阅读路径：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>第一部分：基础篇（第 1-3 章）
+&quot;为什么需要度量，度量什么，怎么设计&quot;
+→ 所有读者建议阅读
+
+第二部分：实现篇（第 4-6 章）
+&quot;如何用代码实现度量、聚合、展示和告警&quot;
+→ 开发者重点阅读
+
+第三部分：运维篇（第 7-8 章）
+&quot;度量驱动的运维和全程可观测性&quot;
+→ SRE/DevOps 重点阅读
+
+第四部分：AI 篇（第 9-11 章）
+&quot;LLM、RAG、Agent 的度量体系和评估驱动开发&quot;
+→ AI 应用开发者必读
+
+第五部分：实践篇（第 12 章）
+&quot;最佳实践、检查清单和未来趋势&quot;
+→ 所有读者建议阅读
+</pre></div>
+</div>
+<p><strong>快速路径</strong>：如果你时间有限，建议至少阅读第 1、2、8、9、12 章，
+这五章涵盖了 MDD 的核心理念和 AI 时代的新实践。</p>
+</section>
+<section id="id6">
+<h2>本书约定<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>代码示例</strong>：本书代码涵盖 Go、Python、Java、C++ 四种语言，
+每章会标注代码所用语言。完整代码请访问 GitHub 仓库。</p></li>
+<li><p><strong>专栏标记</strong>：</p>
+<ul>
+<li><p>💡 <strong>&quot;避坑指南&quot;</strong>：常见错误和解决方案</p></li>
+<li><p>🔬 <strong>&quot;动手实验&quot;</strong>：可以在 15 分钟内完成的小实验</p></li>
+<li><p>📝 <strong>&quot;思考题&quot;</strong>：章末的开放性问题</p></li>
+</ul>
+</li>
+<li><p><strong>配套资源</strong>：所有源代码、Docker Compose 配置、Grafana 面板模板
+均放在 <a class="github reference external" href="https://github.com/walterfan/mdd">walterfan/mdd</a> 中，以供下载参考。</p></li>
+</ul>
+</section>
+<section id="id7">
+<h2>致谢<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>感谢合著者付建在初版中的贡献，他的实战经验为本书奠定了坚实的基础。</p>
+<p>感谢 Zoom 的同事们，在日常工作中对度量驱动开发的实践和反馈，
+让本书的内容不断得到验证和完善。</p>
+<p>感谢每一位读者。如果这本书能帮助你在下一次线上故障时更快地定位问题，
+少走一些弯路，那它就实现了自己的价值。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关于作者</strong></p>
+<p>Walter Fan，资深软件工程师，在 Zoom 从事音视频服务的开发和度量体系建设工作。
+拥有十余年分布式系统开发经验，专注于微服务架构、可观测性工程和 AI 应用开发。
+技术博客：<a class="reference external" href="https://www.fanyamin.com">https://www.fanyamin.com</a></p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">度量驱动开发 Metrics Driven Development</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 1 章 度量驱动开发概论</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">从一次线上排查说起</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">为什么要写这本书</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">AI 时代的三大护法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">谁应该读这本书</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">如何阅读本书</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">本书约定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">致谢</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1011 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 2 章 度量的基本概念与方法论 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter2';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 3 章 微服务度量设计" href="chapter3.html" />
+    <link rel="prev" title="第 1 章 度量驱动开发概论" href="chapter1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter2.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter2.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 2 章 度量的基本概念与方法论</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 微服务的局限</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1.1 局限</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1.2 解决方案</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2 度量的重要性</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.3 度量内容</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3.1 按度量的目标划分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.3.2 按度量的层次划分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">2.3.3 AI 应用度量层次（新增）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.4 度量指标与术语</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.4.1 统计学指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.4.2 度量类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.4.3 度量处理相关术语</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2.5 度量策略选择</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2.5.1 如何做度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.5.2 如何选择度量方案</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.6 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="chapter2">
+<span id="id1"></span><h1>第 2 章 度量的基本概念与方法论<a class="headerlink" href="#chapter2" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>微服务的局限性以及度量为什么是必要条件</p></li>
+<li><p>度量的三个维度：度量工作、度量产品、度量用户</p></li>
+<li><p>度量的层次：从基础设施到业务，再到 AI 质量</p></li>
+<li><p>度量类型：Counter、Gauge、Histogram、Summary 的选择指南</p></li>
+<li><p>度量策略：USED 框架、RED 方法、黄金信号的适用场景</p></li>
+</ul>
+</div>
+<section id="id2">
+<h2>开篇故事<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>我们的 API 服务 P99 延迟从 200ms 飙到了 5 秒，但均值只有 300ms。
+运维同事看了一眼监控面板说：&quot;平均延迟 300ms，一切正常啊。&quot;</em></p>
+<p><em>问题是，我们的面板只展示了均值。P99 = 5s 意味着每 100 个请求中有 1 个
+要等 5 秒以上——如果你的系统每秒处理 1000 个请求，
+那就是每秒有 10 个用户在忍受 5 秒的等待。</em></p>
+<p><em>从那以后，我们的所有延迟指标都改用了百分位数。</em></p>
+</div></blockquote>
+<p>这个故事告诉我们：<strong>选错了度量指标，比没有度量更危险——
+因为它会给你一种&quot;一切正常&quot;的虚假安全感。</strong></p>
+<p>本章系统地介绍度量的基本概念和方法论，帮助你选对指标、用对方法。</p>
+<p>微服务有很多优点，但缺点也很明显。本章简要介绍微服务的一些局限，
+并揭示度量为什么对微服务如此重要，然后系统全面地从术语、内容、层次、方法选择等角度
+剖析度量是什么以及如何做。</p>
+</section>
+<section id="id3">
+<h2>2.1 微服务的局限<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>2.1.1 局限<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>微服务不是灵丹妙药，有一利必有一弊。</p>
+<p>同样的事情，交给一个人做（单体服务）与交给一群人（多个微服务）做，差别巨大:</p>
+<ul class="simple">
+<li><p>一个人做的好处是无沟通协调成本，出了问题只需找一个人</p></li>
+<li><p>一群人做可以群策群力，齐头并进，但沟通协作成本直线上升</p></li>
+</ul>
+<p>微服务的主要局限:</p>
+<ul class="simple">
+<li><p>不断增长的微服务数量会导致 <strong>信息屏障</strong></p></li>
+<li><p>必须应对分布式系统固有的各种故障（网络延迟、抖动、丢包等）</p></li>
+<li><p>问题的发现与诊断更加困难，需要多个团队共同协作</p></li>
+<li><p><strong>数据一致性</strong> 难以保证</p></li>
+<li><p><strong>服务编排</strong> 的复杂性</p></li>
+<li><p><strong>分布式事务</strong> 的处理</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>2.1.2 解决方案<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>针对微服务的局限，可以从以下方面来改善:</p>
+<p><strong>1. 化繁为简</strong></p>
+<p>各司其职，简化对外接口和彼此的交互，把复杂性隐藏封装在内部。</p>
+<p><strong>2. 快速迭代</strong></p>
+<p>&quot;天下武功，唯快不破&quot;:</p>
+<ul class="simple">
+<li><p>快速演变</p></li>
+<li><p>快速伸缩</p></li>
+<li><p>快速上线</p></li>
+</ul>
+<p><strong>3. 自动化</strong></p>
+<ul class="simple">
+<li><p>自动化集成：构建部署流水线 (CI/CD)</p></li>
+<li><p>自动化测试：单元测试、API 测试、消费者契约测试</p></li>
+<li><p>自动化运维：度量驱动运维，日常操作全部自动化</p></li>
+</ul>
+<p><strong>4. 容错设计</strong></p>
+<ul class="simple">
+<li><p><strong>分流</strong>: 负载均衡，将流量合理分派给健康的节点</p></li>
+<li><p><strong>限流</strong>: 根据设定的阈值，限制请求速率</p></li>
+<li><p><strong>断流</strong>: 断路器模式，智能断开或恢复与下游的连接</p></li>
+</ul>
+<p><strong>5. 度量</strong></p>
+<p>及时发现问题、修复问题并避免类似问题。度量让你&quot;见微知著&quot;，
+不放过任何一个产品线上的问题。</p>
+</section>
+</section>
+<section id="id6">
+<h2>2.2 度量的重要性<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>&quot;Own your codes on production&quot;</em> -- 掌控你在产品线上的代码</p>
+</div></blockquote>
+<p>作为软件工程师，不能仅仅交付产品给运维人员就完事了。
+你必须深刻了解你的代码在产品线上是怎么运行的，是否和你想的一样。</p>
+<p>度量就是你了解产品线运行情况的 <strong>眼睛</strong>:</p>
+<ul class="simple">
+<li><p><strong>没有度量 = 盲人摸象</strong>: 你不知道系统的真实状态</p></li>
+<li><p><strong>有了度量 = 了如指掌</strong>: 你可以看到系统的全貌</p></li>
+</ul>
+<p>度量驱动开发 (MDD) 的核心理念:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Plan → Do → Check → Act (PDCA)
+  ↑                      │
+  └──────────────────────┘
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Plan</strong>: 制定度量计划，确定关键指标</p></li>
+<li><p><strong>Do</strong>: 实现度量代码，收集度量数据</p></li>
+<li><p><strong>Check</strong>: 分析度量数据，发现问题和趋势</p></li>
+<li><p><strong>Act</strong>: 基于度量结果采取行动，持续改进</p></li>
+</ul>
+</section>
+<section id="id7">
+<h2>2.3 度量内容<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>2.3.1 按度量的目标划分<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>1. 度量工作 (Measure Your Work)</strong></p>
+<ul class="simple">
+<li><p><strong>工作量</strong>: 代码行数、提交次数、Sprint 完成率</p></li>
+<li><p><strong>进度</strong>: 里程碑达成率、迭代速率</p></li>
+<li><p><strong>效率</strong>: 构建时间、部署频率、变更前置时间</p></li>
+<li><p><strong>质量</strong>: 代码覆盖率、缺陷密度、代码审查通过率</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>推荐使用 DORA 四个关键指标来度量团队的交付效能:</p>
+<ol class="arabic simple">
+<li><p><strong>部署频率</strong>: 组织多久部署一次代码到生产环境</p></li>
+<li><p><strong>变更前置时间</strong>: 从代码提交到代码在生产环境中成功运行所需时间</p></li>
+<li><p><strong>变更失败率</strong>: 部署导致生产环境故障的百分比</p></li>
+<li><p><strong>服务恢复时间</strong>: 从生产环境故障中恢复需要多长时间</p></li>
+</ol>
+</div>
+<p><strong>2. 度量产品 (Measure Your Production)</strong></p>
+<ul class="simple">
+<li><p><strong>健康度</strong>: 服务可用性、错误率、响应时间</p></li>
+<li><p><strong>使用量</strong>: QPS、并发连接数、活跃用户数</p></li>
+<li><p><strong>趋势</strong>: 负载变化趋势、资源消耗趋势</p></li>
+<li><p><strong>KPI</strong>: 业务关键绩效指标</p></li>
+</ul>
+<p><strong>3. 度量用户 (Measure User Behavior)</strong></p>
+<ul class="simple">
+<li><p><strong>DAU/MAU</strong>: 日活跃/月活跃用户数</p></li>
+<li><p><strong>用户旅程</strong>: 用户在系统中的行为路径</p></li>
+<li><p><strong>功能使用率</strong>: 各功能模块的使用频率</p></li>
+<li><p><strong>满意度</strong>: NPS (净推荐值)、APDEX (应用性能指数)</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>2.3.2 按度量的层次划分<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id18">
+<caption><span class="caption-text">微服务度量层次</span><a class="headerlink" href="#id18" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>层次</p></th>
+<th class="head"><p>关注点</p></th>
+<th class="head"><p>典型指标</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>基础设施层</p></td>
+<td><p>硬件和操作系统</p></td>
+<td><p>CPU、内存、磁盘、网络</p></td>
+</tr>
+<tr class="row-odd"><td><p>中间件层</p></td>
+<td><p>数据库、缓存、消息队列</p></td>
+<td><p>连接池、命中率、队列深度</p></td>
+</tr>
+<tr class="row-even"><td><p>应用程序层</p></td>
+<td><p>服务性能和健康</p></td>
+<td><p>TPS、响应时间、错误率</p></td>
+</tr>
+<tr class="row-odd"><td><p>业务层</p></td>
+<td><p>业务目标和用户体验</p></td>
+<td><p>DAU、转化率、收入</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>基础设施层指标</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────┐
+│              System Metrics                   │
+├──────────┬──────────┬──────────┬──────────────┤
+│   CPU    │  Memory  │   Disk   │   Network    │
+│ ──────── │ ──────── │ ──────── │ ──────────── │
+│ usage%   │ used/free│ IOPS     │ bandwidth    │
+│ load avg │ swap     │ latency  │ packet loss  │
+│ iowait   │ cache    │ capacity │ connections  │
+└──────────┴──────────┴──────────┴──────────────┘
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>处理器 (CPU)</strong>: 使用率、负载均值、上下文切换、中断</p></li>
+<li><p><strong>内存 (Memory)</strong>: 使用量、剩余量、交换区使用、缓存命中</p></li>
+<li><p><strong>磁盘 (Disk)</strong>: IOPS、读写延迟、容量使用率</p></li>
+<li><p><strong>网络 (Network)</strong>: 带宽利用率、丢包率、TCP 连接数</p></li>
+</ul>
+<p><strong>应用程序层指标</strong></p>
+<ul class="simple">
+<li><p><strong>TPS (每秒事务数)</strong>: 系统每秒处理的事务量</p></li>
+<li><p><strong>响应时间</strong>: P50、P90、P95、P99 延迟</p></li>
+<li><p><strong>成功率</strong>: 请求成功比例</p></li>
+<li><p><strong>总次数</strong>: 总请求/事务计数</p></li>
+</ul>
+<p><strong>业务层指标</strong></p>
+<p>业务层指标因业务而异，但有几个通用指标:</p>
+<ul class="simple">
+<li><p><strong>用户满意度 (APDEX)</strong>: 基于响应时间的用户满意度评分</p></li>
+<li><p><strong>转化率</strong>: 用户完成目标行为的比例</p></li>
+<li><p><strong>留存率</strong>: 用户在一段时间后继续使用的比例</p></li>
+</ul>
+</section>
+<section id="ai">
+<h3>2.3.3 AI 应用度量层次（新增）<a class="headerlink" href="#ai" title="Link to this heading">#</a></h3>
+<p>随着 LLM、RAG、AI Agent 的普及，度量层次需要扩展:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id19">
+<caption><span class="caption-text">AI 应用度量层次</span><a class="headerlink" href="#id19" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>层次</p></th>
+<th class="head"><p>关注点</p></th>
+<th class="head"><p>典型指标</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>基础设施层</p></td>
+<td><p>GPU、向量数据库、模型服务</p></td>
+<td><p>GPU 利用率、VRAM、向量索引大小</p></td>
+</tr>
+<tr class="row-odd"><td><p>模型服务层</p></td>
+<td><p>LLM 推理性能</p></td>
+<td><p>TTFT、TPS、Token 使用量、推理延迟</p></td>
+</tr>
+<tr class="row-even"><td><p>应用逻辑层</p></td>
+<td><p>RAG 检索、Agent 编排</p></td>
+<td><p>检索精度、工具调用准确率、步骤数</p></td>
+</tr>
+<tr class="row-odd"><td><p>质量层</p></td>
+<td><p>AI 输出质量</p></td>
+<td><p>忠实度、相关性、幻觉率、准确率</p></td>
+</tr>
+<tr class="row-even"><td><p>成本层</p></td>
+<td><p>API 调用成本</p></td>
+<td><p>$/query、$/task、Token 成本</p></td>
+</tr>
+<tr class="row-odd"><td><p>业务层</p></td>
+<td><p>用户价值</p></td>
+<td><p>任务完成率、用户满意度、ROI</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>与传统度量层次的关键区别:</p>
+<ul class="simple">
+<li><p><strong>质量层是 AI 特有的</strong>: 传统 API 返回 200 就是成功，LLM 返回 200 但答案可能是错的</p></li>
+<li><p><strong>成本层更加重要</strong>: LLM 按 Token 计费，成本与输入长度直接相关，需要精确追踪</p></li>
+<li><p><strong>确定性 vs 概率性</strong>: 传统系统是确定性的，AI 系统是概率性的，需要统计性评估</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>AI 应用的度量遵循一个原则: <strong>越往上越重要，越往下越容易量化</strong>。
+基础设施层的 GPU 利用率很容易测量，但业务层的&quot;用户是否满意&quot;很难量化。
+好的度量体系需要从上到下全覆盖。详见第 9 章。</p>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2>2.4 度量指标与术语<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>2.4.1 统计学指标<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>均值 (Mean/Average)</strong>: 所有样本值的算术平均</p></li>
+<li><p><strong>中位数 (Median)</strong>: 将样本排序后的中间值</p></li>
+<li><p><strong>百分位数 (Percentile)</strong>: P50、P90、P95、P99 等</p></li>
+<li><p><strong>标准差 (Standard Deviation)</strong>: 数据的离散程度</p></li>
+<li><p><strong>方差 (Variance)</strong>: 标准差的平方</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>在度量延迟时，<strong>不要使用均值</strong>，而应该使用百分位数。
+均值会掩盖长尾延迟问题。例如，P99 = 5s 意味着 1% 的请求延迟超过 5 秒，
+这可能影响大量用户，但均值可能只有 200ms。</p>
+</div>
+</section>
+<section id="id12">
+<h3>2.4.2 度量类型<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>常见的度量类型:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id20">
+<caption><span class="caption-text">度量类型</span><a class="headerlink" href="#id20" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>类型</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>示例</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Gauge (测量值)</p></td>
+<td><p>某个瞬时值，可增可减</p></td>
+<td><p>当前 CPU 使用率、活跃连接数</p></td>
+</tr>
+<tr class="row-odd"><td><p>Counter (计数器)</p></td>
+<td><p>单调递增的累计值</p></td>
+<td><p>总请求数、总错误数</p></td>
+</tr>
+<tr class="row-even"><td><p>Meter (速率)</p></td>
+<td><p>事件在一段时间内的平均速率</p></td>
+<td><p>每秒请求数、每分钟错误数</p></td>
+</tr>
+<tr class="row-odd"><td><p>Histogram (直方图)</p></td>
+<td><p>数据流的统计分布</p></td>
+<td><p>响应时间分布、请求大小分布</p></td>
+</tr>
+<tr class="row-even"><td><p>Timer (计时器)</p></td>
+<td><p>持续时间的直方图 + 调用次数的速率</p></td>
+<td><p>API 调用耗时</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id13">
+<h3>2.4.3 度量处理相关术语<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>采样 (Sampling)</strong>: 定期获取度量数据的快照</p></li>
+<li><p><strong>聚合 (Aggregation)</strong>: 将多个数据点合并为一个（求和、平均等）</p></li>
+<li><p><strong>降采样 (Downsampling)</strong>: 降低数据精度以节省存储</p></li>
+<li><p><strong>时间窗口 (Time Window)</strong>: 数据聚合的时间范围</p></li>
+<li><p><strong>标签/维度 (Tag/Dimension)</strong>: 度量数据的分类维度</p></li>
+<li><p><strong>基数 (Cardinality)</strong>: 标签值的种类数量</p></li>
+</ul>
+</section>
+</section>
+<section id="id14">
+<h2>2.5 度量策略选择<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="id15">
+<h3>2.5.1 如何做度量<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>度量的基本步骤:</p>
+<ol class="arabic simple">
+<li><p><strong>确定度量目标</strong>: 你想知道什么？要验证什么假设？</p></li>
+<li><p><strong>选择关键指标</strong>: 不要贪多，聚焦于最重要的指标</p></li>
+<li><p><strong>设计采集方案</strong>: 在哪里埋点？用什么工具？</p></li>
+<li><p><strong>实现度量代码</strong>: 编写代码收集度量数据</p></li>
+<li><p><strong>聚合与存储</strong>: 将度量数据聚合、存储到时序数据库</p></li>
+<li><p><strong>展示与分析</strong>: 用仪表盘展示，用查询分析</p></li>
+<li><p><strong>报警与响应</strong>: 设置阈值，自动报警</p></li>
+<li><p><strong>持续优化</strong>: 基于度量结果不断改进</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>确定目标 → 选择指标 → 设计方案 → 实现采集
+    ↑                                  │
+    │                                  ▼
+持续优化 ← 报警响应 ← 展示分析 ← 聚合存储
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h3>2.5.2 如何选择度量方案<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>选择度量方案时需要考虑:</p>
+<ul class="simple">
+<li><p><strong>数据量</strong>: 预估每秒产生的度量数据量</p></li>
+<li><p><strong>延迟要求</strong>: 需要实时还是准实时？</p></li>
+<li><p><strong>存储周期</strong>: 度量数据需要保留多长时间？</p></li>
+<li><p><strong>查询模式</strong>: 主要的查询场景是什么？</p></li>
+<li><p><strong>成本预算</strong>: 基础设施和运维成本</p></li>
+<li><p><strong>团队技能</strong>: 团队对哪些技术栈更熟悉</p></li>
+</ul>
+<p>常见的技术栈选择:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id21">
+<caption><span class="caption-text">度量技术栈对比</span><a class="headerlink" href="#id21" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>技术栈</p></th>
+<th class="head"><p>特点</p></th>
+<th class="head"><p>适用场景</p></th>
+<th class="head"><p>代表工具</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TIG</p></td>
+<td><p>轻量、灵活</p></td>
+<td><p>中小规模系统指标</p></td>
+<td><p>Telegraf + InfluxDB + Grafana</p></td>
+</tr>
+<tr class="row-odd"><td><p>ELKK</p></td>
+<td><p>全文搜索、日志分析</p></td>
+<td><p>日志聚合分析</p></td>
+<td><p>Elasticsearch + Logstash + Kibana + Kafka</p></td>
+</tr>
+<tr class="row-even"><td><p>Prometheus</p></td>
+<td><p>Pull 模型、告警集成</p></td>
+<td><p>云原生环境</p></td>
+<td><p>Prometheus + Grafana + Alertmanager</p></td>
+</tr>
+<tr class="row-odd"><td><p>OpenTelemetry</p></td>
+<td><p>统一标准、厂商中立</p></td>
+<td><p>全栈可观测性</p></td>
+<td><p>OTel Collector + 后端存储</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">🔬 动手实验：15 分钟添加 4 种度量</p>
+<p><strong>目标</strong>：用 Prometheus 客户端库为一个 Hello World 服务添加 Counter、Gauge、Histogram、Summary 四种度量。</p>
+<p><strong>步骤</strong>：</p>
+<ol class="arabic simple">
+<li><p>创建一个简单的 HTTP 服务 (Python Flask 或 Go Gin)</p></li>
+<li><p>添加 <code class="docutils literal notranslate"><span class="pre">http_requests_total</span></code> (Counter)</p></li>
+<li><p>添加 <code class="docutils literal notranslate"><span class="pre">http_connections_active</span></code> (Gauge)</p></li>
+<li><p>添加 <code class="docutils literal notranslate"><span class="pre">http_request_duration_seconds</span></code> (Histogram)</p></li>
+<li><p>添加 <code class="docutils literal notranslate"><span class="pre">http_request_size_bytes</span></code> (Summary)</p></li>
+<li><p>访问 <code class="docutils literal notranslate"><span class="pre">/metrics</span></code> 端点，观察指标格式</p></li>
+</ol>
+<p><strong>完整代码</strong>：见 GitHub 仓库 <code class="docutils literal notranslate"><span class="pre">examples/ch2-four-metrics/</span></code></p>
+</div>
+</section>
+</section>
+<section id="id17">
+<h2>2.6 本章小结<a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点：</strong></p>
+<ul class="simple">
+<li><p>度量是微服务成功的必要条件——没有度量就是盲人摸象</p></li>
+<li><p>度量分为基础设施、中间件、应用、业务四个层次，AI 应用还需要质量层和成本层</p></li>
+<li><p><strong>使用百分位数而非均值来度量延迟</strong>——均值会掩盖长尾问题</p></li>
+<li><p>USED（Usage, Saturation, Error, Delay）是核心度量维度</p></li>
+<li><p>度量驱动开发遵循 PDCA 循环：Plan → Do → Check → Act</p></li>
+</ul>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>你的系统目前使用均值还是百分位数来度量延迟？如果是均值，P99 可能是多少？</p></li>
+<li><p>用 USED 框架分析你最熟悉的一个服务，四个维度分别应该度量什么？</p></li>
+<li><p>Counter 和 Gauge 的区别是什么？在什么场景下容易选错？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 1 章 度量驱动开发概论</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 3 章 微服务度量设计</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 微服务的局限</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1.1 局限</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1.2 解决方案</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2 度量的重要性</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.3 度量内容</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.3.1 按度量的目标划分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.3.2 按度量的层次划分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">2.3.3 AI 应用度量层次（新增）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.4 度量指标与术语</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.4.1 统计学指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.4.2 度量类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.4.3 度量处理相关术语</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2.5 度量策略选择</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2.5.1 如何做度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.5.2 如何选择度量方案</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.6 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

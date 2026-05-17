@@ -1,0 +1,1152 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 10 章 RAG 与 Agent 的度量体系 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter10';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 11 章 评估驱动开发（EDD）" href="chapter11.html" />
+    <link rel="prev" title="第 9 章 LLM 应用的度量体系" href="chapter9.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter10.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter10.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter10.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 10 章 RAG 与 Agent 的度量体系</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag">10.1 RAG 系统度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">10.1.1 RAG 架构与度量点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">10.1.2 检索质量度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">10.1.3 生成质量度量（RAG 专用）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">10.1.4 向量数据库度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grafana">10.1.5 端到端度量与 Grafana 面板</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-agent">10.2 AI Agent 度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agent">10.2.1 Agent 架构与度量点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">10.2.2 Agent 核心度量指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">10.2.3 循环与卡死检测</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">10.2.4 多 Agent 系统度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">10.3 AI 应用的可观测性工具</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">10.3.1 专用可观测性工具</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-genai">10.3.2 OpenTelemetry GenAI 语义约定</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">10.4 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="rag-agent">
+<span id="chapter10"></span><h1>第 10 章 RAG 与 Agent 的度量体系<a class="headerlink" href="#rag-agent" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>RAG 系统的度量架构：检索质量和生成质量的分别度量</p></li>
+<li><p>检索质量核心指标：Precision&#64;K、Recall&#64;K、MRR、NDCG</p></li>
+<li><p>生成质量核心指标：Faithfulness、Answer Relevancy</p></li>
+<li><p>AI Agent 的度量挑战：任务完成率、工具调用、循环检测</p></li>
+<li><p>AI 可观测性工具生态：LangSmith、LangFuse、OpenTelemetry GenAI</p></li>
+</ul>
+</div>
+<section id="id1">
+<h2>开篇故事<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>一个常见的困境：RAG 知识库问答系统上线后，用户投诉越来越多——
+&quot;回答不准确&quot;、&quot;答非所问&quot;、&quot;明明文档里有，但系统说不知道&quot;。</em></p>
+<p><em>但监控面板上一切正常——API 成功率 99.8%，P99 延迟在可接受范围内，
+LLM Token 使用量稳定。所有指标都是绿色的。</em></p>
+<p><em>问题出在哪里？出在只度量了&quot;系统是否正常运行&quot;，
+而没有度量&quot;系统回答得对不对&quot;。HTTP 200 不等于答案正确。</em></p>
+</div></blockquote>
+<p>这个场景揭示了 AI 应用度量的核心盲区：传统度量只能告诉你系统&quot;活着&quot;，
+但无法告诉你系统&quot;做得好不好&quot;。RAG 和 Agent 需要专门的质量度量。</p>
+</section>
+<section id="rag">
+<h2>10.1 RAG 系统度量<a class="headerlink" href="#rag" title="Link to this heading">#</a></h2>
+<p>RAG（Retrieval-Augmented Generation）是当前最常见的 AI 应用模式。
+它的度量需要覆盖 <strong>检索</strong> 和 <strong>生成</strong> 两个阶段——任何一个阶段出问题，
+最终的回答质量都会受影响。</p>
+<section id="id2">
+<h3>10.1.1 RAG 架构与度量点<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────────────┐
+│                    RAG 系统度量点                          │
+│                                                           │
+│  用户查询                                                 │
+│     │                                                     │
+│     ▼  ① Query 处理延迟                                   │
+│  ┌──────────┐                                             │
+│  │ Query    │  度量: 查询改写次数、扩展词数                  │
+│  │ 处理     │                                             │
+│  └────┬─────┘                                             │
+│       │                                                   │
+│       ▼  ② Embedding 延迟                                 │
+│  ┌──────────┐                                             │
+│  │ Embedding│  度量: 向量化延迟、Token 数                   │
+│  │ 生成     │                                             │
+│  └────┬─────┘                                             │
+│       │                                                   │
+│       ▼  ③ 检索延迟 + 检索质量                             │
+│  ┌──────────┐                                             │
+│  │ 向量检索  │  度量: 检索延迟、Top-K 命中率                 │
+│  │ + 重排序  │        Precision@K、Recall@K、MRR           │
+│  └────┬─────┘                                             │
+│       │                                                   │
+│       ▼  ④ 上下文质量                                     │
+│  ┌──────────┐                                             │
+│  │ Context  │  度量: 上下文相关性、上下文长度                │
+│  │ 组装     │        上下文利用率                           │
+│  └────┬─────┘                                             │
+│       │                                                   │
+│       ▼  ⑤ 生成延迟 + 生成质量                             │
+│  ┌──────────┐                                             │
+│  │ LLM 生成 │  度量: TTFT、TPS、Token 成本                 │
+│  │          │        忠实度、答案相关性、幻觉率              │
+│  └────┬─────┘                                             │
+│       │                                                   │
+│       ▼  ⑥ 端到端                                        │
+│  ┌──────────┐                                             │
+│  │ 返回用户  │  度量: E2E 延迟、用户满意度                   │
+│  └──────────┘                                             │
+└──────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p>关键洞察：<strong>检索是 RAG 的基础。检索不好，生成再好也没用。</strong>
+因此，检索质量度量是 RAG 度量体系中最重要的部分。</p>
+</section>
+<section id="id3">
+<h3>10.1.2 检索质量度量<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p><strong>核心指标：</strong></p>
+<div class="pst-scrollable-table-container"><table class="table" id="id11">
+<caption><span class="caption-text">RAG 检索质量指标</span><a class="headerlink" href="#id11" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>计算方式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Precision&#64;K</p></td>
+<td><p>Top-K 结果中相关文档的比例</p></td>
+<td><p>相关文档数 / K</p></td>
+</tr>
+<tr class="row-odd"><td><p>Recall&#64;K</p></td>
+<td><p>Top-K 结果覆盖了多少相关文档</p></td>
+<td><p>命中的相关文档 / 总相关文档</p></td>
+</tr>
+<tr class="row-even"><td><p>MRR</p></td>
+<td><p>Mean Reciprocal Rank，第一个相关结果的排名倒数</p></td>
+<td><p>1 / 第一个相关结果的排名</p></td>
+</tr>
+<tr class="row-odd"><td><p>NDCG&#64;K</p></td>
+<td><p>考虑排名位置的相关性评分</p></td>
+<td><p>越靠前的相关结果权重越高</p></td>
+</tr>
+<tr class="row-even"><td><p>Hit Rate</p></td>
+<td><p>Top-K 中至少有一个相关结果的查询比例</p></td>
+<td><p>有命中的查询数 / 总查询数</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Python 实现：</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Histogram</span><span class="p">,</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">Gauge</span>
+
+<span class="n">rag_retrieval_latency</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;rag_retrieval_latency_seconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RAG retrieval latency&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;index_name&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">rag_retrieval_precision</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;rag_retrieval_precision_at_k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Precision@K for RAG retrieval&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_precision_at_k</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                              <span class="n">relevant_ids</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;计算 Precision@K&quot;&quot;&quot;</span>
+    <span class="n">top_k</span> <span class="o">=</span> <span class="n">retrieved_ids</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">relevant_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="mi">1</span> <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">top_k</span> <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">relevant_ids</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">relevant_count</span> <span class="o">/</span> <span class="n">k</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_mrr</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                   <span class="n">relevant_ids</span><span class="p">:</span> <span class="nb">set</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;计算 MRR (Mean Reciprocal Rank)&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">relevant_ids</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.0</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>10.1.3 生成质量度量（RAG 专用）<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>RAG 的生成质量不仅要看&quot;答案好不好&quot;，还要看&quot;答案是否忠于检索到的上下文&quot;。
+这是 RAG 与普通 LLM 应用的关键区别。</p>
+<p><strong>Ragas 框架的核心指标：</strong></p>
+<div class="pst-scrollable-table-container"><table class="table" id="id12">
+<caption><span class="caption-text">RAG 生成质量指标（Ragas）</span><a class="headerlink" href="#id12" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 40.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>评估方式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Faithfulness（忠实度）</p></td>
+<td><p>答案是否被检索到的上下文支持</p></td>
+<td><p>LLM-as-Judge</p></td>
+</tr>
+<tr class="row-odd"><td><p>Answer Relevancy（答案相关性）</p></td>
+<td><p>答案是否回答了用户的问题</p></td>
+<td><p>LLM-as-Judge</p></td>
+</tr>
+<tr class="row-even"><td><p>Context Relevancy（上下文相关性）</p></td>
+<td><p>检索到的上下文是否与问题相关</p></td>
+<td><p>LLM-as-Judge</p></td>
+</tr>
+<tr class="row-odd"><td><p>Context Recall（上下文召回）</p></td>
+<td><p>上下文是否包含了回答所需的信息</p></td>
+<td><p>与参考答案对比</p></td>
+</tr>
+<tr class="row-even"><td><p>Answer Correctness（答案正确性）</p></td>
+<td><p>答案与参考答案的一致程度</p></td>
+<td><p>语义相似度 + 事实核查</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>使用 Ragas 评估：</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ragas</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ragas.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">faithfulness</span><span class="p">,</span> <span class="n">answer_relevancy</span><span class="p">,</span>
+    <span class="n">context_precision</span><span class="p">,</span> <span class="n">context_recall</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="n">eval_data</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
+    <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;什么是度量驱动开发？&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;度量驱动开发(MDD)是一种以度量数据为核心...&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;contexts&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="s2">&quot;MDD 是指在软件开发过程中...&quot;</span><span class="p">]],</span>
+    <span class="s2">&quot;ground_truth&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;度量驱动开发是一种软件工程方法论...&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">eval_data</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">faithfulness</span><span class="p">,</span> <span class="n">answer_relevancy</span><span class="p">,</span>
+             <span class="n">context_precision</span><span class="p">,</span> <span class="n">context_recall</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="c1"># {&#39;faithfulness&#39;: 0.85, &#39;answer_relevancy&#39;: 0.92,</span>
+<span class="c1">#  &#39;context_precision&#39;: 0.78, &#39;context_recall&#39;: 0.80}</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>10.1.4 向量数据库度量<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>向量数据库是 RAG 的核心组件，需要专门的度量：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id13">
+<caption><span class="caption-text">向量数据库度量</span><a class="headerlink" href="#id13" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>告警阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>查询延迟</p></td>
+<td><p>向量相似度搜索的延迟</p></td>
+<td><p>P99 &gt; 200ms</p></td>
+</tr>
+<tr class="row-odd"><td><p>索引大小</p></td>
+<td><p>向量索引占用的存储空间</p></td>
+<td><p>接近磁盘容量 80%</p></td>
+</tr>
+<tr class="row-even"><td><p>文档数量</p></td>
+<td><p>索引中的文档/向量数量</p></td>
+<td><p>监控增长趋势</p></td>
+</tr>
+<tr class="row-odd"><td><p>写入吞吐</p></td>
+<td><p>每秒写入的向量数</p></td>
+<td><p>低于预期吞吐</p></td>
+</tr>
+<tr class="row-even"><td><p>召回率</p></td>
+<td><p>近似搜索 vs 精确搜索的一致性</p></td>
+<td><p>&lt; 95%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="grafana">
+<h3>10.1.5 端到端度量与 Grafana 面板<a class="headerlink" href="#grafana" title="Link to this heading">#</a></h3>
+<p>一个完整的 RAG 监控面板应该包含以下区域：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────┐
+│              RAG 系统监控面板                              │
+├──────────┬──────────┬──────────┬────────────────────────┤
+│ 查询总量  │ 成功率    │ E2E P99  │ 今日 LLM 成本          │
+│ 1,234    │ 98.5%    │ 3.2s     │ $12.50                │
+├──────────┴──────────┴──────────┴────────────────────────┤
+│  ┌────────────────────────────────────────────────────┐  │
+│  │  查询量趋势 + 错误率 (折线图)                        │  │
+│  └────────────────────────────────────────────────────┘  │
+│  ┌──────────────────────┐  ┌──────────────────────────┐  │
+│  │ 延迟分布 (热力图)     │  │ Token 使用趋势 (面积图)   │  │
+│  │ 检索 vs 生成          │  │ Input vs Output          │  │
+│  └──────────────────────┘  └──────────────────────────┘  │
+│  ┌──────────────────────┐  ┌──────────────────────────┐  │
+│  │ 质量评分趋势          │  │ 检索命中率               │  │
+│  │ Faithfulness          │  │ Hit Rate / Precision@5   │  │
+│  └──────────────────────┘  └──────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>关键 PromQL 查询：</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># RAG 查询成功率
+sum(rate(rag_queries_total{status=&quot;success&quot;}[5m]))
+/ sum(rate(rag_queries_total[5m]))
+
+# E2E P99 延迟
+histogram_quantile(0.99,
+  rate(rag_e2e_latency_seconds_bucket[5m]))
+
+# 每小时 LLM 成本
+increase(llm_cost_dollars_total[1h])
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ai-agent">
+<h2>10.2 AI Agent 度量<a class="headerlink" href="#ai-agent" title="Link to this heading">#</a></h2>
+<p>AI Agent 是比 RAG 更复杂的 AI 应用模式。Agent 能自主决策、调用工具、
+多步推理，这带来了全新的度量挑战。</p>
+<section id="agent">
+<h3>10.2.1 Agent 架构与度量点<a class="headerlink" href="#agent" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────────────┐
+│                  AI Agent 度量点                       │
+│                                                       │
+│  用户任务                                             │
+│     │                                                 │
+│     ▼  ① 任务理解                                     │
+│  ┌──────────┐                                         │
+│  │ Planner  │  度量: 规划延迟、规划步骤数               │
+│  └────┬─────┘                                         │
+│       │                                               │
+│       ▼  ② 工具选择与调用（可能多轮）                   │
+│  ┌──────────┐                                         │
+│  │ Tool     │  度量: 调用次数、准确率、延迟、失败率      │
+│  │ Executor │                                         │
+│  └────┬─────┘                                         │
+│       │                                               │
+│       ▼  ③ 中间推理                                   │
+│  ┌──────────┐                                         │
+│  │ Reasoner │  度量: 推理步骤数、Token 消耗、循环检测    │
+│  └────┬─────┘                                         │
+│       │                                               │
+│       ▼  ④ 结果输出                                   │
+│  ┌──────────┐                                         │
+│  │ Output   │  度量: 任务完成率、结果质量、总成本       │
+│  └──────────┘                                         │
+└──────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>10.2.2 Agent 核心度量指标<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id14">
+<caption><span class="caption-text">AI Agent 核心度量</span><a class="headerlink" href="#id14" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>参考值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Task Success Rate</p></td>
+<td><p>任务完成率</p></td>
+<td><p>&gt; 80%（简单任务 &gt; 95%）</p></td>
+</tr>
+<tr class="row-odd"><td><p>Steps per Task</p></td>
+<td><p>每个任务的平均步骤数</p></td>
+<td><p>越少越好（效率）</p></td>
+</tr>
+<tr class="row-even"><td><p>Tool Call Accuracy</p></td>
+<td><p>工具调用准确率</p></td>
+<td><p>&gt; 90%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tool Call Success Rate</p></td>
+<td><p>工具执行成功率</p></td>
+<td><p>&gt; 95%</p></td>
+</tr>
+<tr class="row-even"><td><p>Cost per Task</p></td>
+<td><p>每个任务的 LLM 成本</p></td>
+<td><p>取决于业务价值</p></td>
+</tr>
+<tr class="row-odd"><td><p>Loop Detection Rate</p></td>
+<td><p>循环/卡死检测率</p></td>
+<td><p>应接近 0%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TaskStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">SUCCESS</span> <span class="o">=</span> <span class="s2">&quot;success&quot;</span>
+    <span class="n">FAILED</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="s2">&quot;timeout&quot;</span>
+    <span class="n">LOOP_DETECTED</span> <span class="o">=</span> <span class="s2">&quot;loop_detected&quot;</span>
+    <span class="n">GUARDRAIL_BLOCKED</span> <span class="o">=</span> <span class="s2">&quot;guardrail_blocked&quot;</span>
+
+<span class="n">agent_tasks_total</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;agent_tasks_total&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Total agent tasks&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;agent_name&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">agent_task_steps</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;agent_task_steps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Number of steps per task&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;agent_name&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">agent_tool_calls_total</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;agent_tool_calls_total&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Total tool calls&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;agent_name&quot;</span><span class="p">,</span> <span class="s2">&quot;tool_name&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>10.2.3 循环与卡死检测<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>Agent 最危险的问题之一是 <strong>无限循环</strong> ——Agent 反复调用同一个工具，
+或者在两个状态之间来回切换，消耗大量 Token 却没有进展。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AgentLoopDetector</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;检测 Agent 是否陷入循环&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">max_repeated_tools</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_cost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_steps</span> <span class="o">=</span> <span class="n">max_steps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_repeated_tools</span> <span class="o">=</span> <span class="n">max_repeated_tools</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_cost</span> <span class="o">=</span> <span class="n">max_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_history</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_cost</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">step_cost</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;返回 True 表示检测到异常，应该终止&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tool_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_cost</span> <span class="o">+=</span> <span class="n">step_cost</span>
+
+        <span class="c1"># 检查 1: 步骤数超限</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool_history</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_steps</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># 检查 2: 连续重复调用同一工具</span>
+        <span class="n">recent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_history</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_repeated_tools</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">recent</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_repeated_tools</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">recent</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># 检查 3: 成本超限</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_cost</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_cost</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>10.2.4 多 Agent 系统度量<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>当多个 Agent 协作时，度量维度进一步扩展：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id15">
+<caption><span class="caption-text">多 Agent 系统度量</span><a class="headerlink" href="#id15" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>度量方式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Agent 间通信延迟</p></td>
+<td><p>Agent 之间消息传递的延迟</p></td>
+<td><p>Histogram</p></td>
+</tr>
+<tr class="row-odd"><td><p>任务分配准确率</p></td>
+<td><p>Supervisor 分配任务到正确 Agent 的比例</p></td>
+<td><p>Counter (correct/total)</p></td>
+</tr>
+<tr class="row-even"><td><p>协作效率</p></td>
+<td><p>多 Agent vs 单 Agent 的效率比</p></td>
+<td><p>对比实验</p></td>
+</tr>
+<tr class="row-odd"><td><p>瓶颈 Agent</p></td>
+<td><p>哪个 Agent 是整体延迟的瓶颈</p></td>
+<td><p>各 Agent 耗时占比</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="ai">
+<h2>10.3 AI 应用的可观测性工具<a class="headerlink" href="#ai" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>10.3.1 专用可观测性工具<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>传统的 Prometheus + Grafana 可以覆盖基础度量，
+但 AI 应用还需要专用的可观测性工具来追踪 LLM 调用链：</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id16">
+<caption><span class="caption-text">AI 可观测性工具</span><a class="headerlink" href="#id16" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>工具</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>特点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LangSmith</p></td>
+<td><p>LangChain 官方</p></td>
+<td><p>Trace 可视化、Prompt 管理、评估套件</p></td>
+</tr>
+<tr class="row-odd"><td><p>LangFuse</p></td>
+<td><p>开源</p></td>
+<td><p>自托管、OTel 集成、成本追踪</p></td>
+</tr>
+<tr class="row-even"><td><p>Phoenix (Arize)</p></td>
+<td><p>开源</p></td>
+<td><p>Embedding 可视化、RAG 评估、LLM Trace</p></td>
+</tr>
+<tr class="row-odd"><td><p>Helicone</p></td>
+<td><p>SaaS</p></td>
+<td><p>LLM 代理层、自动度量、成本分析</p></td>
+</tr>
+<tr class="row-even"><td><p>DeepEval</p></td>
+<td><p>开源测试框架</p></td>
+<td><p>LLM 单元测试、RAG 评估、CI/CD 集成</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="opentelemetry-genai">
+<h3>10.3.2 OpenTelemetry GenAI 语义约定<a class="headerlink" href="#opentelemetry-genai" title="Link to this heading">#</a></h3>
+<p>OpenTelemetry 社区正在开发 LLM 语义约定（Semantic Conventions），
+为 LLM 调用定义标准化的 Span 属性：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace</span>
+
+<span class="n">tracer</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">get_tracer</span><span class="p">(</span><span class="s2">&quot;rag-service&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">query_rag</span><span class="p">(</span><span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tracer</span><span class="o">.</span><span class="n">start_as_current_span</span><span class="p">(</span><span class="s2">&quot;rag.query&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">span</span><span class="p">:</span>
+        <span class="c1"># 检索阶段</span>
+        <span class="k">with</span> <span class="n">tracer</span><span class="o">.</span><span class="n">start_as_current_span</span><span class="p">(</span><span class="s2">&quot;rag.retrieval&quot;</span><span class="p">):</span>
+            <span class="n">docs</span> <span class="o">=</span> <span class="n">vector_store</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span>
+                <span class="n">question</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># 生成阶段</span>
+        <span class="k">with</span> <span class="n">tracer</span><span class="o">.</span><span class="n">start_as_current_span</span><span class="p">(</span><span class="s2">&quot;rag.generation&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">gen</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">context</span><span class="o">=</span><span class="n">docs</span><span class="p">,</span> <span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">))</span>
+            <span class="n">gen</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.system&quot;</span><span class="p">,</span> <span class="s2">&quot;anthropic&quot;</span><span class="p">)</span>
+            <span class="n">gen</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.request.model&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;claude-sonnet-4-20250514&quot;</span><span class="p">)</span>
+            <span class="n">gen</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.usage.input_tokens&quot;</span><span class="p">,</span>
+                               <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">input_tokens</span><span class="p">)</span>
+            <span class="n">gen</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.usage.output_tokens&quot;</span><span class="p">,</span>
+                               <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">output_tokens</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>这种标准化的 Trace 格式使得不同的 AI 应用可以使用统一的可观测性后端，
+降低了工具碎片化的问题。</p>
+<div class="tip admonition">
+<p class="admonition-title">🔬 动手实验：用 Ragas 评估 RAG 系统</p>
+<p><strong>目标</strong>：用 Ragas 框架评估一个简单 RAG 系统的检索和生成质量。</p>
+<p><strong>步骤</strong>：</p>
+<ol class="arabic simple">
+<li><p>安装依赖：<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ragas</span> <span class="pre">datasets</span> <span class="pre">langchain-openai</span></code></p></li>
+<li><p>准备 5-10 个评估样本（问题 + 参考答案 + 上下文）</p></li>
+<li><p>运行 Ragas 评估，获取 Faithfulness、Answer Relevancy 等分数</p></li>
+<li><p>分析结果：哪个维度最弱？如何改进？</p></li>
+</ol>
+<p><strong>完整代码</strong>：见 GitHub 仓库 <code class="docutils literal notranslate"><span class="pre">examples/ch10-rag-eval/</span></code></p>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2>10.4 本章小结<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点：</strong></p>
+<ul class="simple">
+<li><p>RAG 系统必须分别度量检索和生成两个阶段</p></li>
+<li><p>检索质量（Precision&#64;K、MRR）是 RAG 质量的基础</p></li>
+<li><p>Faithfulness（忠实度）是 RAG 生成质量最重要的指标</p></li>
+<li><p>Agent 的循环检测和成本控制是生产环境的必备能力</p></li>
+<li><p>OpenTelemetry GenAI 语义约定正在成为 AI 可观测性的统一标准</p></li>
+</ul>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>你的 RAG 系统的检索质量和生成质量，哪个是瓶颈？你如何判断？</p></li>
+<li><p>如果你的 Agent 在生产环境中陷入了无限循环，你的系统能在多长时间内检测到？</p></li>
+<li><p>LangSmith 和 LangFuse 各有什么优缺点？你会选择哪个？为什么？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter9.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 9 章 LLM 应用的度量体系</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter11.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 11 章 评估驱动开发（EDD）</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag">10.1 RAG 系统度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">10.1.1 RAG 架构与度量点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">10.1.2 检索质量度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">10.1.3 生成质量度量（RAG 专用）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">10.1.4 向量数据库度量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grafana">10.1.5 端到端度量与 Grafana 面板</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-agent">10.2 AI Agent 度量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agent">10.2.1 Agent 架构与度量点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">10.2.2 Agent 核心度量指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">10.2.3 循环与卡死检测</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">10.2.4 多 Agent 系统度量</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">10.3 AI 应用的可观测性工具</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">10.3.1 专用可观测性工具</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-genai">10.3.2 OpenTelemetry GenAI 语义约定</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">10.4 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

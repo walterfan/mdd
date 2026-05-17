@@ -1,0 +1,1335 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第 4 章 度量驱动的多语言实现 &#8212; 度量驱动开发 - Metrics Driven Development</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=65c3ca45"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter4';</script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第 5 章 度量数据的聚合与展示" href="chapter5.html" />
+    <link rel="prev" title="第 3 章 微服务度量设计" href="chapter3.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">度量驱动开发 - Metrics Driven Development</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">搜索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">前言</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preface.html">前言</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第一部分：基础篇 — 为什么需要度量</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1.html">第 1 章 度量驱动开发概论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2.html">第 2 章 度量的基本概念与方法论</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3.html">第 3 章 微服务度量设计</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二部分：实现篇 — 如何实现度量</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">第 4 章 度量驱动的多语言实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">第 5 章 度量数据的聚合与展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">第 6 章 度量数据的分析与报警</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三部分：运维篇 — 度量驱动的运维</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7.html">第 7 章 度量驱动的运维</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">第 8 章 全程度量与可观测性</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第四部分：AI 篇 — AI 应用的度量体系</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">第 9 章 LLM 应用的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">第 10 章 RAG 与 Agent 的度量体系</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11.html">第 11 章 评估驱动开发（EDD）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第五部分：实践篇</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter12.html">第 12 章 度量驱动开发的最佳实践</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">附录 常用度量工具与软件库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_b.html">附录 B 度量指标速查表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix_c.html">附录 C 告警规则与 Grafana 面板模板</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语表</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="源码库"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/edit/main/doc/source/chapter4.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/walterfan/mdd/issues/new?title=Issue%20on%20page%20%2Fchapter4.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="创建议题"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="下载此页面">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chapter4.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="下载源文件"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="列印成 PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全屏模式"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第 4 章 度量驱动的多语言实现</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目录 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.1 度量代码质量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.1.1 静态分析指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.1.2 各语言的代码质量工具</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.2 度量进度</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dora">4.2.1 DORA 指标</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.3 度量性能</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.3.1 性能度量金三角</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.3.2 多语言性能测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.4 多语言度量实现</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#go">4.4.1 Go 度量实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python">4.4.2 Python 度量实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">4.4.3 C++ 度量实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#java">4.4.4 Java 度量实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry">4.5 OpenTelemetry: 统一的度量标准</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">4.6 AI 辅助编程中的度量实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-prompt">4.6.1 正确的 AI Prompt 模式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.6.2 度量设计先于代码实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.6.3 AI 生成代码的度量检查清单</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.6.4 AI 应用的度量代码模式</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.7 本章小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="chapter4">
+<span id="id1"></span><h1>第 4 章 度量驱动的多语言实现<a class="headerlink" href="#chapter4" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">本章你将学到</p>
+<ul class="simple">
+<li><p>代码质量度量的核心指标和工具</p></li>
+<li><p>OpenTelemetry 作为多语言度量统一标准的优势</p></li>
+<li><p>Go、Python、Java、C++ 四种语言的度量实现方法</p></li>
+<li><p>AI 辅助编程时代的度量实践</p></li>
+</ul>
+</div>
+<section id="id2">
+<h2>开篇故事<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><em>我们的系统用 Go 写后端 API、Python 写 AI 服务、Java 写数据管道。
+三个团队各自选了不同的度量库——Go 用 Prometheus client，
+Python 用 StatsD，Java 用 Micrometer。</em></p>
+<p><em>结果是：三套指标命名规范不同、数据格式不同、存储后端不同。
+想做一个跨服务的延迟分析？几乎不可能。</em></p>
+<p><em>后来我们统一迁移到 OpenTelemetry，问题迎刃而解。</em></p>
+</div></blockquote>
+<p>多语言环境下的度量统一是一个真实的工程挑战。
+本章介绍如何在不同语言中实现度量，以及如何用 OpenTelemetry 统一标准。</p>
+<p>现代微服务系统通常涉及多种编程语言。本章介绍如何在 Go、Python、Java、C++ 中
+实现度量驱动开发，并探讨 AI 辅助编程时代的度量实践。</p>
+</section>
+<section id="id3">
+<h2>4.1 度量代码质量<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>4.1.1 静态分析指标<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id15">
+<caption><span class="caption-text">代码质量指标</span><a class="headerlink" href="#id15" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>参考阈值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>圈复杂度 (Cyclomatic Complexity)</p></td>
+<td><p>代码路径的复杂度</p></td>
+<td><p>&lt; 10 为佳, &gt; 20 需重构</p></td>
+</tr>
+<tr class="row-odd"><td><p>代码覆盖率 (Code Coverage)</p></td>
+<td><p>测试覆盖的代码比例</p></td>
+<td><p>&gt; 80% 为佳</p></td>
+</tr>
+<tr class="row-even"><td><p>代码重复率 (Duplication)</p></td>
+<td><p>重复代码的比例</p></td>
+<td><p>&lt; 5% 为佳</p></td>
+</tr>
+<tr class="row-odd"><td><p>技术债务 (Technical Debt)</p></td>
+<td><p>需要修复的代码问题</p></td>
+<td><p>持续降低</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id5">
+<h3>4.1.2 各语言的代码质量工具<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="id16">
+<caption><span class="caption-text">多语言代码质量工具</span><a class="headerlink" href="#id16" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 40.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>语言</p></th>
+<th class="head"><p>工具</p></th>
+<th class="head"><p>用法</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Go</p></td>
+<td><p>golangci-lint, go vet, go test -cover</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">golangci-lint</span> <span class="pre">run</span> <span class="pre">./...</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Python</p></td>
+<td><p>pylint, flake8, mypy, pytest-cov</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">--cov=src</span> <span class="pre">--cov-report=html</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Java</p></td>
+<td><p>SonarQube, Checkstyle, SpotBugs</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mvn</span> <span class="pre">sonar:sonar</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>C++</p></td>
+<td><p>clang-tidy, cppcheck, gcov, lcov</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-DCMAKE_BUILD_TYPE=Coverage</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p><strong>AI 时代的代码质量度量更重要了。</strong></p>
+<p>AI 生成的代码可能通过了基本的语法检查，但可能存在:</p>
+<ul class="simple">
+<li><p>未处理的边界条件</p></li>
+<li><p>资源泄漏 (文件句柄、连接、内存)</p></li>
+<li><p>不合理的算法复杂度</p></li>
+<li><p>缺失的错误处理</p></li>
+</ul>
+<p>用静态分析工具扫描 AI 生成的代码，是质量保障的第一道防线。</p>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2>4.2 度量进度<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="dora">
+<h3>4.2.1 DORA 指标<a class="headerlink" href="#dora" title="Link to this heading">#</a></h3>
+<p>DORA 四个关键指标是度量软件交付效能的黄金标准:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id17">
+<caption><span class="caption-text">DORA 指标</span><a class="headerlink" href="#id17" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>精英</p></th>
+<th class="head"><p>高效</p></th>
+<th class="head"><p>低效</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>部署频率</p></td>
+<td><p>每天多次</p></td>
+<td><p>每天到每周</p></td>
+<td><p>每月到每半年</p></td>
+</tr>
+<tr class="row-odd"><td><p>变更前置时间</p></td>
+<td><p>不到一天</p></td>
+<td><p>一天到一周</p></td>
+<td><p>一个月到半年</p></td>
+</tr>
+<tr class="row-even"><td><p>变更失败率</p></td>
+<td><p>0-15%</p></td>
+<td><p>16-30%</p></td>
+<td><p>46-60%</p></td>
+</tr>
+<tr class="row-odd"><td><p>服务恢复时间</p></td>
+<td><p>不到一小时</p></td>
+<td><p>不到一天</p></td>
+<td><p>超过半年</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2>4.3 度量性能<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>4.3.1 性能度量金三角<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        延迟 (Latency)
+           /\
+          /  \
+         /    \
+        /      \
+       /________\
+吞吐量           资源使用率
+(Throughput)     (Utilization)
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>4.3.2 多语言性能测试<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p><strong>Go: 内置 Benchmark</strong></p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="c1">// Go 内置的 benchmark 是度量性能的利器</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">BenchmarkCreatePotato</span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">svc</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewPotatoService</span><span class="p">(</span><span class="nx">testDB</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">b</span><span class="p">.</span><span class="nx">ResetTimer</span><span class="p">()</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">svc</span><span class="p">.</span><span class="nx">Create</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Potato</span><span class="p">{</span>
+<span class="w">            </span><span class="nx">Name</span><span class="p">:</span><span class="w">     </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;potato-%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="p">),</span>
+<span class="w">            </span><span class="nx">Priority</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="p">})</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">BenchmarkQueryPotato</span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">svc</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewPotatoService</span><span class="p">(</span><span class="nx">testDB</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">b</span><span class="p">.</span><span class="nx">ResetTimer</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">b</span><span class="p">.</span><span class="nx">RunParallel</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">pb</span><span class="w"> </span><span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">PB</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nx">pb</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">svc</span><span class="p">.</span><span class="nx">FindAll</span><span class="p">()</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="p">}</span>
+
+<span class="c1">// 运行: go test -bench=. -benchmem -count=3</span>
+</pre></div>
+</div>
+<p><strong>Python: pytest-benchmark</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_create_potato_perf</span><span class="p">(</span><span class="n">benchmark</span><span class="p">,</span> <span class="n">potato_service</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;度量创建土豆的性能&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span>
+        <span class="n">potato_service</span><span class="o">.</span><span class="n">create</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;benchmark-potato&quot;</span><span class="p">,</span>
+        <span class="n">priority</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_query_potato_perf</span><span class="p">(</span><span class="n">benchmark</span><span class="p">,</span> <span class="n">potato_service</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;度量查询土豆的性能&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span><span class="n">potato_service</span><span class="o">.</span><span class="n">find_all</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
+<span class="c1"># 运行: pytest --benchmark-only --benchmark-json=output.json</span>
+</pre></div>
+</div>
+<p><strong>C++: Google Benchmark</strong></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;benchmark/benchmark.h&gt;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">BM_CreatePotato</span><span class="p">(</span><span class="n">benchmark</span><span class="o">::</span><span class="n">State</span><span class="o">&amp;</span><span class="w"> </span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">PotatoService</span><span class="w"> </span><span class="n">svc</span><span class="p">(</span><span class="n">test_db</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Potato</span><span class="w"> </span><span class="n">p</span><span class="p">{</span><span class="s">&quot;benchmark-potato&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">};</span>
+<span class="w">        </span><span class="n">svc</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">state</span><span class="p">.</span><span class="n">SetItemsProcessed</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">iterations</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="n">BENCHMARK</span><span class="p">(</span><span class="n">BM_CreatePotato</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Threads</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">BM_QueryPotato</span><span class="p">(</span><span class="n">benchmark</span><span class="o">::</span><span class="n">State</span><span class="o">&amp;</span><span class="w"> </span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">PotatoService</span><span class="w"> </span><span class="n">svc</span><span class="p">(</span><span class="n">test_db</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svc</span><span class="p">.</span><span class="n">find_all</span><span class="p">();</span>
+<span class="w">        </span><span class="n">benchmark</span><span class="o">::</span><span class="n">DoNotOptimize</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">BENCHMARK</span><span class="p">(</span><span class="n">BM_QueryPotato</span><span class="p">);</span>
+
+<span class="n">BENCHMARK_MAIN</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>负载测试: k6 (语言无关)</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// k6 负载测试脚本 -- 适用于任何语言的 HTTP 服务</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;k6/http&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">check</span><span class="p">,</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;k6&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Rate</span><span class="p">,</span><span class="w"> </span><span class="nx">Trend</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;k6/metrics&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">errorRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rate</span><span class="p">(</span><span class="s1">&#39;errors&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">latencyTrend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Trend</span><span class="p">(</span><span class="s1">&#39;latency_p99&#39;</span><span class="p">);</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">stages</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;30s&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="mf">50</span><span class="w"> </span><span class="p">},</span><span class="w">   </span><span class="c1">// ramp up</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;1m&#39;</span><span class="p">,</span><span class="w">  </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="mf">100</span><span class="w"> </span><span class="p">},</span><span class="w">  </span><span class="c1">// steady</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;30s&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="p">},</span><span class="w">    </span><span class="c1">// ramp down</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nx">thresholds</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">http_req_duration</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;p(99)&lt;500&#39;</span><span class="p">],</span><span class="w">   </span><span class="c1">// P99 &lt; 500ms</span>
+<span class="w">    </span><span class="nx">errors</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;rate&lt;0.01&#39;</span><span class="p">],</span><span class="w">              </span><span class="c1">// error rate &lt; 1%</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;http://localhost:9003/api/potatoes&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">check</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">&#39;status is 200&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">200</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="nx">errorRate</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="mf">200</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">latencyTrend</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">timings</span><span class="p">.</span><span class="nx">duration</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">sleep</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2>4.4 多语言度量实现<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="go">
+<h3>4.4.1 Go 度量实现<a class="headerlink" href="#go" title="Link to this heading">#</a></h3>
+<p>Go 是云原生时代的主力语言，Prometheus 客户端是最常用的度量库。</p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="kn">package</span><span class="w"> </span><span class="nx">metrics</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;net/http&quot;</span>
+<span class="w">    </span><span class="s">&quot;github.com/prometheus/client_golang/prometheus&quot;</span>
+<span class="w">    </span><span class="s">&quot;github.com/prometheus/client_golang/prometheus/promauto&quot;</span>
+<span class="w">    </span><span class="s">&quot;github.com/prometheus/client_golang/prometheus/promhttp&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="c1">// 业务度量</span>
+<span class="w">    </span><span class="nx">PotatoCreated</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">promauto</span><span class="p">.</span><span class="nx">NewCounter</span><span class="p">(</span><span class="nx">prometheus</span><span class="p">.</span><span class="nx">CounterOpts</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;potato_created_total&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Help</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total number of potatoes created&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">})</span>
+
+<span class="w">    </span><span class="nx">PotatoCompleted</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">promauto</span><span class="p">.</span><span class="nx">NewCounter</span><span class="p">(</span><span class="nx">prometheus</span><span class="p">.</span><span class="nx">CounterOpts</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;potato_completed_total&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Help</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total number of potatoes completed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">})</span>
+
+<span class="w">    </span><span class="c1">// 应用度量</span>
+<span class="w">    </span><span class="nx">RequestDuration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">promauto</span><span class="p">.</span><span class="nx">NewHistogramVec</span><span class="p">(</span>
+<span class="w">        </span><span class="nx">prometheus</span><span class="p">.</span><span class="nx">HistogramOpts</span><span class="p">{</span>
+<span class="w">            </span><span class="nx">Name</span><span class="p">:</span><span class="w">    </span><span class="s">&quot;http_request_duration_seconds&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">Help</span><span class="p">:</span><span class="w">    </span><span class="s">&quot;HTTP request duration&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">Buckets</span><span class="p">:</span><span class="w"> </span><span class="nx">prometheus</span><span class="p">.</span><span class="nx">DefBuckets</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;method&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;path&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;status&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1">// 资源度量</span>
+<span class="w">    </span><span class="nx">ActiveConnections</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">promauto</span><span class="p">.</span><span class="nx">NewGauge</span><span class="p">(</span><span class="nx">prometheus</span><span class="p">.</span><span class="nx">GaugeOpts</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;active_connections&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Help</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Number of active connections&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="p">)</span>
+
+<span class="c1">// ExposeMetrics 暴露 /metrics 端点</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">ExposeMetrics</span><span class="p">(</span><span class="nx">addr</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">http</span><span class="p">.</span><span class="nx">Handle</span><span class="p">(</span><span class="s">&quot;/metrics&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">promhttp</span><span class="p">.</span><span class="nx">Handler</span><span class="p">())</span>
+<span class="w">    </span><span class="k">go</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">ListenAndServe</span><span class="p">(</span><span class="nx">addr</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Go 健康检查:</strong></p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="c1">// 标准的健康检查端点</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">HealthStatus</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Status</span><span class="w">    </span><span class="kt">string</span><span class="w">            </span><span class="s">`json:&quot;status&quot;`</span>
+<span class="w">    </span><span class="nx">Checks</span><span class="w">   </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="w"> </span><span class="s">`json:&quot;checks&quot;`</span>
+<span class="w">    </span><span class="nx">Version</span><span class="w">  </span><span class="kt">string</span><span class="w">            </span><span class="s">`json:&quot;version&quot;`</span>
+<span class="w">    </span><span class="nx">Uptime</span><span class="w">   </span><span class="kt">string</span><span class="w">            </span><span class="s">`json:&quot;uptime&quot;`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">s</span><span class="w"> </span><span class="o">*</span><span class="nx">Server</span><span class="p">)</span><span class="w"> </span><span class="nx">healthHandler</span><span class="p">(</span><span class="nx">w</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">status</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">HealthStatus</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">Status</span><span class="p">:</span><span class="w">  </span><span class="s">&quot;UP&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Version</span><span class="p">:</span><span class="w"> </span><span class="nx">Version</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Uptime</span><span class="p">:</span><span class="w">  </span><span class="nx">time</span><span class="p">.</span><span class="nx">Since</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">startTime</span><span class="p">).</span><span class="nx">String</span><span class="p">(),</span>
+<span class="w">        </span><span class="nx">Checks</span><span class="p">:</span><span class="w">  </span><span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">),</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 检查数据库连接</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">Ping</span><span class="p">();</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">status</span><span class="p">.</span><span class="nx">Status</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;DOWN&quot;</span>
+<span class="w">        </span><span class="nx">status</span><span class="p">.</span><span class="nx">Checks</span><span class="p">[</span><span class="s">&quot;database&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;FAIL: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">err</span><span class="p">.</span><span class="nx">Error</span><span class="p">()</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">status</span><span class="p">.</span><span class="nx">Checks</span><span class="p">[</span><span class="s">&quot;database&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;OK&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 检查 Redis 连接</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">redis</span><span class="p">.</span><span class="nx">Ping</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Context</span><span class="p">()).</span><span class="nx">Result</span><span class="p">();</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">status</span><span class="p">.</span><span class="nx">Checks</span><span class="p">[</span><span class="s">&quot;redis&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;FAIL: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">err</span><span class="p">.</span><span class="nx">Error</span><span class="p">()</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">status</span><span class="p">.</span><span class="nx">Checks</span><span class="p">[</span><span class="s">&quot;redis&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;OK&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nx">w</span><span class="p">.</span><span class="nx">Header</span><span class="p">().</span><span class="nx">Set</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">json</span><span class="p">.</span><span class="nx">NewEncoder</span><span class="p">(</span><span class="nx">w</span><span class="p">).</span><span class="nx">Encode</span><span class="p">(</span><span class="nx">status</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="python">
+<h3>4.4.2 Python 度量实现<a class="headerlink" href="#python" title="Link to this heading">#</a></h3>
+<p>Python 常用 FastAPI + Prometheus Client:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">Histogram</span><span class="p">,</span> <span class="n">Gauge</span><span class="p">,</span> <span class="n">generate_latest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Potato Service&quot;</span><span class="p">)</span>
+
+<span class="c1"># 业务度量</span>
+<span class="n">POTATO_CREATED</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s2">&quot;potato_created_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Potatoes created&quot;</span><span class="p">)</span>
+<span class="n">POTATO_COMPLETED</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s2">&quot;potato_completed_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Potatoes completed&quot;</span><span class="p">)</span>
+
+<span class="c1"># 应用度量</span>
+<span class="n">REQUEST_DURATION</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;http_request_duration_seconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Request duration&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;endpoint&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># 资源度量</span>
+<span class="n">CPU_USAGE</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span><span class="s2">&quot;process_cpu_usage_percent&quot;</span><span class="p">,</span> <span class="s2">&quot;CPU usage percentage&quot;</span><span class="p">)</span>
+<span class="n">MEMORY_USAGE</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span><span class="s2">&quot;process_memory_usage_bytes&quot;</span><span class="p">,</span> <span class="s2">&quot;Memory usage in bytes&quot;</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">metrics_middleware</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="n">REQUEST_DURATION</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+        <span class="n">endpoint</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/metrics&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">metrics</span><span class="p">():</span>
+    <span class="c1"># 更新资源度量</span>
+    <span class="n">CPU_USAGE</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">())</span>
+    <span class="n">MEMORY_USAGE</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">()</span><span class="o">.</span><span class="n">memory_info</span><span class="p">()</span><span class="o">.</span><span class="n">rss</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="n">generate_latest</span><span class="p">(),</span>
+        <span class="n">media_type</span><span class="o">=</span><span class="s2">&quot;text/plain&quot;</span>
+    <span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/api/potatoes&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_potato</span><span class="p">(</span><span class="n">potato</span><span class="p">:</span> <span class="n">PotatoCreate</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">potato_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">potato</span><span class="p">)</span>
+    <span class="n">POTATO_CREATED</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</section>
+<section id="c">
+<h3>4.4.3 C++ 度量实现<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
+<p>C++ 使用 prometheus-cpp 或 OpenTelemetry C++ SDK:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;prometheus/counter.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;prometheus/exposer.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;prometheus/histogram.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;prometheus/registry.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;chrono&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MetricsManager</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">MetricsManager</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bind_address</span><span class="p">)</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">exposer_</span><span class="p">(</span><span class="n">bind_address</span><span class="p">)</span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="n">registry_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">prometheus</span><span class="o">::</span><span class="n">Registry</span><span class="o">&gt;</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="c1">// 业务度量</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">potato_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prometheus</span><span class="o">::</span><span class="n">BuildCounter</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Name</span><span class="p">(</span><span class="s">&quot;potato_created_total&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Help</span><span class="p">(</span><span class="s">&quot;Total potatoes created&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Register</span><span class="p">(</span><span class="o">*</span><span class="n">registry_</span><span class="p">);</span>
+<span class="w">        </span><span class="n">potato_created_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">potato_family</span><span class="p">.</span><span class="n">Add</span><span class="p">({});</span>
+
+<span class="w">        </span><span class="c1">// 请求延迟</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">duration_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prometheus</span><span class="o">::</span><span class="n">BuildHistogram</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Name</span><span class="p">(</span><span class="s">&quot;http_request_duration_seconds&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Help</span><span class="p">(</span><span class="s">&quot;HTTP request duration&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Register</span><span class="p">(</span><span class="o">*</span><span class="n">registry_</span><span class="p">);</span>
+<span class="w">        </span><span class="n">request_duration_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">duration_family</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span>
+<span class="w">            </span><span class="p">{{</span><span class="s">&quot;handler&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;api&quot;</span><span class="p">}},</span>
+<span class="w">            </span><span class="n">prometheus</span><span class="o">::</span><span class="n">Histogram</span><span class="o">::</span><span class="n">BucketBoundaries</span><span class="p">{</span>
+<span class="w">                </span><span class="mf">0.01</span><span class="p">,</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">5.0</span>
+<span class="w">            </span><span class="p">});</span>
+
+<span class="w">        </span><span class="n">exposer_</span><span class="p">.</span><span class="n">RegisterCollectable</span><span class="p">(</span><span class="n">registry_</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// RAII 计时器</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">ScopedTimer</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">ScopedTimer</span><span class="p">(</span><span class="n">prometheus</span><span class="o">::</span><span class="n">Histogram</span><span class="o">*</span><span class="w"> </span><span class="n">h</span><span class="p">)</span>
+<span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="n">histogram_</span><span class="p">(</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="n">start_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="o">~</span><span class="n">ScopedTimer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_</span><span class="p">;</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">duration</span><span class="p">).</span><span class="n">count</span><span class="p">();</span>
+<span class="w">            </span><span class="n">histogram_</span><span class="o">-&gt;</span><span class="n">Observe</span><span class="p">(</span><span class="n">seconds</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">prometheus</span><span class="o">::</span><span class="n">Histogram</span><span class="o">*</span><span class="w"> </span><span class="n">histogram_</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">time_point</span><span class="w"> </span><span class="n">start_</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">ScopedTimer</span><span class="w"> </span><span class="nf">time_request</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">ScopedTimer</span><span class="p">(</span><span class="n">request_duration_</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">inc_potato_created</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">potato_created_</span><span class="o">-&gt;</span><span class="n">Increment</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">prometheus</span><span class="o">::</span><span class="n">Exposer</span><span class="w"> </span><span class="n">exposer_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">prometheus</span><span class="o">::</span><span class="n">Registry</span><span class="o">&gt;</span><span class="w"> </span><span class="n">registry_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">prometheus</span><span class="o">::</span><span class="n">Counter</span><span class="o">*</span><span class="w"> </span><span class="n">potato_created_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">prometheus</span><span class="o">::</span><span class="n">Histogram</span><span class="o">*</span><span class="w"> </span><span class="n">request_duration_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用示例</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">handle_create_potato</span><span class="p">(</span><span class="n">MetricsManager</span><span class="o">&amp;</span><span class="w"> </span><span class="n">metrics</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metrics</span><span class="p">.</span><span class="n">time_request</span><span class="p">();</span><span class="w">  </span><span class="c1">// RAII 自动计时</span>
+<span class="w">    </span><span class="c1">// ... 处理请求 ...</span>
+<span class="w">    </span><span class="n">metrics</span><span class="p">.</span><span class="n">inc_potato_created</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="java">
+<h3>4.4.4 Java 度量实现<a class="headerlink" href="#java" title="Link to this heading">#</a></h3>
+<p>Spring Boot + Micrometer 仍然是 Java 生态的首选:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Service</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PotatoService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Counter</span><span class="w"> </span><span class="n">potatoCreated</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Timer</span><span class="w"> </span><span class="n">queryTimer</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">PotatoService</span><span class="p">(</span><span class="n">MeterRegistry</span><span class="w"> </span><span class="n">registry</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">potatoCreated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Counter</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="s">&quot;potato.created.total&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="na">description</span><span class="p">(</span><span class="s">&quot;Total potatoes created&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="na">register</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">queryTimer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="s">&quot;potato.query.duration&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="na">description</span><span class="p">(</span><span class="s">&quot;Potato query duration&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="na">publishPercentiles</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9</span><span class="p">,</span><span class="w"> </span><span class="mf">0.95</span><span class="p">,</span><span class="w"> </span><span class="mf">0.99</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="na">register</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Potato</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="n">Potato</span><span class="w"> </span><span class="n">potato</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Potato</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">potato</span><span class="p">);</span>
+<span class="w">        </span><span class="n">potatoCreated</span><span class="p">.</span><span class="na">increment</span><span class="p">();</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Potato</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findAll</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">queryTimer</span><span class="p">.</span><span class="na">record</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">repository</span><span class="p">.</span><span class="na">findAll</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="opentelemetry">
+<h2>4.5 OpenTelemetry: 统一的度量标准<a class="headerlink" href="#opentelemetry" title="Link to this heading">#</a></h2>
+<p>OpenTelemetry 是 CNCF 的统一可观测性框架，支持所有主流语言:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌──────────────────────────────────────────────┐
+│         OpenTelemetry SDK (多语言)            │
+│  ┌────────┐  ┌────────┐  ┌────────┐         │
+│  │Metrics │  │Traces  │  │ Logs   │         │
+│  └───┬────┘  └───┬────┘  └───┬────┘         │
+└──────┼───────────┼───────────┼───────────────┘
+       │           │           │  OTLP
+       ▼           ▼           ▼
+┌──────────────────────────────────────────────┐
+│         OTel Collector                        │
+│  ┌──────────┐ ┌──────────┐ ┌──────────────┐ │
+│  │Receivers │ │Processors│ │  Exporters   │ │
+│  └──────────┘ └──────────┘ └──────────────┘ │
+└──────┬──────────────┬──────────────┬─────────┘
+       │              │              │
+       ▼              ▼              ▼
+┌──────────┐   ┌──────────┐   ┌──────────┐
+│Prometheus│   │  Jaeger  │   │   Loki   │
+└──────────┘   └──────────┘   └──────────┘
+</pre></div>
+</div>
+<p><strong>Go + OpenTelemetry:</strong></p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;go.opentelemetry.io/otel&quot;</span>
+<span class="w">    </span><span class="s">&quot;go.opentelemetry.io/otel/metric&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nx">meter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">otel</span><span class="p">.</span><span class="nx">Meter</span><span class="p">(</span><span class="s">&quot;potato-service&quot;</span><span class="p">)</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nx">potatoCreated</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">meter</span><span class="p">.</span><span class="nx">Int64Counter</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;potato.created&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">metric</span><span class="p">.</span><span class="nx">WithDescription</span><span class="p">(</span><span class="s">&quot;Number of potatoes created&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nx">requestDuration</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">meter</span><span class="p">.</span><span class="nx">Float64Histogram</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;http.request.duration&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">metric</span><span class="p">.</span><span class="nx">WithDescription</span><span class="p">(</span><span class="s">&quot;HTTP request duration in seconds&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="nx">metric</span><span class="p">.</span><span class="nx">WithUnit</span><span class="p">(</span><span class="s">&quot;s&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Python + OpenTelemetry:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.sdk.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeterProvider</span>
+
+<span class="n">meter</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get_meter</span><span class="p">(</span><span class="s2">&quot;potato-service&quot;</span><span class="p">)</span>
+
+<span class="n">potato_created</span> <span class="o">=</span> <span class="n">meter</span><span class="o">.</span><span class="n">create_counter</span><span class="p">(</span>
+    <span class="s2">&quot;potato.created&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of potatoes created&quot;</span>
+<span class="p">)</span>
+
+<span class="n">request_duration</span> <span class="o">=</span> <span class="n">meter</span><span class="o">.</span><span class="n">create_histogram</span><span class="p">(</span>
+    <span class="s2">&quot;http.request.duration&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;HTTP request duration&quot;</span><span class="p">,</span>
+    <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="ai">
+<h2>4.6 AI 辅助编程中的度量实践<a class="headerlink" href="#ai" title="Link to this heading">#</a></h2>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p><strong>在 AI 时代，让 AI 生成代码时就要求&quot;自带度量&quot;。</strong></p>
+<p>不要先让 AI 写完功能代码，再补度量。
+而是在 Prompt 中明确度量需求，让 AI 从一开始就 Build in 可观测性。</p>
+</div>
+<section id="ai-prompt">
+<h3>4.6.1 正确的 AI Prompt 模式<a class="headerlink" href="#ai-prompt" title="Link to this heading">#</a></h3>
+<p><strong>错误示范:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>帮我写一个 HTTP 请求重试逻辑。
+</pre></div>
+</div>
+<p><strong>正确示范:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>我需要一个带指标监控的 HTTP 请求重试逻辑。
+
+功能要求：
+- 支持指数退避重试（最多 3 次）
+- 可配置重试条件
+
+度量要求（用 Prometheus metrics）：
+- http_request_total: 总请求数（按 method, path, status_code 分类）
+- http_request_retry_total: 重试次数
+- http_request_duration_seconds: 请求耗时分布
+
+请生成：
+1. 实现代码（包含埋点）
+2. 对应的测试用例
+3. Grafana 面板查询（PromQL）
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>4.6.2 度量设计先于代码实现<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>对于复杂系统，让 AI 先设计度量方案:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>请先给出度量设计方案，包括：
+1. 关键指标清单（Golden Signals: Latency, Traffic, Errors, Saturation）
+2. 每个指标的类型（Gauge / Counter / Histogram）
+3. SLO 定义（可用性、性能目标）
+然后再实现代码。
+</pre></div>
+</div>
+<p><strong>为什么度量设计比代码实现更重要？</strong></p>
+<p>因为度量方向错了，埋再多点也没用。
+而有了正确的度量设计，AI 可以很好地生成实现代码。</p>
+</section>
+<section id="id12">
+<h3>4.6.3 AI 生成代码的度量检查清单<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>✅ 可观测性检查项（MDD）
+- [ ] 定义了关键度量指标（RED Metrics + 业务指标）
+- [ ] 代码包含度量埋点
+- [ ] 健康检查端点可用
+- [ ] 关键操作有日志记录
+- [ ] 配置了告警规则
+- [ ] 提供了 Grafana 面板配置或 PromQL 查询示例
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3>4.6.4 AI 应用的度量代码模式<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>当你开发 LLM/RAG/Agent 应用时，度量代码有一些通用模式：</p>
+<p><strong>LLM 调用包装器（Python 示例）：</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">Histogram</span><span class="p">,</span> <span class="n">Gauge</span>
+
+<span class="n">llm_requests_total</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;llm_requests_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Total LLM API calls&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">llm_token_usage</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;llm_token_usage_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Token usage&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">]</span>  <span class="c1"># type: input/output</span>
+<span class="p">)</span>
+<span class="n">llm_duration</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+    <span class="s2">&quot;llm_request_duration_seconds&quot;</span><span class="p">,</span> <span class="s2">&quot;LLM call duration&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
+    <span class="n">buckets</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">llm_cost_dollars</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+    <span class="s2">&quot;llm_cost_dollars_total&quot;</span><span class="p">,</span> <span class="s2">&quot;LLM API cost in USD&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">call_llm_with_metrics</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">messages</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;带度量的 LLM 调用包装器&quot;&quot;&quot;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+        <span class="c1"># 记录度量</span>
+        <span class="n">llm_requests_total</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+        <span class="n">llm_duration</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="p">:</span>
+            <span class="n">llm_token_usage</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">prompt_tokens</span>
+            <span class="p">)</span>
+            <span class="n">llm_token_usage</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">completion_tokens</span>
+            <span class="p">)</span>
+            <span class="c1"># 成本估算（以 GPT-4o 为例）</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">prompt_tokens</span> <span class="o">*</span> <span class="mf">2.5</span>
+                    <span class="o">+</span> <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">completion_tokens</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1_000_000</span>
+            <span class="n">llm_cost_dollars</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">llm_requests_total</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+        <span class="k">raise</span>
+</pre></div>
+</div>
+<p>这个模式可以复用到任何 LLM 应用中。在第 9 章中，我们将展示更完整的
+RAG 和 Agent 度量实现。</p>
+</section>
+</section>
+<section id="id14">
+<h2>4.7 本章小结<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<p>本章介绍了多语言环境下的度量驱动实现:</p>
+<ul class="simple">
+<li><p>Go、Python、Java、C++ 各有成熟的度量生态</p></li>
+<li><p>OpenTelemetry 正在统一各语言的度量标准</p></li>
+<li><p>DORA 指标是度量团队交付效能的黄金标准</p></li>
+<li><p><strong>AI 时代，度量需求应该在 Prompt 中前置，而非事后补充</strong></p></li>
+<li><p>LLM/RAG/Agent 应用有专门的度量代码模式</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><strong>关键要点:</strong></p>
+<ul class="simple">
+<li><p>每种语言都有 Prometheus 客户端，API 风格一致</p></li>
+<li><p>OpenTelemetry 是未来统一的方向</p></li>
+<li><p>AI 应用的度量包装器是可复用的基础设施代码</p></li>
+<li><p>让 AI 生成带度量的代码，比生成后再补度量更高效</p></li>
+<li><p>度量设计先于代码实现（先定义指标，再写实现）</p></li>
+</ul>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">💡 避坑指南：多语言度量的 3 个常见问题</p>
+<p><strong>问题 1：指标命名不统一</strong></p>
+<p>Go 团队用 <code class="docutils literal notranslate"><span class="pre">http_request_duration_seconds</span></code>，Python 团队用 <code class="docutils literal notranslate"><span class="pre">api_latency_ms</span></code>。
+解决方案：制定统一的命名规范，推荐使用 OpenTelemetry 语义约定。</p>
+<p><strong>问题 2：标签基数爆炸</strong></p>
+<p>把 user_id 作为标签？如果有 100 万用户，就会产生 100 万个时间序列。
+解决方案：标签值的基数应控制在 100 以内，高基数维度用日志而非度量。</p>
+<p><strong>问题 3：度量端点未保护</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">/metrics</span></code> 端点暴露了系统内部信息，不应对外公开。
+解决方案：将度量端点绑定到内部端口，或添加认证。</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">🔬 动手实验：用 OpenTelemetry 统一多语言度量</p>
+<p><strong>目标</strong>：用 OTel SDK 为一个 Go 或 Python 服务添加度量，通过 OTel Collector 导出到 Prometheus。</p>
+<p><strong>步骤</strong>：</p>
+<ol class="arabic simple">
+<li><p>启动 OTel Collector (Docker)：<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">otel/opentelemetry-collector</span></code></p></li>
+<li><p>在服务中集成 OTel SDK，创建 Counter 和 Histogram</p></li>
+<li><p>配置 OTLP Exporter 指向 Collector</p></li>
+<li><p>在 Prometheus 中查看导出的指标</p></li>
+</ol>
+<p><strong>完整代码</strong>：见 GitHub 仓库 <code class="docutils literal notranslate"><span class="pre">examples/ch4-otel-demo/</span></code></p>
+</div>
+<div class="admonition- admonition">
+<p class="admonition-title">📝 思考题</p>
+<ol class="arabic simple">
+<li><p>你的团队使用了几种编程语言？度量标准是否统一？如果不统一，迁移到 OTel 的成本有多大？</p></li>
+<li><p>当你让 AI 生成代码时，你会在 Prompt 中要求&quot;自带度量&quot;吗？试试看效果如何。</p></li>
+<li><p>标签基数爆炸是一个常见问题。你的系统中是否存在高基数标签？如何优化？</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter3.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">第 3 章 微服务度量设计</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter5.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">第 5 章 度量数据的聚合与展示</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目录
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开篇故事</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.1 度量代码质量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.1.1 静态分析指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.1.2 各语言的代码质量工具</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.2 度量进度</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dora">4.2.1 DORA 指标</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.3 度量性能</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.3.1 性能度量金三角</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.3.2 多语言性能测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.4 多语言度量实现</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#go">4.4.1 Go 度量实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python">4.4.2 Python 度量实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">4.4.3 C++ 度量实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#java">4.4.4 Java 度量实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry">4.5 OpenTelemetry: 统一的度量标准</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">4.6 AI 辅助编程中的度量实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-prompt">4.6.1 正确的 AI Prompt 模式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.6.2 度量设计先于代码实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.6.3 AI 生成代码的度量检查清单</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.6.4 AI 应用的度量代码模式</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.7 本章小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+作者： Walter Fan, Jian Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020-2026, Walter Fan, Jian Fu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
